@@ -1,5 +1,7 @@
 # Rust language
 
+- [Good MD version](https://github.com/donbright/rust-lang-cheat-sheet/tree/master)
+- [Good online/book](https://cheats.rs/)
 
 ## Rust in a Nutshell
 
