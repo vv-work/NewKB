@@ -14,7 +14,7 @@
 
 | Name   | Oper  |  =   | Bits |
 |--------|-------|------|------| 
-|**OR**  | `x|y` | `15` | 1111 | 
+|**OR**  | `x\|y`| `15` | 1111 | 
 |**AND** | `x&y` | `12` | 1100 | 
 |**XOR** | `x^y` | `2`  | 0010 | 
 |L Shift | `x>>y`| `7`  | 0111 | 
@@ -32,3 +32,25 @@ x<<1 # Binary shift left
 x^1 # XOR operation
 # out 4(100) 
 ```
+
+## Notes
+
+<details>
+
+<summary>
+<code>O(logN)</code> complexity of shifting
+</summary>
+
+
+ **Not** `O(N)` **If we are shifting** `>>` or `<<` to the left our complexity would be
+ Because we basically multiplying or deviding by **2**
+
+</details>
+
+
+## Bitmask(mask)
+
+- [ 136 Single Number](https://leetcode.com/problems/single-number/)
+
+
+
