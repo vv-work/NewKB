@@ -2107,3 +2107,36 @@ fn main() {
 }
 ```
 
+## LeetCode Exmaples
+
+
+### Fibonachi
+
+```rust
+//getting 
+
+//sqrt
+fn fib(n:i32){
+    let sqrt_5  = (5.0 as f32).sqrt();
+    let phi     = (1+sqrt_5)/2;
+    let psi     = (1-sqrt_5)/2;
+    let phi_n   = (phi.powi(n)-psi.powi(n))/sqrt_5;
+
+    return phi_n as i32;
+})
+
+impl Solution {
+    pub fn is_subsequence(s: String, t: String) -> bool {
+        let mut s_idx = 0; 
+        let s_chars: Vec<char> = s.chars().collect();  
+        let s_len = s_chars.len(); 
+        
+        for c in t.chars() { 
+            if s_idx < s_len && c == s_chars[s_idx] {  
+                s_idx += 1;  
+            }
+        }
+        
+        s_idx == s_len  
+}
+```
