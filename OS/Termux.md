@@ -16,8 +16,6 @@ To install open-interpter on android just follow the instruction from
 
 ## Failed to build  Kiwi 
 
-
-
 [Github Link]( https://github.com/MikeBirdTech/open-interpreter-termux/issues/15)
 
 ```bash
