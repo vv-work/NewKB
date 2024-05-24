@@ -133,7 +133,7 @@ let s6 = s + s2;                // concatenate String to &str
 for i in "말 한마디에 천냥 빚을 갚는다".split(" ") {print!("{i}");} // split &str
 s.chars().nth(4);               // get nth char. 
 s.get(2..).unwrap(); // ERROR   // get substring failed because 上 was 3 bytes
-s.get(3..).unwrap(); 		// 善若水
+s.get(3..).unwrap(); 		    // 善若水
 s.trim();                       // 上善若水, no trailing space
 s.starts_with("上善");          // true
 s.ends_with("水");              // true
