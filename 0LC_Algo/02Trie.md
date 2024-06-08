@@ -1,22 +1,25 @@
 # Trie
 
-> Pronunce like **try**
+- Pronunce like **try**
+- 
 
-- [Implment Trie(Prefix Tree) on **LC**]()
-> [!WARNING]
+- [LC Crash Course explentation](https://leetcode.com/explore/interview/card/leetcodes-interview-crash-course-data-structures-and-algorithms/714/bonus/4549/)
+- [208. Implment Trie(Prefix Tree) on **LC**](https://leetcode.com/problems/implement-trie-prefix-tree/description/ )
 
 Below is simple example of Trie data structure.
 
+```python
+class TrieNode:
+    def __init__(self):
+        self.children = {}
+        self.isEnd = False
+
+```
 ```mermaid
-graph TD 
-    A((Root)) --> B((C))
-    A((Root)) --> C((A))
-    A((Root)) --> D((D))
-    B --> E((A))
-    E --> F((T))
-    C --> G((A))
-    G --> H((S))
-    D --> I((O)
 
-
+```mermaid
+graph TD
+    A --> C(Round Rect)
+    B --> D{Rhombus}
+    C --> D
 ```
