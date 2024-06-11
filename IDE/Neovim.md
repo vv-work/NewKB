@@ -1,6 +1,5 @@
 # Neovim
 
-
 ## Quick notes 
 
 - **Hide Tabline** 
@@ -9,4 +8,5 @@
     - `set nonu`
 - **Hide Status Line**
     - `set laststatus=0`
+- `<C>` + `w` + `v` - Split window vertically
 
