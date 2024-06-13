@@ -1,5 +1,6 @@
 # Rules
 
+- Mid Sgingular Cortex (Make you'self do uncomfortable things)
 - Consistency
 - Enjoy the Process
 - Deep Work
