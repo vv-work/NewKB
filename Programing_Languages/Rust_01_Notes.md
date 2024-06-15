@@ -71,3 +71,88 @@ fn main() {
 ```
 In this example, `r1` and `r2` are immutable borrows, which are allowed simultaneously. Trying to create `r3`, a mutable borrow, while `r1` and `r2` are in scope would result in a compile-time error. After the immutable borrows go out of scope, `r4` can be created as a mutable borrow.
 
+
+## Options and NULL 
+
+Rust has enum types reprsenting null(absent) data type `Some(T)` `None`
+
+
+The `Option` enum in Rust is a powerful way to handle situations where a value might be present or absent. It is defined as follows:
+
+```rust
+enum Option<T> {
+    Some(T),
+    None,
+}
+```
+
+- `Some(T)`: This variant contains a value of type `T`.
+- `None`: This variant represents the absence of a value.
+
+Using `Option` helps avoid issues related to null references (like null pointer exceptions in other languages). Instead of returning a null value, a function can return an `Option` to explicitly indicate that a value might or might not be present.
+
+Here's a simple example:
+
+```rust
+fn divide(numerator: f64, denominator: f64) -> Option<f64> {
+    if denominator == 0.0 {
+        None
+    } else {
+        Some(numerator / denominator)
+    }
+}
+
+fn main() {
+    let result = divide(4.0, 2.0);
+    match result {
+        Some(value) => println!("Result: {}", value),
+        None => println!("Cannot divide by zero"),
+    }
+}
+```
+
+In this example:
+
+- The `divide` function returns an `Option<f64>`, indicating that the result might be a floating-point number (`Some(value)`) or might not be available (`None`).
+- The `match` statement in the `main` function handles both cases, ensuring that the program can safely deal with the possibility of division by zero.
+
+
+## Exeustive Pattern Matching
+
+In Rust, exhaustively matching an enum means that when you use a `match` expression to handle an enum, you provide patterns for all possible variants of that enum. This ensures that every possible value the enum can take is accounted for, preventing runtime errors from unhandled cases.
+
+Here's a basic example to illustrate this concept:
+
+Suppose you have an enum representing a traffic light:
+
+```rust
+enum TrafficLight {
+    Red,
+    Yellow,
+    Green,
+}
+```
+
+To exhaustively match this enum, you need to handle all possible variants (`Red`, `Yellow`, and `Green`) in your `match` expression:
+
+```rust
+fn describe_light(light: TrafficLight) {
+    match light {
+        TrafficLight::Red => println!("Stop"),
+        TrafficLight::Yellow => println!("Caution"),
+        TrafficLight::Green => println!("Go"),
+    }
+}
+
+fn main() {
+    let light = TrafficLight::Red;
+    describe_light(light);
+}
+```
+
+In this example:
+
+- The `match` expression in the `describe_light` function has a pattern for each of the three possible `TrafficLight` variants.
+- If you forget to include one of the variants, the Rust compiler will produce an error, indicating that the match is not exhaustive. This helps catch potential bugs at compile time.
+
+Exhaustively matching enums is a key feature of Rust's type system, promoting safety and correctness by ensuring that all possible cases are handled explicitly.
