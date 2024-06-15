@@ -20,6 +20,14 @@
 - [📚 Dou.ua: Как я искал работу в США во время пандемии, подался на 200 вакансий и получил оффер на $380K by *Adam Leos*](https://dou.ua/lenta/interviews/get-job-in-usa-during-pandemic/)
 
 
+- [📨 Telegram: **FAANG interview  🇺🇦 **](https://t.me/FaangInterviewUa)
+> **Best Ukrainian community** for FAANG. ❗Mocks & study groups❗
+
+- [📨 Telegram: **FAANG interview 🦅**](https://t.me/FAANG_USA)
+> **Active Ukrainians in US** Best for selaries migration and really fun to participate a lot of referals.
+
+- [📨 Telegram: **Tech Resume Review**](https://t.me/resume_reviewew)
+> **Slavic Community(ua/by/rus)** Resume review good enought Community but you can meet russians there. But except that good enough
 
 ## Best Youtube Channels
 
