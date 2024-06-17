@@ -1,7 +1,9 @@
 # Tech Interview Resources
 
+
  ## Global resources
 
+- [Mock interview Examle](https://www.youtube.com/watch?v=46dZH7LDbf8)
 - [📔Tech Interview Handbook](https://www.techinterviewhandbook.org/)
 > **Best Roadmap**
 > Direct roadmap to help you prepare for a technical interview and land a **FAANG** job.
@@ -12,6 +14,12 @@
  
 - [🚀NeetCode.io](https://neetcode.io/) 
 > **Best tutorials and Roadmap for LeetCode level up**
+
+
+## Lists of **LeetCode Questions**
+
+- [📃 LeetCode75](https://leetcode.com/studyplan/leetcode-75/)
+- []
 
 ## 🇺🇦 Ukrainian Resources
 
