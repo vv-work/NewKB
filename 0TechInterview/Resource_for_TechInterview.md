@@ -55,36 +55,4 @@
 - [ThePrimeagen](https://www.youtube.com/watch?v=hW5s_UUO1RI)
 > ♂ 💪 **REAL** ♂ 💪 **MALE** way of coding & 🥲 fun to watch if you love pain and VIM.
 
-## Example code
 
-NO it's comletely diffent infomration 
-
-```python
-def BFS(graph, start):
-    visited = set()
-    queue = [start]
-    while queue:
-        vertex = queue.pop(0)
-        if vertex not in visited:
-            visited.add(vertex)
-            queue.extend(graph[vertex] - visited)
-    return visited
-```
-```rust 
-fn bfs(graph: &HashMap<i32, Vec<i32>>, start: i32) -> HashSet<i32> {
-    let mut visited = HashSet::new();
-    let mut queue = VecDeque::new();
-    queue.push_back(start);
-    while let Some(vertex) = queue.pop_front() {
-        if !visited.contains(&vertex) {
-            visited.insert(vertex);
-            for &neighbour in &graph[&vertex] {
-                if !visited.contains(&neighbour) {
-                    queue.push_back(neighbour);
-                }
-            }
-        }
-    }
-    visited
-}
-```
