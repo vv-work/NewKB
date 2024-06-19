@@ -1,3 +1,11 @@
+# Markdown
+
+## Latex
+
+Adding Latex to Markdown to display mathematical formul, examples:
+
+$O(N)$
+$O(N \log N)$
 
 ## Markdown Examples for Spoilers and Code
 
