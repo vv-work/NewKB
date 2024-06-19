@@ -1,5 +1,9 @@
 # Tech Interview Resources
 
+## Todo
+
+- Article about LeetCode dou 
+- Hcks with string
 
  ## Global resources
 
