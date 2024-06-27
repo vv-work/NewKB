@@ -5,6 +5,7 @@
 ## Exmaples
 
 **Top Down**
+*italic* **bold** ***bold italic***
 
 ```mermaid
 graph TD
