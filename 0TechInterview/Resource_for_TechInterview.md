@@ -7,6 +7,7 @@
 
  ## Global resources
 
+- [📚 LeetCode](https://leetcode.com/discuss/interview-question/5366542/all-leetcode-articles-on-coding-patterns-summarized-in-one-page)
 - [Mock interview Examle](https://www.youtube.com/watch?v=46dZH7LDbf8)
 - [📔Tech Interview Handbook](https://www.techinterviewhandbook.org/)
 > **Best Roadmap**
