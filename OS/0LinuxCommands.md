@@ -7,3 +7,7 @@
 `tree`  - see the hirarchy
 
 `ddcutil setvcp 10 50` -set brightness to 50
+
+`setxkbmap -option caps:swapescape`  - Swaping keys
+
+
