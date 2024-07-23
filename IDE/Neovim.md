@@ -3,15 +3,22 @@
 ## Questions
 
 - [ ] Removing & Creating files
-- [ ] Surround with
-- [ ] Buffers
-- [ ] Features i am missing
+- [ ] Surround with         ++  
+- [ ] Buffers               ++
+- [ ] Buffers and clipboard ++
+- [ ] Features i am missing? 
 - [ ] Better interactgion with Tabs and copilot
+
 
 ## NvimTree
 
 `d` - Delate file
 `m` - Rename file
+
+## Screen manimpulations
+
+- `:vsplit` -vertical split
+- `:split` - horizontal split
 
 ## Quick notes 
 
