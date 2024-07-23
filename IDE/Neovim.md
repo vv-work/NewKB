@@ -12,8 +12,13 @@
 
 ## NvimTree
 
+`:NvimTreeToggle` - Open NvimTree
+`:NvimTreeFindFile` - Find file in NvimTree
+
+`a` - Create file 
+    `/` - Create folder
 `d` - Delate file
-`m` - Rename file
+`m` - Marking file
 
 ## Screen manimpulations
 
