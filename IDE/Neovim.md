@@ -24,6 +24,8 @@
 
 - `:vsplit` -vertical split
 - `:split` - horizontal split
+`:NvimTreeToggle` - Open NvimTree
+`:NvimTreeFindFile` - Find file in NvimTree
 
 ## Quick notes 
 
