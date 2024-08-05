@@ -1,6 +1,6 @@
 # Knowledge Base 2.0
-It's my KB version 2.0 I moved from just repo in Github.
-To set of notes that I am able to share to the world though the:
+
+**KB 2.0** is a collection of my personal notes **DeepWork**
 `ScriptoriumLudus` - my **Great Idea** sort of project
 
 Collection of everything you need for DeepWork.
