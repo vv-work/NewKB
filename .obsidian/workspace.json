@@ -1,0 +1,183 @@
+{
+  "main": {
+    "id": "d47a51db33b1fd0b",
+    "type": "split",
+    "children": [
+      {
+        "id": "1b2268559749ad8c",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "05f75a49db1d0021",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Dev_Syntaxis/Python_CrashCourse.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Python_CrashCourse"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "81cc4e2642dc4b8a",
+    "type": "split",
+    "children": [
+      {
+        "id": "458dfdcdfdd6ac9b",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "0f309310c358f964",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "1ef6eb5db293e2ff",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "d753970303825179",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 384.5
+  },
+  "right": {
+    "id": "9fcca2f1ec67f423",
+    "type": "split",
+    "children": [
+      {
+        "id": "db3582bd57388573",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "ed30f2df57737b5d",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "OS/01_RemoteAccess.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks for 01_RemoteAccess"
+            }
+          },
+          {
+            "id": "5cf93dee5d0da482",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "OS/01_RemoteAccess.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links from 01_RemoteAccess"
+            }
+          },
+          {
+            "id": "3d4966016494c74d",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "20445fadc4d8aafe",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "OS/01_RemoteAccess.md"
+              },
+              "icon": "lucide-list",
+              "title": "Outline of 01_RemoteAccess"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false
+    }
+  },
+  "active": "05f75a49db1d0021",
+  "lastOpenFiles": [
+    "Dev_Syntaxis/Python.md",
+    "OS/01_RemoteAccess.md",
+    "OS/00_Lunux_commands.md",
+    "OS/Termux.md",
+    "OS/UbuntuBasicSoft.md",
+    "OS/UbuntuSetup.md",
+    "IDE/NeoVim-Mermaid.md",
+    "IDE/Tmux.md",
+    "IDE/Neovim.md",
+    "Dev_Syntaxis/Rust_01_Notes.md",
+    "Dev_Syntaxis/Rust_00Fundamentals_Coursera.md",
+    "Dev_Syntaxis/Rust.md",
+    "Dev_Syntaxis/MarkDown.md",
+    "01_Tech_Interview/Resource_for_TechInterview.md",
+    "01_Tech_Interview/NeetCode.md"
+  ]
+}

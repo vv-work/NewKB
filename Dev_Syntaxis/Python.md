@@ -13,6 +13,8 @@ def add(x,y):
 # Both above are the same
 
 sorted(height_name, key=lambda x: x[1], reverse = True)
+names = ['Johnatan', 'Jane', 'Jack',"Elizabeth", "Mary"]
+sorted(names, key=len) 
 
 ```
 
@@ -31,3 +33,15 @@ height_to_name_map = OrderedDict()
 # Sort the OrderedDict by height in descending order
 height_to_name_map = OrderedDict( sorted(height_to_name_map.items(), reverse=True))
 ```
+
+### Basic types 
+
+ ```python
+from typing import List
+visited:List[bool] = [False]*n
+``` 
+
+
+### Iteration 
+
+for machine, users in machines.items():
