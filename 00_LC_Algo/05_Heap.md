@@ -2,12 +2,12 @@
 
 ## Complexity
 
-| Opearation  | Complexity  |
-|------------ | ----------- |
-| `top()`     | $O(N)$      |
-| `insert()`  | $O(\log N)$ | 
-| `remove()`  | $O(\log N)$ |
-| `heapify()` | $O(N)$      |
+| Opearation  | Complexity  |     |
+| ----------- | ----------- | --- |
+| `top()`     | $O(N)$      |     |
+| `insert()`  | $O(\log N)$ |     |
+| `remove()`  | $O(\log N)$ |     |
+| `heapify()` | $O(N)$      |     |
 
 ```python
 import heapq
@@ -27,7 +27,5 @@ heapq.nlargest(3,arr)
 # [10, 9, 8]
 heapq.nsmallest(3,arr)
 # [2, 3, 4]
-
-
-```
+ ```
 

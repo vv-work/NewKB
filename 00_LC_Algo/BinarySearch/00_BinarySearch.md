@@ -31,9 +31,10 @@ Time Complexity:    `O(log n)`
 
 Space Complexity:   `O(1)`
 
+
 <details>
 
-<summary> 
+ <summary> 
     <b>Python implementation</b>
 </summary>
 

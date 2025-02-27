@@ -12,10 +12,10 @@
 
 1. HashMap
 2. LinkedList
+3. Stack
+4. Heap
+5. Queue
+6. Dynamic Programming
 
-4 3. Stack
-4
-6. Heap
-7. Queue
 
-. Dynamic Programming
+## Course 

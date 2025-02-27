@@ -38,12 +38,11 @@ set() #creates HashSet
 ```python
 
 counter = Counter(data)
-
 # Sort the Counter by the amount of elements
 sorted_counter = sorted(counter.items(), key=lambda x: x[1], reverse=True)
 
 ```
-### Ordered diectionary
+### Ordered dictionary
 
 ```python
 height_to_name_map = OrderedDict()

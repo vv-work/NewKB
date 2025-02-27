@@ -56,3 +56,5 @@
 > ♂ 💪 **REAL** ♂ 💪 **MALE** way of coding & 🥲 fun to watch if you love pain and VIM.
 
 
+### System Design 
+![[Pasted image 20250222111436.png]]

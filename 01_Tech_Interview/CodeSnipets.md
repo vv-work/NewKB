@@ -21,3 +21,31 @@ def leafSimilar(root1,root2):
             yield from dfs(node.left)
             yield from dfs(node.right)
 ```
+
+## Imports 
+
+```python 
+from collections import defaultdit
+from collections import deque 
+import heapq 
+```
+## Adjacency list 
+
+```python 
+
+class GraphNode:
+	def __init__(self,val):
+		self.val = val
+		self.neighbours = val
+		
+adjList = [ ["A", "B"] ,["B","C"], ["B","E"], ["C","E"] ,["E", "D"]]
+
+adjList = {}
+
+for src,dst in edges:
+	if not src in adjList:
+		adjList[src] = []
+	if not dst in adjList:
+		adjList[dst] = []
+	adjList[src].append(dst)
+```

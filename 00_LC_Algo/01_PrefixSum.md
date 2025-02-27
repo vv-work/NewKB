@@ -1,4 +1,5 @@
-# Prefix Sum
+
+## Prefix Sum
 
 For prefix sum you just create array with first element in the begining. 
 And then sum them all up
