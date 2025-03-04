@@ -27,12 +27,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "00_LC_Algo/00_Intro.md",
+                "file": "Dev_Syntaxis/Python_NeetCode_Interviews.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "00_Intro"
+              "title": "Python_NeetCode_Interviews"
             }
           }
         ],
@@ -180,13 +180,25 @@
   },
   "active": "633bfe0fd3d95c6f",
   "lastOpenFiles": [
+    "00_LC_Algo/04_SlidingWindow.md~",
+    "00_LC_Algo/4913",
+    "00_LC_Algo/img/sliding_00.mp4",
+    "00_LC_Algo/img/slding_00.gif",
+    "00_LC_Algo/img/Sliding Window Fixed - Close Duplicates [8GZ7znQGpMM].temp.mp4",
+    "00_LC_Algo/img/Sliding Window Fixed - Close Duplicates [8GZ7znQGpMM].mp4",
+    "00_LC_Algo/img/Sliding Window Fixed - Close Duplicates [8GZ7znQGpMM].mp4.part-Frag7",
+    "00_LC_Algo/img/Sliding Window Fixed - Close Duplicates [8GZ7znQGpMM].mp4.part-Frag7.part",
+    "00_LC_Algo/img/Sliding Window Fixed - Close Duplicates [8GZ7znQGpMM].mp4.part-Frag6",
+    "00_LC_Algo/img/Sliding Window Fixed - Close Duplicates [8GZ7znQGpMM].mp4.part-Frag6.part",
+    "00_LC_Algo/img/Sliding Window Fixed - Close Duplicates [8GZ7znQGpMM].mp4.part-Frag5",
+    "00_LC_Algo/img/Sliding Window Fixed - Close Duplicates [8GZ7znQGpMM].mp4.part-Frag5.part",
+    "00_LC_Algo/00_Intro.md",
+    "Dev_Syntaxis/Python_NeetCode_Interviews.md",
     "00_LC_Algo/Graph/Adjacency_List.md",
     "01_Tech_Interview/NeetCode.md",
     "01_Tech_Interview/CodeSnipets.md",
-    "00_LC_Algo/Graph",
     "00_LC_Algo/03_Sorting.md",
     "00_LC_Algo/01_PrefixSum.md",
-    "00_LC_Algo/00_Intro.md",
     "00_LC_Algo/Arrays_String/00_Array_String.md",
     "00_LC_Algo/BinarySearch/00_BinarySearch.md",
     "00_LC_Algo/Bonus/04_BitManipuation.md",
@@ -205,7 +217,6 @@
     "IDE/Tmux.md",
     "IDE/Neovim.md",
     "Dev_Syntaxis/Rust_01_Notes.md",
-    "Dev_Syntaxis/Rust_00Fundamentals_Coursera.md",
-    "Dev_Syntaxis/Rust.md"
+    "Dev_Syntaxis/Rust_00Fundamentals_Coursera.md"
   ]
 }
