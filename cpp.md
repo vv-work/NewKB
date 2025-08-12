@@ -1,5 +1,8 @@
-# C++ Learning 
+# C++ Learning
 
+## Namespaces
+
+Using names: `std::cout`, `std::endl`, etc. is common in C++. To avoid typing `std::` every time, you can use the `using` directive.
 
 ```cpp
 #include <iostream>
@@ -14,5 +17,19 @@ int main(){
 
   return 0;
 }
+```
+## Random
 
+```cpp
+# include <cstdlib> 
+# include <iostream>
+# include <ctime>
+
+using namespace std;
+
+int main(){
+  long elapsed_time = time(0);
+  srand(elapsed_time);
+
+  int number = rand() % 100;
 ```
