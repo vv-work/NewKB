@@ -93,7 +93,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 384.5
+    "width": 384.5,
+    "collapsed": true
   },
   "right": {
     "id": "9fcca2f1ec67f423",
@@ -180,6 +181,7 @@
   },
   "active": "633bfe0fd3d95c6f",
   "lastOpenFiles": [
+    "Pasted image 20250812174815.png",
     "Pasted image 20250812103741.png",
     "Unity_ECS.md~",
     "Pasted image 20250812074053.png",

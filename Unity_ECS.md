@@ -2,9 +2,18 @@
 
 - [Code Monkey ECS RTS game](https://www.youtube.com/watch?v=1gSnTlUjs-s)
 
-## Tutorial notes
+## Code monkey Tutorial notes
 
 - [Code Monkey 1h ECS Extreme Performance](https://www.youtube.com/watch?v=4ZYn9sR3btg)
+
+
+### Questions 
+
+- [ ] `SystemAPI` 
+- [ ] `SystemAPI.Query`
+- [ ] `SystemAPI.Time.DelataTime`
+
+### Getting started with Unity ECS
 
 1. Do not reload domain
 ![[Pasted image 20250812071238.png]]
@@ -39,15 +48,15 @@ using Unity.Entities;
 public struct RotationSpeed : IComponentData
 {
     public float Value; 
-}
+} 
 ```
 
 #### MonoBehaviour - Baker
 
-`Baker` is used to convert `MonoBehaviour` data into ECS components. 
+`Baker` - is used to convert `MonoBehaviour` data into ECS components. 
+`AddComponent` - is used to add a component to an entity.
 
 ```csharp
-
 using Unity.Entities;
 using UnityEngine;
 
@@ -63,9 +72,9 @@ public class RotationSpeedAuthoring: MonoBehaviour
             AddComponent(entity,rs);
         }
     } 
-}
-```
+} 
 
+```
 #### SystemBase vs ISystem
 
 `SystemBase` - is a base class for creating systems in Unity ECS. It provides a way to define the behavior of entities. `class`
@@ -133,8 +142,136 @@ Reading/Writing without them would not change the entity value.
 
 `math.mul()` - is used to multiply two quaternions.
 
-#### Questions 
 
-- [ ] SystemAPI 
-- [ ] SystemAPI.Query
-- [ ] SystemAPI.Time.DelataTime
+#### System Registration
+
+```csharp
+public partial struct RotationCubeSystem: ISystem
+{
+    public void OnCreate(ref SystemState state)
+    {
+        state.RequireForUpdate<RotationSpeed>(); 
+    }
+
+```
+
+#### Burst Compilation
+
+To enable Burst compilation, you need to add the `BurstCompile` attribute to your system. 
+
+![[Pasted image 20250812174815.png]]
+
+If you use `class` anywhere the Burst compilation will not work.
+
+```csharp
+
+    
+    [BurstCompile]
+    public void OnUpdate(ref SystemState state) 
+    {
+    }
+```
+
+#### Jobs 
+
+
+##### Job Syntaxis 
+
+```csharp
+
+    public  partial struct RotationCubeJob : IJobEntity
+    {
+        public float deltaTime;
+        public void Execute(ref LocalTransform localTransform, ref RotationSpeed rotationSpeed)
+        {
+            float power = 1f;
+            for (int i = 0; i < 100000; i++)
+            {
+                power *= 2f;
+                power /= 2f;
+            }
+             
+            localTransform = localTransform.RotateY(rotationSpeed.Value*deltaTime*power); 
+        }
+    }
+
+
+```
+
+###### Sheduling a Job
+
+```csharp
+//short hand 
+job.Schedule(); //instead of job.Run()
+
+//actual implementation
+state.Dependency = job.Schedule(state.Dependency); //If you want to use dependencies
+```
+
+
+```csharp
+    [BurstCompile]
+    public void OnUpate(ref SystemState state)
+    {
+        var job = new RotationCubeJob
+        {
+            deltaTime = SystemAPI.Time.DeltaTime
+        }
+        /*job.Run();*/
+        job.Schedule();
+    }
+
+    public void OnUpdate(ref SystemState state) 
+    {
+        var job = new RotationCubeJob
+        {
+            deltaTime = SystemAPI.Time.DeltaTime
+        };
+        job.Schedule(); 
+    }
+```
+
+##### IJobEntity vs IJob
+
+`IJobEntity` - automatically iterates over entities and provides access to their components.
+`IJob` - requires you to manually iterate over entities and provides access to their components.
+
+#### Tag Components  
+
+Tag component is `IComponentData` that does not contain any data.
+
+```csharp
+public struct MyTag : IComponentData { } //tag component 
+
+```
+##### With None 
+
+The following code will run the only for entities that do not have the `MyTag` component.
+
+```csharp
+[WithNone(typeof(MyTag))]
+public  partial struct RotationCubeJob : IJobEntity 
+
+```
+> Actual implementation : 
+
+```csharp
+SystemAPI.Query<RefRW<LocalTransform>,RefRO<RotationSpeed>>().WithNone<PlayerTag>()
+```
+
+
+#### Mathematics
+
+`float3` - is a 3D vector that contains three float values (x, y, z).
+`float2` - is a 2D vector that contains two float values (x, y).
+`quaternion` - is a mathematical representation of rotation in 3D space.
+`math` - is a static class that contains various mathematical functions and constants.
+
+```csharp
+float3 position = new float3(1f, 2f, 3f);
+float2 uv = new float2(0.5f, 0.5f);
+quaternion rotation = quaternion.EulerXYZ(new float3(0f, math.radians(90f), 0f));
+float length = math.length(position);
+float dotProduct = math.dot(new float3(1f, 0f, 0f), new float3(0f, 1f, 0f));
+```
+
