@@ -9,9 +9,11 @@
 
 ### Questions 
 
-- [ ] `SystemAPI` 
-- [ ] `SystemAPI.Query`
-- [ ] `SystemAPI.Time.DelataTime`
+- [ ] `SystemAPI` usecases commands 
+- [ ] `SystemAPI.Query` usecases commands
+- [ ] EnityCommandBuffer usecases commands
+- [ ] `entityManager` usecases commands
+
 
 ### Getting started with Unity ECS
 
@@ -121,7 +123,21 @@ public partial struct RotationCubeSystem: ISystem
 }
 ```
 
-#### RerRO vs RefRW
+##### Disabling a system
+
+```csharp
+public void OnUpdate(ref SystemState state){
+
+    state.Enabled = flase;
+return;
+/*
+...
+*/
+```
+
+#### RerRO vs RefRW or Reference wrappers
+
+Reference wrappers are used incide ECS queries to safely and efficiently access component data.
 
 - `RefRO` - is used to read data from an entity. It is a **read-only** reference to the data.
 - `RefRW` - is used to read and write data to an entity. It is a **read-write** reference to the data.
@@ -274,4 +290,317 @@ quaternion rotation = quaternion.EulerXYZ(new float3(0f, math.radians(90f), 0f))
 float length = math.length(position);
 float dotProduct = math.dot(new float3(1f, 0f, 0f), new float3(0f, 1f, 0f));
 ```
+
+#### Aspects (iAspect)
+
+`IAspect` is a way to define a group of entity data that will be used together.
+
+> ❗️**IAspect** is used with `readonly` and `struct` 
+
+##### IAspect usecase
+
+Converting from:
+
+```csharp
+foreach ((RefRW<LocalTransform> localTransform, RefRO<RotationSpeedData> rotationSpeed,RefRO<MovementData> movement) in 
+         SystemAPI.Query<RefRW<LocalTransform>,RefRO<RotationSpeedData>,RefRO<MovementData>>().WithAll<RotatingCubeTag>())
+```
+Converting into:
+
+```csharp
+foreach (var aspect in SystemAPI.Query<RotationAspect>())
+{
+    aspect.Rotate(SystemAPI.Time.DeltaTime);
+}
+```
+
+###### IAspect Example
+
+```csharp
+using Unity.Entities;
+
+public readonly partial struct RotationAspect : IAspect{
+    public readonly RefRO<LocalTransform> LocalTransform;
+    public readonly RefRO<RotationSpeed> RotationSpeed;
+    public float RotationSpeedValue => RotationSpeed.ValueRO.Value;
+ 
+    public void Rotate(float deltaTime)
+    {
+        var rotation = quaternion.EulerXYZ(0,RotationSpeedValue*deltaTime,0); 
+        LocalTransform.ValueRW.Rotation = math.mul(LocalTransform.ValueRO.Rotation,rotation);
+    }
+}
+```
+
+#### Entity 
+
+`Entity` is a struct that represents an entity in Unity ECS. It is used to create, destroy, and manage entities. Contains ID and version.
+> is like `GameObject` in Unity, but without any components.
+
+##### Creating an Entity
+
+- `SystemAPI.EntityManager.CreateEntity()` - is used to create and manage entities in Unity ECS.
+
+```csharp
+entity = SystemAPI.EntityManager.CreateEntity();
+entityManager.AddComponentData(entity, new Transform { Position = new float3(0, 0, 0) });
+entityManager.AddComponentData(entity, new Rotation { Value = quaternion.identity });
+```
+
+##### Instantiating an Entity
+
+- `EntityManager.Instantiate()` is used to create a new entity from a prefab entity.
+
+```csharp
+Entity entity = SystemAPI.EntityManager.Instantiate(prefabEntity);
+````
+
+##### Getting and Entity 
+
+We can use `GetEntity` method inside a `Baker` class to get the entity associated with a `MonoBehaviour`.
+
+```csharp
+Entity entity = GetEntity(TransformUsageFlags.Dynamic);
+```
+###### TransformUsageFlags
+
+`TransformUsageFlags` - is an enum that defines how the transform of an entity will be used.
+
+- `Dynamic` - is used for entities that will be moved or rotated frequently.
+- `None` - The entity will not have a transform.
+- `WorldSpace` - entitys position is set in world cordinates.
+
+###### Getting an Entity from a GameObject
+
+```csharp
+Entity entity = GetEntity(authoring.gameObject, TransformUsageFlags.Dynamic);
+```
+
+##### Singelton Entity 
+
+A singleton entity is an entity that has only one instance in the world. It is used to store global data that is shared across all entities.
+
+- `RequireSingletonForUpdate<SpawnnCubesSingleton>()` - is used to require singleton to be present.
+- `SystemAPI.GetSingleton<SpawnnCubesSingleton>()` - is used to get the singleton entity.
+- `SystemAPI.SetSingleton<SpawnnCubesSingleton>(value)` - is used to set the singleton entity .
+
+
+```csharp
+
+public struct SpawnnCubesSingleton : IComponentData
+{
+    public int Count;
+}
+
+public partial struct SpawnCubesSystem : ISystem
+{
+    public void OnCreate(ref SystemState state)
+    {
+        state.RequireSingletonForUpdate<SpawnnCubesSingleton>();
+    }
+    public void OnUpdate(ref SystemState state)
+    {
+        config = SystemAPI.GetSingleton<SpawnnCubesSingleton>();
+        config.Count++;
+        SystemAPI.SetSingleton<SpawnnCubesSingleton>(config);
+
+    }
+}
+
+```
+
+#### EntityCommandBuffer (ECB)
+
+**EntityCommandBuffer (ECB)** is a way to record structural changes to entities and apply them later. It allows you to safely modify entities from jobs or other systems without immediately affecting the entity manager.
+
+EntityCommandBuffer fixed my shit code now it's working correctly.
+
+You also use instead of `state.EntityManager` to modify entities. for instance set position, rotation, etc.
+**Syntaxis:**
+`BeginInitializationEntityCommandBufferSystem.Singleton.CreateCommandBuffer(state.WorldUnmanaged);`
+
+##### Without ECS
+
+
+
+```csharp
+
+public partial struct SpawnNoECBSystem : ISystem
+{
+    public void OnUpdate(ref SystemState state)
+    {
+        var spawner = SystemAPI.GetSingleton<Spawner>();
+        var entities = state.EntityManager.Instantiate(spawner.Prefab, spawner.Count, Allocator.Temp);
+    }
+}
+```
+
+##### With ECB 
+
+```csharp
+public partial struct SpawnWithECBSystem : ISystem
+{
+    public void OnUpdate(ref SystemState state)
+    {
+        var ecb = SystemAPI.GetSingleton<BeginInitializationEntityCommandBufferSystem.Singleton>().CreateCommandBuffer(state.WorldUnmanaged);
+        var spawner = SystemAPI.GetSingleton<Spawner>();
+        for (int i = 0; i < spawner.Count; i++)
+            ecb.Instantiate(spawner.Prefab);
+            ecb.SetComponent(spawner.Prefab, new LocalTransform { Position = new float3(0, 0, 0), Rotation = quaternion.identity });
+}
+}
+
+```
+
+
+#### IEnableableComponent
+
+`IEnableableComponent` is an interface that allows you to enable or disable an entity. It is used to control the behavior of entities in Unity ECS.
+
+**❗️ Not a structural change** - it does not change the entity structure, but rather changes the state of the entity.
+
+##### Enabling and Disabling an Entity
+
+```csharp
+
+public partial struct EnableDisableSystem : ISystem
+{
+    public void OnUpdate(ref SystemState state)
+    {
+        var query = SystemAPI.QueryBuilder().WithAll<EnableableComponent>().Build();
+        foreach (var entity in query)
+        {
+            if (/* some condition */)
+            {
+                SystemAPI.SetComponentEnabled<EnableableComponent>(entity, true);
+            }
+            else
+            {
+                SystemAPI.SetComponentEnabled<EnableableComponent>(entity, false);
+            }
+        }
+    }
+}
+```
+
+
+### Query 
+
+Here’s a Markdown explanation of Query in Unity ECS with the most used methods and calls.
+
+⸻
+
+🔍 SystemAPI.Query in Unity ECS
+
+SystemAPI.Query is used inside SystemBase or ISystem to iterate over entities that match specific component types and filters.
+It’s a type-safe, Burst-friendly way to access components without manually writing Entities.ForEach.
+
+⸻
+
+Basic Usage
+
+foreach (var (transform, velocity) in 
+         SystemAPI.Query<RefRW<LocalTransform>, RefRO<Velocity>>())
+{
+    // transform is writable, velocity is read-only
+}
+
+
+⸻
+
+📜 Common Component Access Modifiers
+
+Modifier	Meaning	Example
+RefRO<T>	Read-only access to component T	RefRO<Health>
+RefRW<T>	Read-write access to component T	RefRW<LocalTransform>
+EnabledRefRO<T>	Read-only access for enabled/disabled components	EnabledRefRO<MyTag>
+EnabledRefRW<T>	Read-write access for enabled/disabled components	EnabledRefRW<MyTag>
+
+
+⸻
+
+⚙ Filtering Methods
+
+1. .WithAll<T>()
+
+Selects entities that have all of the listed components or tags.
+
+SystemAPI.Query<RefRO<Health>>()
+         .WithAll<PlayerTag, AliveTag>();
+
+
+⸻
+
+2. .WithAny<T>()
+
+Selects entities that have at least one of the listed components.
+
+SystemAPI.Query<RefRO<Health>>()
+         .WithAny<ZombieTag, VampireTag>();
+
+
+⸻
+
+3. .WithNone<T>()
+
+Excludes entities with specific components.
+
+SystemAPI.Query<RefRO<Health>>()
+         .WithNone<DeadTag>();
+
+
+⸻
+
+4. .WithEntityAccess()
+
+Gives you access to the entity ID in the loop.
+
+foreach ((var transform, var entity) in 
+         SystemAPI.Query<RefRO<LocalTransform>>()
+                  .WithAll<PlayerTag>()
+                  .WithEntityAccess())
+{
+    // entity is the Entity struct
+}
+
+
+⸻
+
+5. .WithDisabled<T>()
+
+Includes entities where component T is disabled.
+
+SystemAPI.Query<RefRW<AIState>>()
+         .WithDisabled<AIEnabled>();
+
+
+⸻
+
+🛠 Special Cases
+
+Getting a Single Component
+
+var playerHealth = SystemAPI.GetSingleton<Health>();
+
+var ecb = SystemAPI.GetSingleton<BeginInitializationEntityCommandBufferSystem.Singleton>()
+                   .CreateCommandBuffer(World.Unmanaged);
+
+
+⸻
+
+Accessing Lookups
+
+Lookups allow random access to component data outside of direct queries.
+
+var transformLookup = SystemAPI.GetComponentLookup<LocalTransform>(isReadOnly: false);
+
+
+⸻
+
+🚀 Performance Tips
+	•	Use RefRO unless you need to modify — this allows Burst optimizations.
+	•	Chain filters to reduce the number of entities processed.
+	•	Use `.WithEntityAccess()` only if you really need the entity ID.
+
+⸻
 
