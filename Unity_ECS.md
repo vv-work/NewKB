@@ -32,10 +32,10 @@ Access via: `Window` > `Entities` > `Hierarchy`
 
 ## Quick Reference Questions
 
-- [ ] `SystemAPI` use cases and commands 
-- [ ] `SystemAPI.Query` use cases and commands
-- [ ] `EntityCommandBuffer` use cases and commands
-- [ ] `EntityManager` use cases and commands
+- [x] `SystemAPI` use cases and commands 
+- [x] `SystemAPI.Query` use cases and commands
+- [x] `EntityCommandBuffer` use cases and commands
+- [x] `EntityManager` use cases and commands
 
 ## Core Concepts
 
@@ -76,6 +76,8 @@ public class RotationSpeedAuthoring : MonoBehaviour
         }
     } 
 }
+```
+
 ### Systems
 
 #### SystemBase vs ISystem
@@ -213,6 +215,8 @@ public partial struct MySystem : ISystem
 #### Job System
 
 The Job System enables parallel processing of entities for maximum performance.
+
+`IJobEntity` - is a job entity that automatically iterates over entities with specified components.
 
 **Job Structure:**
 ```csharp
@@ -527,77 +531,80 @@ public partial struct EnableDisableSystem : ISystem
 ```
 
 
-### Query 
+### 🔍 SystemAPI.Query in Unity ECS
 
-Here’s a Markdown explanation of Query in Unity ECS with the most used methods and calls.
+`SystemAPI.Query` is used inside `SystemBase` or `ISystem` to iterate over entities that match specific component types and filters.
+It’s a type-safe, Burst-friendly way to access components without manually writing `Entities.ForEach`.
 
-⸻
-
-🔍 SystemAPI.Query in Unity ECS
-
-SystemAPI.Query is used inside SystemBase or ISystem to iterate over entities that match specific component types and filters.
-It’s a type-safe, Burst-friendly way to access components without manually writing Entities.ForEach.
-
-⸻
+---
 
 Basic Usage
 
+```csharp
 foreach (var (transform, velocity) in 
          SystemAPI.Query<RefRW<LocalTransform>, RefRO<Velocity>>())
 {
     // transform is writable, velocity is read-only
 }
+```
 
-
-⸻
+---
 
 📜 Common Component Access Modifiers
 
-Modifier	Meaning	Example
-RefRO<T>	Read-only access to component T	RefRO<Health>
-RefRW<T>	Read-write access to component T	RefRW<LocalTransform>
-EnabledRefRO<T>	Read-only access for enabled/disabled components	EnabledRefRO<MyTag>
-EnabledRefRW<T>	Read-write access for enabled/disabled components	EnabledRefRW<MyTag>
+Modifier	    Meaning	Example
+
+`RefRO<T>`	        Read-only access to component T	RefRO<Health>
+`RefRW<T>`	        Read-write access to component T	RefRW<LocalTransform>
+`EnabledRefRO<T>`	Read-only access for enabled/disabled components	EnabledRefRO<MyTag>
+`EnabledRefRW<T>`	Read-write access for enabled/disabled components	EnabledRefRW<MyTag>
 
 
-⸻
+---
 
 ⚙ Filtering Methods
 
-1. .WithAll<T>()
+1. .`WithAll<T>()`
 
 Selects entities that have all of the listed components or tags.
 
+```csharp
 SystemAPI.Query<RefRO<Health>>()
          .WithAll<PlayerTag, AliveTag>();
+```
 
 
-⸻
+---
 
-2. .WithAny<T>()
+2. .`WithAny<T>()`
 
 Selects entities that have at least one of the listed components.
 
+```csharp
 SystemAPI.Query<RefRO<Health>>()
          .WithAny<ZombieTag, VampireTag>();
+```
 
 
-⸻
+---
 
-3. .WithNone<T>()
+3. .`WithNone<T>()`
 
 Excludes entities with specific components.
 
+```csharp
 SystemAPI.Query<RefRO<Health>>()
          .WithNone<DeadTag>();
+```
 
 
-⸻
+---
 
-4. .WithEntityAccess()
+4. .`WithEntityAccess()`
 
 Gives you access to the entity ID in the loop.
 
+```csharp
 foreach ((var transform, var entity) in 
          SystemAPI.Query<RefRO<LocalTransform>>()
                   .WithAll<PlayerTag>()
@@ -605,19 +612,22 @@ foreach ((var transform, var entity) in
 {
     // entity is the Entity struct
 }
+```
 
 
-⸻
+---
 
-5. .WithDisabled<T>()
+5. `.WithDisabled<T>()`
 
 Includes entities where component T is disabled.
 
+```csharp
 SystemAPI.Query<RefRW<AIState>>()
          .WithDisabled<AIEnabled>();
+```
 
 
-⸻
+---
 
 🛠 Special Cases
 
@@ -625,27 +635,28 @@ Getting a Single Component
 
 var playerHealth = SystemAPI.GetSingleton<Health>();
 
+```csharp
 var ecb = SystemAPI.GetSingleton<BeginInitializationEntityCommandBufferSystem.Singleton>()
                    .CreateCommandBuffer(World.Unmanaged);
+```
 
 
-⸻
+---
 
 Accessing Lookups
 
 Lookups allow random access to component data outside of direct queries.
-
+```csharp
 var transformLookup = SystemAPI.GetComponentLookup<LocalTransform>(isReadOnly: false);
+```
 
-
-⸻
+---
 
 🚀 Performance Tips
-	•	Use RefRO unless you need to modify — this allows Burst optimizations.
+	•	Use `RefRO` unless you need to modify — this allows Burst optimizations.
 	•	Chain filters to reduce the number of entities processed.
 	•	Use `.WithEntityAccess()` only if you really need the entity ID.
 
-⸻
 
 ## Data Structures
 
