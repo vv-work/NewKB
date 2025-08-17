@@ -7,20 +7,19 @@ Unity ECS is a data-oriented design pattern that provides high performance and e
 1. [Resources](#resources)
 2. [Setup and Configuration](#setup-and-configuration)
 3. [Core Concepts](#core-concepts)
-   - [Components](#components)
-   - [Entities](#entities)
-   - [Systems](#systems)
-4. [Components Deep Dive](#components-deep-dive)
-5. [Systems Deep Dive](#systems-deep-dive)
-6. [Queries and Filtering](#queries-and-filtering)
-7. [Aspects](#aspects)
-8. [Entity Management](#entity-management)
-9. [Prefabs and Spawning](#prefabs-and-spawning)
-10. [World Management](#world-management)
-11. [Performance Optimization](#performance-optimization)
-12. [Advanced Features](#advanced-features)
-13. [Best Practices](#best-practices)
-14. [Debugging and Troubleshooting](#debugging-and-troubleshooting)
+4. [Components](#components)
+5. [Entities](#entities) 
+6. [Systems](#systems)
+7. [Queries and Filtering](#queries-and-filtering)
+8. [Aspects](#aspects)
+9. [Entity Management](#entity-management)
+10. [Prefabs and Spawning](#prefabs-and-spawning)
+11. [World Management](#world-management)
+12. [Performance Optimization](#performance-optimization)
+13. [Advanced Features](#advanced-features)
+14. [Best Practices](#best-practices)
+15. [Debugging and Troubleshooting](#debugging-and-troubleshooting)
+16. [Quick Reference](#quick-reference)
 
 ## Resources
 
@@ -66,7 +65,7 @@ Unity ECS follows the Entity-Component-System pattern:
 - **Scalability**: Handle thousands of entities efficiently
 - **Predictability**: No inheritance hierarchies or virtual calls
 
-## Components Deep Dive
+## Components
 
 ### IComponentData
 
@@ -211,164 +210,6 @@ public partial struct AudioCleanupSystem : ISystem
 }
 ```
 
-## 🔍 SystemAPI.Query 
-
-SystemAPI.Query is used inside `SystemBase` or `ISystem` to iterate over entities that match specific component types and filters.
-
-It’s a type-safe, Burst-friendly way to access components without manually writing `Entities.ForEach`.
-
-
----
-
-Basic Usage
-
-```csharp
-foreach (var (transform, velocity) in 
-         SystemAPI.Query<RefRW<LocalTransform>, RefRO<Velocity>>()) { }
-```
----
-
-
-📜 Common Component Access Modifiers
-
-Modifier	    Meaning	Example
-
-```csharp
-RefRO<T>	        //read-only access to component T	
-RefRW<T>	        //Read-write access to component T	
-EnabledRefRO<T>	//Read-only access for enabled/disabled components	
-EnabledRefRW<T>	//Read-write access for enabled/disabled components
-```
-
----
-
-⚙ Filtering Methods
-
-1. ```WithAll<T>()```
-
-Selects entities that have all of the listed components or tags.
-
-```csharp
-SystemAPI.Query<RefRO<Health>>()
-         .WithAll<PlayerTag, AliveTag>();
-```
-
-
----
-
-2. .`WithAny<T>()`
-
-Selects entities that have at least one of the listed components.
-
-```csharp
-SystemAPI.Query<RefRO<Health>>()
-         .WithAny<ZombieTag, VampireTag>();
-```
-
-
----
-
-3. .`WithNone<T>()`
-
-Excludes entities with specific components.
-
-```csharp
-SystemAPI.Query<RefRO<Health>>()
-         .WithNone<DeadTag>();
-```
-
-
----
-
-4. .`WithEntityAccess()`
-
-Gives you access to the entity ID in the loop.
-
-```csharp
-foreach ((var transform, var entity) in 
-         SystemAPI.Query<RefRO<LocalTransform>>()
-                  .WithAll<PlayerTag>()
-                  .WithEntityAccess())
-{
-    // entity is the Entity struct
-}
-```
-
-
----
-
-5. ```.WithDisabled<T>()```
-
-Includes entities where component T is disabled.
-
-```csharp
-SystemAPI.Query<RefRW<AIState>>()
-         .WithDisabled<AIEnabled>();
-```
-
-
----
-
-🛠 Special Cases
-
-Getting a Single Component
-
-```csharp
-var playerHealth = SystemAPI.GetSingleton<Health>();
-
-var ecb = SystemAPI.GetSingleton<BeginInitializationEntityCommandBufferSystem.Singleton>()
-                   .CreateCommandBuffer(World.Unmanaged);
-```
-
-
----
-
-Accessing Lookups
-
-Lookups allow random access to component data outside of direct queries.
-```csharp
-var transformLookup = SystemAPI.GetComponentLookup<LocalTransform>(isReadOnly: false);
-```
-
----
-
-🚀 Performance Tips
-	•	Use `RefRO` unless you need to modify — this allows Burst optimizations.
-	•	Chain filters to reduce the number of entities processed.
-	•	Use `.WithEntityAccess()` only if you really need the entity ID.
-
-## MonoBehaviour Integration
-
-### Interacting between MonoBehaviour and ECS
-
-```csharp
-// In MonoBehaviour
-void Start()
-{
-    World.DefaultGameObjectInjectionWorld
-         .GetExistingSystem<PlayerInputSystem>()
-         .OnShoot += HandleShoot;
-}
-
-void HandleShoot(object sender, EventArgs e)
-{
-    // Handle shoot event
-}
-
-public partial struct PlayerInputSystem : ISystem
-{
-    public event Action OnShoot;
-
-    public void OnUpdate(ref SystemState state)
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            OnShoot?.Invoke();
-        }
-    }
-}
-```
-
 ## Entities
 
 `Entity` is a struct that represents an entity in Unity ECS. Contains ID and version for identification.
@@ -436,7 +277,7 @@ public partial struct SpawnCubesSystem : ISystem
 }
 ```
 
-## Systems Deep Dive
+## Systems
 
 ### SystemBase vs ISystem
 
@@ -670,6 +511,21 @@ public partial struct LookupSystem : ISystem
     }
 }
 ```
+
+### Singletons and Special Cases
+
+**Getting a Single Component:**
+```csharp
+var playerHealth = SystemAPI.GetSingleton<Health>();
+
+var ecb = SystemAPI.GetSingleton<BeginInitializationEntityCommandBufferSystem.Singleton>()
+                   .CreateCommandBuffer(World.Unmanaged);
+```
+
+**Performance Tips:**
+- Use `RefRO` unless you need to modify — this allows Burst optimizations
+- Chain filters to reduce the number of entities processed
+- Use `.WithEntityAccess()` only if you really need the entity ID
 
 ## Aspects
 
@@ -933,6 +789,7 @@ customWorld.Dispose();
 ### MonoBehaviour Integration
 
 ```csharp
+// Interacting between MonoBehaviour and ECS
 public class GameManager : MonoBehaviour
 {
     void Start()
@@ -1086,6 +943,16 @@ float3 crossProduct = math.cross(new float3(1, 0, 0), new float3(0, 1, 0));
 // Interpolation
 float3 lerped = math.lerp(position, float3.zero, 0.5f);
 ```
+
+**Key Math Functions:**
+- `math.mul()` - Multiply quaternions or matrices
+- `math.lerp()` - Linear interpolation between values
+- `math.dot()` - Dot product (alignment measure)
+- `math.cross()` - Cross product (perpendicular vector)
+- `math.radians()` - Convert degrees to radians
+- `math.degrees()` - Convert radians to degrees
+- `math.normalize()` - Normalize vector to unit length
+- `math.length()` - Get vector magnitude
 
 ### System Groups and Ordering
 
