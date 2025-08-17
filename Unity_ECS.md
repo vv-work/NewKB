@@ -2,10 +2,31 @@
 
 Unity ECS is a data-oriented design pattern that provides high performance and enables massive parallelization through the Burst compiler and Job System.
 
+## Table of Contents
+
+1. [Resources](#resources)
+2. [Setup and Configuration](#setup-and-configuration)
+3. [Core Concepts](#core-concepts)
+   - [Components](#components)
+   - [Entities](#entities)
+   - [Systems](#systems)
+4. [Components Deep Dive](#components-deep-dive)
+5. [Systems Deep Dive](#systems-deep-dive)
+6. [Queries and Filtering](#queries-and-filtering)
+7. [Aspects](#aspects)
+8. [Entity Management](#entity-management)
+9. [Prefabs and Spawning](#prefabs-and-spawning)
+10. [World Management](#world-management)
+11. [Performance Optimization](#performance-optimization)
+12. [Advanced Features](#advanced-features)
+13. [Best Practices](#best-practices)
+14. [Debugging and Troubleshooting](#debugging-and-troubleshooting)
+
 ## Resources
 
 - [Code Monkey ECS RTS game](https://www.youtube.com/watch?v=1gSnTlUjs-s)
 - [Code Monkey 1h ECS Extreme Performance](https://www.youtube.com/watch?v=4ZYn9sR3btg)
+- [Unity ECS Documentation](https://docs.unity3d.com/Packages/com.unity.entities@1.0/manual/index.html)
 
 ## Setup and Configuration
 
@@ -30,8 +51,22 @@ Unity ECS is a data-oriented design pattern that provides high performance and e
 Access via: `Window` > `Entities` > `Hierarchy`
 ![[Pasted image 20250812103741.png]]
 
+## Core Concepts
 
-## Components
+Unity ECS follows the Entity-Component-System pattern:
+
+- **Entity**: A unique identifier (like GameObject but lightweight)
+- **Component**: Pure data containers (no behavior)
+- **System**: Logic that processes entities with specific components
+
+### Data-Oriented Design Benefits
+
+- **Performance**: Cache-friendly memory layout
+- **Parallelization**: Easy to process entities in parallel
+- **Scalability**: Handle thousands of entities efficiently
+- **Predictability**: No inheritance hierarchies or virtual calls
+
+## Components Deep Dive
 
 ### IComponentData
 
@@ -43,7 +78,18 @@ using Unity.Entities;
 public struct RotationSpeed : IComponentData
 {
     public float Value; 
-} 
+}
+
+public struct Health : IComponentData
+{
+    public float Current;
+    public float Maximum;
+}
+
+public struct Velocity : IComponentData
+{
+    public float3 Value;
+}
 ```
 
 ### Authoring and Baking
@@ -70,7 +116,169 @@ public class RotationSpeedAuthoring : MonoBehaviour
 }
 ```
 
-## Systems
+### Tag Components  
+
+Tag components are `IComponentData` without data, used purely for identification and filtering.
+
+```csharp
+public struct PlayerTag : IComponentData { }
+public struct EnemyTag : IComponentData { }
+public struct DeadTag : IComponentData { }
+public struct SelectedTag : IComponentData { }
+```
+
+### IEnableableComponent
+
+`IEnableableComponent` allows you to enable or disable components without structural changes (no entity recreation).
+
+```csharp
+public struct AIEnabled : IComponentData, IEnableableComponent { }
+
+// Usage in system
+public partial struct AISystem : ISystem
+{
+    public void OnUpdate(ref SystemState state)
+    {
+        foreach (var (entity, aiState) in 
+                 SystemAPI.Query<Entity, RefRO<AIState>>()
+                          .WithAll<AIEnabled>())
+        {
+            // Process AI logic
+            
+            // Conditionally disable AI
+            if (aiState.ValueRO.ShouldStop)
+            {
+                SystemAPI.SetComponentEnabled<AIEnabled>(entity, false);
+            }
+        }
+    }
+}
+```
+
+### ISharedComponentData
+
+Shared components group entities with the same data values together, enabling efficient batch processing.
+
+```csharp
+public struct RenderMesh : ISharedComponentData
+{
+    public Mesh Mesh;
+    public Material Material;
+}
+
+public struct TeamData : ISharedComponentData
+{
+    public int TeamID;
+    public Color TeamColor;
+}
+```
+
+**Usage:**
+```csharp
+// Entities with the same shared component values are grouped together
+SystemAPI.EntityManager.SetSharedComponent(entity, new TeamData 
+{ 
+    TeamID = 1, 
+    TeamColor = Color.red 
+});
+```
+
+### ISystemStateComponent
+
+System state components persist when regular components are removed, enabling proper cleanup.
+
+```csharp
+public struct AudioSourceSystemState : ISystemStateComponent
+{
+    public Entity AudioEntity;
+}
+
+public partial struct AudioCleanupSystem : ISystem
+{
+    public void OnUpdate(ref SystemState state)
+    {
+        // Clean up when AudioSource component is removed, but the state remains
+        foreach (var (stateComponent, entity) in 
+                 SystemAPI.Query<RefRO<AudioSourceSystemState>>()
+                          .WithNone<AudioSource>()
+                          .WithEntityAccess())
+        {
+            // Clean up audio resources
+            SystemAPI.EntityManager.DestroyEntity(stateComponent.ValueRO.AudioEntity);
+            SystemAPI.EntityManager.RemoveComponent<AudioSourceSystemState>(entity);
+        }
+    }
+}
+```
+
+## Entities
+
+`Entity` is a struct that represents an entity in Unity ECS. Contains ID and version for identification.
+
+> **Think of it like `GameObject` in Unity, but without any components.**
+
+### Creating Entities
+
+```csharp
+// Create empty entity
+Entity entity = SystemAPI.EntityManager.CreateEntity();
+
+// Create with archetype
+EntityArchetype archetype = SystemAPI.EntityManager.CreateArchetype(
+    typeof(LocalTransform),
+    typeof(RotationSpeed)
+);
+Entity entity = SystemAPI.EntityManager.CreateEntity(archetype);
+
+// Add components
+SystemAPI.EntityManager.AddComponentData(entity, new RotationSpeed { Value = 1.0f });
+```
+
+### TransformUsageFlags
+
+`TransformUsageFlags` defines how the transform of an entity will be used:
+
+- **Dynamic**: For entities that move or rotate frequently
+- **None**: Entity will not have a transform
+- **WorldSpace**: Entity position is set in world coordinates
+
+```csharp
+// In Baker
+Entity entity = GetEntity(TransformUsageFlags.Dynamic);
+Entity staticEntity = GetEntity(TransformUsageFlags.None);
+Entity worldEntity = GetEntity(TransformUsageFlags.WorldSpace);
+```
+
+### Singleton Entities
+
+A singleton entity has only one instance in the world, used for global data.
+
+```csharp
+public struct SpawnCubesConfig : IComponentData
+{
+    public int Count;
+    public float SpawnRate;
+}
+
+public partial struct SpawnCubesSystem : ISystem
+{
+    public void OnCreate(ref SystemState state)
+    {
+        state.RequireForUpdate<SpawnCubesConfig>();
+    }
+    
+    public void OnUpdate(ref SystemState state)
+    {
+        var config = SystemAPI.GetSingleton<SpawnCubesConfig>();
+        
+        // Modify singleton data
+        config.Count++;
+        SystemAPI.SetSingleton(config);
+    }
+}
+```
+
+## Systems Deep Dive
 
 ### SystemBase vs ISystem
 
@@ -84,59 +292,118 @@ public class RotationSpeedAuthoring : MonoBehaviour
 
 **Recommendation**: Use `ISystem` for performance-critical systems.
 
-### Basic ISystem Structure
+### ISystem Structure and Lifecycle
 
 ```csharp
-public partial struct RotationCubeSystem : ISystem
+public partial struct RotationSystem : ISystem
 {
-    public void OnCreate(ref SystemState state) { } 
-    public void OnUpdate(ref SystemState state) { }
-    public void OnDestroy(ref SystemState state) { } 
+    public void OnCreate(ref SystemState state) 
+    {
+        // Initialize system (called once)
+        // Set up requirements, queries, etc.
+    } 
+    
+    public void OnUpdate(ref SystemState state) 
+    {
+        // Process entities every frame
+        // Main system logic goes here
+    }
+    
+    public void OnDestroy(ref SystemState state) 
+    {
+        // Clean up resources (called once)
+        // Dispose unmanaged resources
+    } 
 }
 ```
 
-**System Lifecycle Methods:**
-- `OnCreate()` - Initialize system (called once)
-- `OnUpdate()` - Process entities every frame
-- `OnDestroy()` - Clean up resources (called once)
+### System Requirements
+
+```csharp
+public partial struct MovementSystem : ISystem
+{
+    public void OnCreate(ref SystemState state)
+    {
+        // System only runs when entities with these components exist
+        state.RequireForUpdate<RotationSpeed>();
+        state.RequireForUpdate<PlayerInput>();
+    }
+}
+```
 
 ### System Examples
 
 **Simple Rotation System:**
-
 ```csharp
 using Unity.Entities;
 using Unity.Transforms;
+using Unity.Mathematics;
 
-public partial struct RotationCubeSystem : ISystem
+public partial struct RotationSystem : ISystem
 {
     public void OnUpdate(ref SystemState state)
     {
+        float deltaTime = SystemAPI.Time.DeltaTime;
+        
         foreach (var (localTransform, rotationSpeed) 
                  in SystemAPI.Query<RefRW<LocalTransform>, RefRO<RotationSpeed>>()) 
         {
             localTransform.ValueRW = localTransform.ValueRO.RotateY(
-                rotationSpeed.ValueRO.Value * SystemAPI.Time.DeltaTime
+                rotationSpeed.ValueRO.Value * deltaTime
             ); 
         }
     } 
 }
 ```
 
-**Disabling a System:**
+**Movement System with Multiple Components:**
+```csharp
+public partial struct MovementSystem : ISystem
+{
+    public void OnUpdate(ref SystemState state)
+    {
+        float deltaTime = SystemAPI.Time.DeltaTime;
+        
+        foreach (var (transform, velocity, speed) in 
+                 SystemAPI.Query<RefRW<LocalTransform>, RefRO<Velocity>, RefRO<MovementSpeed>>()
+                          .WithNone<DeadTag>()) // Exclude dead entities
+        {
+            float3 movement = velocity.ValueRO.Value * speed.ValueRO.Value * deltaTime;
+            transform.ValueRW.Position += movement;
+        }
+    }
+}
+```
 
+**Disabling a System:**
 ```csharp
 public void OnUpdate(ref SystemState state)
 {
-    state.Enabled = false;
-    return;
+    if (someCondition)
+    {
+        state.Enabled = false;
+        return;
+    }
     // Rest of system logic...
 }
 ```
 
-## Reference Wrappers
+## Queries and Filtering
 
-Reference wrappers provide safe and efficient access to component data in ECS queries.
+### SystemAPI.Query Basics
+
+SystemAPI.Query provides type-safe, Burst-friendly entity iteration:
+
+```csharp
+// Basic query
+foreach (var (transform, velocity) in 
+         SystemAPI.Query<RefRW<LocalTransform>, RefRO<Velocity>>())
+{
+    // Process entities
+}
+```
+
+### Reference Wrappers
 
 | Wrapper | Access | Usage |
 |---------|--------|---------|
@@ -145,331 +412,725 @@ Reference wrappers provide safe and efficient access to component data in ECS qu
 | `EnabledRefRO<T>` | Read-only enabled components | For IEnableableComponent |
 | `EnabledRefRW<T>` | Read-write enabled components | For IEnableableComponent |
 
-**Example Usage:**
+### Query Filtering
+
+**Include entities with specific components:**
 ```csharp
-foreach (var (pos, speed) in SystemAPI.Query<RefRW<LocalTransform>, RefRO<RotationSpeed>>())
+SystemAPI.Query<RefRO<Health>>()
+         .WithAll<PlayerTag, AliveTag>();
+```
+
+**Include entities with at least one component:**
+```csharp
+SystemAPI.Query<RefRO<Health>>()
+         .WithAny<ZombieTag, VampireTag>();
+```
+
+**Exclude entities with specific components:**
+```csharp
+SystemAPI.Query<RefRO<Health>>()
+         .WithNone<DeadTag, DisabledTag>();
+```
+
+**Access entity in query:**
+```csharp
+foreach ((var transform, var entity) in 
+         SystemAPI.Query<RefRO<LocalTransform>>()
+                  .WithAll<PlayerTag>()
+                  .WithEntityAccess())
 {
-    pos.ValueRW.Rotation = math.mul(
-        pos.ValueRW.Rotation, 
-        quaternion.RotateY(speed.ValueRO.Value * SystemAPI.Time.DeltaTime)
-    );
+    // Use entity for additional operations
 }
 ```
 
-**Performance Benefits:**
-- More performant than `GetComponentData()` and `SetComponentData()`
-- Type-safe access with compile-time checks
-- Burst-compatible for maximum performance
+**Include disabled components:**
+```csharp
+SystemAPI.Query<RefRW<AIState>>()
+         .WithDisabled<AIEnabled>();
+```
 
+### EntityQueryBuilder (Advanced)
 
-
-### System Requirements
+For complex queries that need to be cached or reused:
 
 ```csharp
-public partial struct RotationCubeSystem : ISystem
+public partial struct ComplexQuerySystem : ISystem
 {
+    private EntityQuery playerQuery;
+    
     public void OnCreate(ref SystemState state)
     {
-        state.RequireForUpdate<RotationSpeed>(); 
+        playerQuery = SystemAPI.QueryBuilder()
+            .WithAll<LocalTransform, Health>()
+            .WithAny<PlayerTag, NPCTag>()
+            .WithNone<DeadTag>()
+            .Build();
+    }
+    
+    public void OnUpdate(ref SystemState state)
+    {
+        foreach (var (transform, health) in 
+                 SystemAPI.Query<RefRW<LocalTransform>, RefRW<Health>>()
+                          .WithEntityQueryOptions(EntityQueryOptions.IncludeDisabledEntities))
+        {
+            // Process entities
+        }
     }
 }
 ```
 
+### Component Lookups
 
-### Component Types
-
-#### Tag Components  
-
-Tag components are `IComponentData` without data, used purely for identification and filtering.
+For random access to component data outside of queries:
 
 ```csharp
-public struct PlayerTag : IComponentData { }
-public struct EnemyTag : IComponentData { }
-public struct DeadTag : IComponentData { }
-```
-
-#### Filtering with Tags
-
-**Job-based filtering:**
-```csharp
-[WithNone(typeof(DeadTag))]
-public partial struct RotationCubeJob : IJobEntity 
+public partial struct LookupSystem : ISystem
 {
-    // Only processes entities without DeadTag
+    public void OnUpdate(ref SystemState state)
+    {
+        var transformLookup = SystemAPI.GetComponentLookup<LocalTransform>(isReadOnly: false);
+        var healthLookup = SystemAPI.GetComponentLookup<Health>(isReadOnly: true);
+        
+        foreach (var (targetRef, entity) in 
+                 SystemAPI.Query<RefRO<Target>>().WithEntityAccess())
+        {
+            Entity targetEntity = targetRef.ValueRO.Entity;
+            
+            // Check if target has component before accessing
+            if (healthLookup.HasComponent(targetEntity))
+            {
+                Health targetHealth = healthLookup[targetEntity];
+                
+                if (targetHealth.Current <= 0 && transformLookup.HasComponent(targetEntity))
+                {
+                    var targetTransform = transformLookup[targetEntity];
+                    targetTransform.Position = new float3(0, -100, 0); // Move underground
+                    transformLookup[targetEntity] = targetTransform;
+                }
+            }
+        }
+    }
 }
-```
-
-**Query-based filtering:**
-```csharp
-// Exclude entities with PlayerTag
-SystemAPI.Query<RefRW<LocalTransform>, RefRO<RotationSpeed>>()
-         .WithNone<PlayerTag>()
-```
-
-
-## Mathematics 
-
-### Structs 
-
-Unity Mathematics provides Burst-compatible math types and functions.
-
-**Core Types:**
-- `float2` - 2D vector (x, y)
-- `float3` - 3D vector (x, y, z)  
-- `float4` - 4D vector (x, y, z, w)
-- `quaternion` - Rotation representation
-- `float4x4` - Transformation matrix
-
-**Common Operations:**
-```csharp
-float3 position = new float3(1f, 2f, 3f);
-float2 uv = new float2(0.5f, 0.5f);
-quaternion rotation = quaternion.EulerXYZ(0f, math.radians(90f), 0f);
-
-// Vector operations
-float length = math.length(position);
-float dotProduct = math.dot(new float3(1f, 0f, 0f), new float3(0f, 1f, 0f));
-float3 normalized = math.normalize(position);
-float distance = math.distance(float3.zero, position);
-
-// Quaternion operations
-quaternion rotY = quaternion.RotateY(math.radians(45f));
-math.mul(rotation, rotY); // Combine rotations
-```
-
-### Methods 
-•	**Dot product (·):** “How aligned?” → 📏 Number (scalar)
-•	**Cross product (×):** “What’s the perpendicular spin?” (oreintation) → 🧭 Vector
-
-`math.mul()` - is used to multiply two quaternions.
-`math.lerp()` - is used to linearly interpolate between two values.
-
-`math.dot()` - is used to calculate the dot product of two vectors.
-`math.cross()` - is used to calculate the cross product of two vectors.
-
-`math.radians()` - is used to convert degrees to radians.
-`math.degrees()` - is used to convert radians to degrees.
-
-`math.normalize()` - is used to normalize a vector.
-`math.length()` - is used to get the length of a vector.
-
-```csharp
-quaternion rotation = quaternion.EulerXYZ(0f, math.radians(90f), 0f);
-quaternion rotY = quaternion.RotateY(math.radians(45f));
-quaternion combinedRotation = math.mul(rotation, rotY);
-
-float3 positionA = new float3(1f, 2f, 3f);
-float3 positionB = new float3(4f, 5f, 6f);
-
-float distance = math.distance(positionA, positionB);
-float3 direction = math.normalize(positionB - positionA);
-float dotProduct = math.dot(new float3(1f, 0f, 0f), new float3(0f, 1f, 0f));
-float3 crossProduct = math.cross(new float3(1f, 0f, 0f), new float3(0f, 1f, 0f));
 ```
 
 ## Aspects
 
 `IAspect` groups related component data into a cohesive interface, improving code organization and reusability.
 
-**Requirements:**
-- Use `readonly partial struct`
-- Implement `IAspect` interface
-- Define component references as fields
+### Aspect Definition
 
-**Before (verbose query):**
-```csharp
-foreach (var (localTransform, rotationSpeed, movement) in 
-         SystemAPI.Query<RefRW<LocalTransform>, RefRO<RotationSpeedData>, RefRO<MovementData>>()
-                  .WithAll<RotatingCubeTag>())
-{
-    // Complex logic here...
-}
-```
-
-**After (clean aspect):**
-```csharp
-foreach (var aspect in SystemAPI.Query<RotationAspect>())
-{
-    aspect.Rotate(SystemAPI.Time.DeltaTime);
-}
-```
-
-**Aspect Implementation:**
 ```csharp
 using Unity.Entities;
 using Unity.Transforms;
 using Unity.Mathematics;
 
-public readonly partial struct RotationAspect : IAspect
+public readonly partial struct MovementAspect : IAspect
 {
-    readonly RefRW<LocalTransform> localTransform;
-    readonly RefRO<RotationSpeed> rotationSpeed;
+    readonly RefRW<LocalTransform> transform;
+    readonly RefRO<Velocity> velocity;
+    readonly RefRO<MovementSpeed> speed;
     
-    public float RotationSpeedValue => rotationSpeed.ValueRO.Value;
- 
-    public void Rotate(float deltaTime)
+    // Properties for clean access
+    public float3 Position 
+    { 
+        get => transform.ValueRO.Position;
+        set => transform.ValueRW.Position = value;
+    }
+    
+    public float3 Forward => transform.ValueRO.Forward();
+    
+    // Methods encapsulate behavior
+    public void Move(float deltaTime)
     {
-        var rotation = quaternion.RotateY(RotationSpeedValue * deltaTime);
-        localTransform.ValueRW.Rotation = math.mul(
-            localTransform.ValueRO.Rotation, 
-            rotation
+        Position += velocity.ValueRO.Value * speed.ValueRO.Value * deltaTime;
+    }
+    
+    public void RotateTowards(float3 direction, float deltaTime)
+    {
+        var targetRotation = quaternion.LookRotationSafe(direction, math.up());
+        transform.ValueRW.Rotation = math.slerp(
+            transform.ValueRO.Rotation, 
+            targetRotation, 
+            deltaTime * 5.0f
         );
     }
 }
 ```
 
-## Entity 
+### Using Aspects
 
-`Entity` is a struct that represents an entity in Unity ECS. It is used to create, destroy, and manage entities. Contains ID and version.
-> is like `GameObject` in Unity, but without any components.
-
-### Creating an Entity
-
-- `SystemAPI.EntityManager.CreateEntity()` - is used to create and manage entities in Unity ECS.
-
+**Before (verbose query):**
 ```csharp
-entity = SystemAPI.EntityManager.CreateEntity();
-entityManager.AddComponentData(entity, new Transform { Position = new float3(0, 0, 0) });
-entityManager.AddComponentData(entity, new Rotation { Value = quaternion.identity });
-```
-
-### Instantiating an Entity
-
-- `EntityManager.Instantiate()` is used to create a new entity from a prefab entity.
-
-```csharp
-Entity entity = SystemAPI.EntityManager.Instantiate(prefabEntity);
-````
-
-### Getting and Entity 
-
-We can use `GetEntity` method inside a `Baker` class to get the entity associated with a `MonoBehaviour`.
-
-```csharp
-Entity entity = GetEntity(TransformUsageFlags.Dynamic);
-```
-### TransformUsageFlags
-
-`TransformUsageFlags` - is an enum that defines how the transform of an entity will be used.
-
-- `Dynamic` - is used for entities that will be moved or rotated frequently.
-- `None` - The entity will not have a transform.
-- `WorldSpace` - entitys position is set in world cordinates.
-
-###### Getting an Entity from a GameObject
-
-```csharp
-Entity entity = GetEntity(authoring.gameObject, TransformUsageFlags.Dynamic);
-```
-
-### Singelton Entity 
-
-A singleton entity is an entity that has only one instance in the world. It is used to store global data that is shared across all entities.
-
-- `RequireSingletonForUpdate<SpawnnCubesSingleton>()` - is used to require singleton to be present.
-- `SystemAPI.GetSingleton<SpawnnCubesSingleton>()` - is used to get the singleton entity.
-- `SystemAPI.SetSingleton<SpawnnCubesSingleton>(value)` - is used to set the singleton entity .
-
-
-```csharp
-
-public struct SpawnnCubesSingleton : IComponentData
+foreach (var (localTransform, velocity, speed) in 
+         SystemAPI.Query<RefRW<LocalTransform>, RefRO<Velocity>, RefRO<MovementSpeed>>()
+                  .WithAll<PlayerTag>())
 {
-    public int Count;
+    float3 movement = velocity.ValueRO.Value * speed.ValueRO.Value * SystemAPI.Time.DeltaTime;
+    localTransform.ValueRW.Position += movement;
 }
-
-public partial struct SpawnCubesSystem : ISystem
-{
-    public void OnCreate(ref SystemState state)
-    {
-        state.RequireSingletonForUpdate<SpawnnCubesSingleton>();
-    }
-    public void OnUpdate(ref SystemState state)
-    {
-        config = SystemAPI.GetSingleton<SpawnnCubesSingleton>();
-        config.Count++;
-        SystemAPI.SetSingleton<SpawnnCubesSingleton>(config);
-
-    }
-}
-
 ```
 
-## IEnableableComponent
+**After (clean aspect):**
+```csharp
+foreach (var movementAspect in SystemAPI.Query<MovementAspect>().WithAll<PlayerTag>())
+{
+    movementAspect.Move(SystemAPI.Time.DeltaTime);
+}
+```
 
-`IEnableableComponent` is an interface that allows you to enable or disable an entity. It is used to control the behavior of entities in Unity ECS.
+## Entity Management
 
-**❗️ Not a structural change** - it does not change the entity structure, but rather changes the state of the entity.
+### EntityCommandBuffer (ECB)
 
-### Enabling and Disabling an Entity
+**EntityCommandBuffer (ECB)** records structural changes to entities and applies them later, enabling safe modifications from jobs or during iteration.
 
 ```csharp
-
-public partial struct EnableDisableSystem : ISystem
+public partial struct SpawnSystem : ISystem
 {
     public void OnUpdate(ref SystemState state)
     {
-        var query = SystemAPI.QueryBuilder().WithAll<EnableableComponent>().Build();
-        foreach (var entity in query)
+        var ecb = SystemAPI.GetSingleton<BeginInitializationEntityCommandBufferSystem.Singleton>()
+                           .CreateCommandBuffer(state.WorldUnmanaged);
+        
+        var spawner = SystemAPI.GetSingleton<SpawnerConfig>();
+        
+        for (int i = 0; i < spawner.Count; i++)
         {
-            if (/* some condition */)
+            Entity newEntity = ecb.Instantiate(spawner.Prefab);
+            ecb.SetComponent(newEntity, new LocalTransform 
+            { 
+                Position = new float3(i, 0, 0), 
+                Rotation = quaternion.identity,
+                Scale = 1.0f
+            });
+            ecb.AddComponent(newEntity, new Velocity { Value = new float3(0, 1, 0) });
+        }
+    }
+}
+```
+
+### ECB System Groups
+
+Different ECB systems for different timing:
+
+- `BeginInitializationEntityCommandBufferSystem`: Start of frame
+- `EndInitializationEntityCommandBufferSystem`: After initialization
+- `BeginSimulationEntityCommandBufferSystem`: Start of simulation
+- `EndSimulationEntityCommandBufferSystem`: End of simulation
+- `BeginPresentationEntityCommandBufferSystem`: Start of presentation
+
+### Entity Destruction with Cleanup
+
+```csharp
+public partial struct DestroySystem : ISystem
+{
+    public void OnUpdate(ref SystemState state)
+    {
+        var ecb = SystemAPI.GetSingleton<EndSimulationEntityCommandBufferSystem.Singleton>()
+                           .CreateCommandBuffer(state.WorldUnmanaged);
+        
+        foreach (var (health, entity) in 
+                 SystemAPI.Query<RefRO<Health>>().WithEntityAccess())
+        {
+            if (health.ValueRO.Current <= 0)
             {
-                SystemAPI.SetComponentEnabled<EnableableComponent>(entity, true);
-            }
-            else
-            {
-                SystemAPI.SetComponentEnabled<EnableableComponent>(entity, false);
+                // Add cleanup component first
+                ecb.AddComponent<DestroyedTag>(entity);
+                
+                // Then schedule destruction
+                ecb.DestroyEntity(entity);
             }
         }
     }
 }
 ```
-## EntityCommandBuffer (ECB)
 
-**EntityCommandBuffer (ECB)** is a way to record structural changes to entities and apply them later. It allows you to safely modify entities from jobs or other systems without immediately affecting the entity manager.
+## Prefabs and Spawning
 
-EntityCommandBuffer fixed my shit code now it's working correctly.
+### Entity Prefabs
 
-You also use instead of `state.EntityManager` to modify entities. for instance set position, rotation, etc.
-
-**Syntaxis:**
-`BeginInitializationEntityCommandBufferSystem.Singleton.CreateCommandBuffer(state.WorldUnmanaged);`
-
-In the end:
-
-`ecb.PlayBack(EntityManager)`
-
-### Without ECB
+Entity prefabs are baked versions of GameObjects that can be instantiated efficiently:
 
 ```csharp
-
-public partial struct SpawnNoECBSystem : ISystem
+public struct SpawnerConfig : IComponentData
 {
-    public void OnUpdate(ref SystemState state)
+    public Entity Prefab;
+    public int Count;
+    public float SpawnRate;
+    public float3 SpawnArea;
+}
+
+public class SpawnerAuthoring : MonoBehaviour
+{
+    public GameObject prefab;
+    public int count = 100;
+    public float spawnRate = 10.0f;
+    public Vector3 spawnArea = new Vector3(10, 0, 10);
+    
+    class Baker : Baker<SpawnerAuthoring>
     {
-        var spawner = SystemAPI.GetSingleton<Spawner>();
-        var entities = state.EntityManager.Instantiate(spawner.Prefab, spawner.Count, Allocator.Temp);
+        public override void Bake(SpawnerAuthoring authoring)
+        {
+            Entity entity = GetEntity(TransformUsageFlags.None);
+            AddComponent(entity, new SpawnerConfig
+            {
+                Prefab = GetEntity(authoring.prefab, TransformUsageFlags.Dynamic),
+                Count = authoring.count,
+                SpawnRate = authoring.spawnRate,
+                SpawnArea = authoring.spawnArea
+            });
+        }
     }
 }
 ```
 
-### With ECB 
+### Instantiation Patterns
+
+**Basic Instantiation:**
+```csharp
+Entity newEntity = SystemAPI.EntityManager.Instantiate(prefabEntity);
+```
+
+**Batch Instantiation:**
+```csharp
+using Unity.Collections;
+
+var entities = new NativeArray<Entity>(100, Allocator.Temp);
+SystemAPI.EntityManager.Instantiate(prefabEntity, entities);
+
+// Modify each instance
+for (int i = 0; i < entities.Length; i++)
+{
+    SystemAPI.EntityManager.SetComponentData(entities[i], new LocalTransform
+    {
+        Position = new float3(i, 0, 0),
+        Rotation = quaternion.identity,
+        Scale = 1.0f
+    });
+}
+
+entities.Dispose();
+```
+
+**ECB Spawning:**
+```csharp
+public partial struct WaveSpawnerSystem : ISystem
+{
+    private float nextSpawnTime;
+    
+    public void OnUpdate(ref SystemState state)
+    {
+        if (SystemAPI.Time.ElapsedTime < nextSpawnTime) return;
+        
+        var ecb = SystemAPI.GetSingleton<BeginSimulationEntityCommandBufferSystem.Singleton>()
+                           .CreateCommandBuffer(state.WorldUnmanaged);
+        
+        var config = SystemAPI.GetSingleton<SpawnerConfig>();
+        
+        for (int i = 0; i < config.Count; i++)
+        {
+            Entity enemy = ecb.Instantiate(config.Prefab);
+            
+            float3 spawnPosition = new float3(
+                UnityEngine.Random.Range(-config.SpawnArea.x, config.SpawnArea.x),
+                0,
+                UnityEngine.Random.Range(-config.SpawnArea.z, config.SpawnArea.z)
+            );
+            
+            ecb.SetComponent(enemy, LocalTransform.FromPosition(spawnPosition));
+            ecb.AddComponent(enemy, new Velocity { Value = new float3(0, 0, 1) });
+        }
+        
+        nextSpawnTime = (float)SystemAPI.Time.ElapsedTime + (1.0f / config.SpawnRate);
+    }
+}
+```
+
+## World Management
+
+### Multiple Worlds
+
+Unity ECS supports multiple worlds for different purposes:
 
 ```csharp
-public partial struct SpawnWithECBSystem : ISystem
+// Create new world
+World customWorld = new World("CustomWorld");
+
+// Get default world
+World defaultWorld = World.DefaultGameObjectInjectionWorld;
+
+// Switch between worlds
+World.DefaultGameObjectInjectionWorld = customWorld;
+
+// Clean up
+customWorld.Dispose();
+```
+
+### World Types
+
+- **Default World**: Main game world with standard systems
+- **Custom Worlds**: Specialized worlds (e.g., UI, background simulation)
+- **Client/Server Worlds**: For netcode applications
+
+### MonoBehaviour Integration
+
+```csharp
+public class GameManager : MonoBehaviour
+{
+    void Start()
+    {
+        // Get system from default world
+        var playerSystem = World.DefaultGameObjectInjectionWorld
+                               .GetExistingSystemManaged<PlayerInputSystem>();
+        
+        if (playerSystem != null)
+        {
+            // Configure system
+            playerSystem.Enabled = true;
+        }
+    }
+    
+    void Update()
+    {
+        // Access singleton data
+        if (World.DefaultGameObjectInjectionWorld.EntityManager
+                 .HasSingleton<GameState>())
+        {
+            var gameState = World.DefaultGameObjectInjectionWorld.EntityManager
+                                 .GetSingleton<GameState>();
+            // Use game state...
+        }
+    }
+}
+```
+
+## Performance Optimization
+
+### Burst Compilation
+
+Burst compilation provides massive performance improvements by compiling to highly optimized native code.
+
+```csharp
+[BurstCompile]
+public partial struct HighPerformanceSystem : ISystem
+{
+    [BurstCompile]
+    public void OnUpdate(ref SystemState state) 
+    {
+        foreach (var (transform, velocity) in 
+                 SystemAPI.Query<RefRW<LocalTransform>, RefRO<Velocity>>())
+        {
+            transform.ValueRW.Position += velocity.ValueRO.Value * SystemAPI.Time.DeltaTime;
+        }
+    }
+}
+```
+
+### Job System Integration
+
+```csharp
+[BurstCompile]
+public partial struct MovementJob : IJobEntity
+{
+    public float deltaTime;
+    
+    public void Execute(ref LocalTransform transform, in Velocity velocity)
+    {
+        transform.Position += velocity.Value * deltaTime;
+    }
+}
+
+public partial struct MovementSystem : ISystem
 {
     public void OnUpdate(ref SystemState state)
     {
-        var ecb = SystemAPI.GetSingleton<BeginInitializationEntityCommandBufferSystem.Singleton>().CreateCommandBuffer(state.WorldUnmanaged);
-        var spawner = SystemAPI.GetSingleton<Spawner>();
-        for (int i = 0; i < spawner.Count; i++)
-            ecb.Instantiate(spawner.Prefab);
-            ecb.SetComponent(spawner.Prefab, new LocalTransform { Position = new float3(0, 0, 0), Rotation = quaternion.identity });
+        var job = new MovementJob
+        {
+            deltaTime = SystemAPI.Time.DeltaTime
+        };
+        
+        state.Dependency = job.ScheduleParallel(state.Dependency);
+    }
 }
-}
-
 ```
 
+### Memory Management
 
+**NativeArray for temporary data:**
+```csharp
+using Unity.Collections;
 
+public partial struct DataProcessingSystem : ISystem
+{
+    public void OnUpdate(ref SystemState state)
+    {
+        using var positions = new NativeArray<float3>(100, Allocator.TempJob);
+        
+        // Process data...
+    } // Automatic disposal
+}
+```
 
+**DynamicBuffer for variable-length data:**
+```csharp
+[InternalBufferCapacity(8)]
+public struct PathPoint : IBufferElementData
+{
+    public float3 Position;
+}
+
+public partial struct PathfindingSystem : ISystem
+{
+    public void OnUpdate(ref SystemState state)
+    {
+        foreach (var pathBuffer in SystemAPI.Query<DynamicBuffer<PathPoint>>())
+        {
+            // Add waypoint
+            pathBuffer.Add(new PathPoint { Position = new float3(1, 0, 1) });
+            
+            // Process path
+            for (int i = 0; i < pathBuffer.Length; i++)
+            {
+                float3 waypoint = pathBuffer[i].Position;
+                // Navigate to waypoint...
+            }
+        }
+    }
+}
+```
+
+## Advanced Features
+
+### Mathematics Package
+
+Unity Mathematics provides Burst-compatible math types:
+
+```csharp
+using Unity.Mathematics;
+
+// Vector types
+float2 uv = new float2(0.5f, 0.5f);
+float3 position = new float3(1, 2, 3);
+float4 color = new float4(1, 0, 0, 1);
+
+// Quaternion operations
+quaternion rotation = quaternion.EulerXYZ(0, math.radians(90), 0);
+quaternion rotY = quaternion.RotateY(math.radians(45));
+quaternion combined = math.mul(rotation, rotY);
+
+// Common operations
+float length = math.length(position);
+float3 normalized = math.normalize(position);
+float distance = math.distance(float3.zero, position);
+float dotProduct = math.dot(new float3(1, 0, 0), new float3(0, 1, 0));
+float3 crossProduct = math.cross(new float3(1, 0, 0), new float3(0, 1, 0));
+
+// Interpolation
+float3 lerped = math.lerp(position, float3.zero, 0.5f);
+```
+
+### System Groups and Ordering
+
+```csharp
+[UpdateInGroup(typeof(SimulationSystemGroup))]
+[UpdateBefore(typeof(MovementSystem))]
+public partial struct InputSystem : ISystem
+{
+    // This system runs before MovementSystem
+}
+
+[UpdateInGroup(typeof(SimulationSystemGroup), OrderFirst = true)]
+public partial struct EarlySystem : ISystem
+{
+    // This system runs first in the group
+}
+
+[UpdateInGroup(typeof(SimulationSystemGroup), OrderLast = true)]
+public partial struct LateSystem : ISystem
+{
+    // This system runs last in the group
+}
+```
+
+### Custom System Groups
+
+```csharp
+[UpdateInGroup(typeof(SimulationSystemGroup))]
+public class AISystemGroup : ComponentSystemGroup { }
+
+[UpdateInGroup(typeof(AISystemGroup))]
+public partial struct AIMovementSystem : ISystem { }
+
+[UpdateInGroup(typeof(AISystemGroup))]
+public partial struct AIDecisionSystem : ISystem { }
+```
+
+## Best Practices
+
+### Component Design
+
+✅ **Good - Pure data:**
+```csharp
+public struct PlayerData : IComponentData
+{
+    public float MovementSpeed;
+    public int Health;
+    public int MaxHealth;
+}
+```
+
+❌ **Bad - References to managed objects:**
+```csharp
+public struct BadComponent : IComponentData
+{
+    public Transform transform; // Don't store Unity object references
+    public List<int> items;     // Don't use managed collections
+}
+```
+
+### System Design
+
+✅ **Good - Single responsibility:**
+```csharp
+public partial struct MovementSystem : ISystem
+{
+    // Only handles movement logic
+}
+
+public partial struct HealthSystem : ISystem
+{
+    // Only handles health logic
+}
+```
+
+❌ **Bad - Multiple responsibilities:**
+```csharp
+public partial struct EverythingSystem : ISystem
+{
+    // Handles movement, health, AI, rendering, etc.
+}
+```
+
+### Performance Guidelines
+
+1. **Use `ISystem` over `SystemBase`** for better performance
+2. **Minimize entity structural changes** during gameplay
+3. **Use `EntityCommandBuffer`** for deferred structural changes
+4. **Batch operations** when possible
+5. **Use appropriate `Allocator`** types for temporary data
+6. **Profile and measure** performance improvements
+
+### Memory Management
+
+```csharp
+// Good - Automatic disposal
+using var tempArray = new NativeArray<float>(100, Allocator.TempJob);
+
+// Good - Explicit disposal
+var persistentArray = new NativeArray<float>(100, Allocator.Persistent);
+// ... use array ...
+persistentArray.Dispose();
+
+// Bad - Memory leak
+var leakyArray = new NativeArray<float>(100, Allocator.Persistent);
+// Missing Dispose() call
+```
+
+## Debugging and Troubleshooting
+
+### Entity Debugger
+
+Access via: `Window` > `Entities` > `Systems` or `Hierarchy`
+
+**Common debugging tasks:**
+- View entity composition and component values
+- Monitor system execution order and timing
+- Track entity creation/destruction
+- Inspect chunk utilization
+
+### Common Issues and Solutions
+
+**Issue: System not running**
+```csharp
+// Solution: Check system requirements
+public void OnCreate(ref SystemState state)
+{
+    state.RequireForUpdate<RequiredComponent>();
+}
+```
+
+**Issue: Structural changes during iteration**
+```csharp
+// Problem:
+foreach (var entity in SystemAPI.Query<Entity>())
+{
+    SystemAPI.EntityManager.AddComponent<NewComponent>(entity); // ❌ Dangerous
+}
+
+// Solution: Use ECB
+var ecb = SystemAPI.GetSingleton<EndSimulationEntityCommandBufferSystem.Singleton>()
+                   .CreateCommandBuffer(state.WorldUnmanaged);
+
+foreach (var entity in SystemAPI.Query<Entity>())
+{
+    ecb.AddComponent<NewComponent>(entity); // ✅ Safe
+}
+```
+
+**Issue: Performance problems**
+- Use Burst Profiler to identify bottlenecks
+- Check for unnecessary boxing/managed allocations
+- Verify systems are using `ISystem` and `[BurstCompile]`
+- Monitor chunk utilization in Entity Debugger
+
+### Profiling Tips
+
+1. **Use Unity Profiler** with ECS-specific markers
+2. **Enable Burst Inspector** for job analysis
+3. **Monitor memory allocation** in Memory Profiler
+4. **Check entity chunk fragmentation** in Entity Debugger
+
+### Error Messages Guide
+
+**"SystemState.RequireForUpdate" not met:**
+- Ensure required components exist in the world
+- Check if entities with required components are being created
+
+**"NativeArray has not been disposed":**
+- Always dispose NativeArrays and other native containers
+- Use `using` statements for automatic disposal
+
+**"InvalidOperationException during iteration":**
+- Don't perform structural changes during entity iteration
+- Use EntityCommandBuffer for deferred operations
+
+## Quick Reference
+
+### Key Types
+- `Entity` - Unique identifier
+- `IComponentData` - Pure data component
+- `ISystem` - High-performance system
+- `SystemAPI` - Main API for queries and singletons
+- `EntityCommandBuffer` - Deferred structural changes
+
+### Common Patterns
+```csharp
+// Query with filtering
+foreach (var (transform, health) in 
+         SystemAPI.Query<RefRW<LocalTransform>, RefRO<Health>>()
+                  .WithAll<PlayerTag>()
+                  .WithNone<DeadTag>())
+
+// Singleton access
+var config = SystemAPI.GetSingleton<GameConfig>();
+SystemAPI.SetSingleton(newConfig);
+
+// ECB usage
+var ecb = SystemAPI.GetSingleton<EndSimulationEntityCommandBufferSystem.Singleton>()
+                   .CreateCommandBuffer(state.WorldUnmanaged);
+
+// Component lookup
+var healthLookup = SystemAPI.GetComponentLookup<Health>(isReadOnly: true);
+```
+
+This comprehensive guide covers Unity ECS from basic concepts to advanced patterns. Use it as a reference while developing your ECS-based games and applications.
