@@ -41,16 +41,16 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Unity_ECS.md",
+                "file": "Unity_NewInputSystem.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Unity_ECS"
+              "title": "Unity_NewInputSystem"
             }
           }
         ],
-        "currentTab": 2
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -192,10 +192,22 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "48dac34fd50e54b9",
+  "active": "d05a8ba61568d848",
   "lastOpenFiles": [
-    "Unity_ECS_Advenced.md",
+    "Unity_NewInputSystem.md",
+    "Unity_ECS.md~",
+    "Unity_NewInputSystem.md~",
+    "Pasted image 20250817131700.png",
+    "Pasted image 20250817131301.png",
+    "Pasted image 20250817130917.png",
+    "Pasted image 20250817130811.png",
+    "Pasted image 20250817125058.png",
+    "Pasted image 20250817124920.png",
     "Unity_ECS.md",
+    "some.cs",
+    "some.ts",
+    "some.js",
+    "Unity_ECS_Advenced.md",
     "IDE/Tmux.md",
     "IDE/NeoVim-Mermaid.md",
     "IDE/Neovim.md",
@@ -203,7 +215,6 @@
     "img/Pasted image 20250812074053.png",
     "img/Pasted image 20250812103741.png",
     "img/Pasted image 20250812174815.png",
-    "img/Ron_meme.gif",
     "Unity_ECS_Brust_Jobs.md",
     "Unity",
     "Unity_ECS_Advenced.md~",
@@ -212,18 +223,12 @@
     "Unity_ECS.md.tmp.72296.1755183042963",
     "Unity_ECS.md.tmp.72296.1755183007943",
     "CLAUDE.md",
-    "Unity_ECS.md~",
     "Dev_Syntaxis/Python_NeetCode_Interviews.md",
     "Readme.md",
     "cpp.md",
     "Edu/Rules.md",
     "Edu/EndjoyTheProcess.md",
     "00_LC_Algo/04_SlidingWindow.md~",
-    "00_LC_Algo/4913",
-    "00_LC_Algo/img/sliding_00.mp4",
-    "00_LC_Algo/img/slding_00.gif",
-    "00_LC_Algo/img/Sliding Window Fixed - Close Duplicates [8GZ7znQGpMM].temp.mp4",
-    "00_LC_Algo/img/Sliding Window Fixed - Close Duplicates [8GZ7znQGpMM].mp4",
     "00_LC_Algo/00_Intro.md",
     "00_LC_Algo/Graph/Adjacency_List.md",
     "01_Tech_Interview/NeetCode.md",
@@ -233,8 +238,6 @@
     "00_LC_Algo/Arrays_String/00_Array_String.md",
     "00_LC_Algo/BinarySearch/00_BinarySearch.md",
     "00_LC_Algo/Bonus/04_BitManipuation.md",
-    "00_LC_Algo/04_SlidingWindow.md",
-    "00_LC_Algo/05_Heap.md",
-    "01_Tech_Interview/img/Pasted image 20250222111436.png"
+    "00_LC_Algo/04_SlidingWindow.md"
   ]
 }

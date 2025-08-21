@@ -277,6 +277,12 @@ public partial struct SpawnCubesSystem : ISystem
 }
 ```
 
+### Entity static class 
+
+```csharp 
+Entity entity = Entity.Null; // Represents no entity
+```
+
 ## Systems
 
 ### SystemBase vs ISystem
@@ -932,6 +938,7 @@ float4 color = new float4(1, 0, 0, 1);
 quaternion rotation = quaternion.EulerXYZ(0, math.radians(90), 0);
 quaternion rotY = quaternion.RotateY(math.radians(45));
 quaternion combined = math.mul(rotation, rotY);
+transform.Rotation = quaternion.LookRotation(forward, math.up())
 
 // Common operations
 float length = math.length(position);
