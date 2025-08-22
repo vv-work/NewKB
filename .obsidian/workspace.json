@@ -156,6 +156,7 @@
   },
   "left-ribbon": {
     "hiddenItems": {
+      "bases:Create new base": false,
       "switcher:Open quick switcher": false,
       "graph:Open graph view": false,
       "canvas:Create new canvas": false,
@@ -166,8 +167,9 @@
   },
   "active": "d05a8ba61568d848",
   "lastOpenFiles": [
-    "Unity_ECS_Examples.md",
+    "Unity_NewInputSystem.md~",
     "Unity_ECS.md~",
+    "Unity_ECS_Examples.md",
     "Unity_NewInputSystem.md",
     "Unity_ECS.md",
     "Dev_Syntaxis/Rust.md~",
@@ -177,7 +179,6 @@
     "TypeScript.md",
     "Pasted image 20250821072044.png",
     "img/Pasted image 20250817131700.png",
-    "Unity_NewInputSystem.md~",
     "img/Pasted image 20250817131301.png",
     "img/Pasted image 20250817130917.png",
     "img/Pasted image 20250817130811.png",
@@ -210,7 +211,6 @@
     "01_Tech_Interview/CodeSnipets.md",
     "00_LC_Algo/03_Sorting.md",
     "00_LC_Algo/01_PrefixSum.md",
-    "00_LC_Algo/Arrays_String/00_Array_String.md",
-    "00_LC_Algo/BinarySearch/00_BinarySearch.md"
+    "00_LC_Algo/Arrays_String/00_Array_String.md"
   ]
 }

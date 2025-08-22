@@ -76,3 +76,40 @@ public partial class PlayerInputSystem : SystemBase
 pro
 
 ```
+
+
+## Instead of old Input Manager
+
+### Getting mouse position 
+
+```csharp
+// Old Input Manager
+Input.mousePosition
+
+// New Input System
+using UnityEngine.InputSystem;
+
+Mouse.current.position.ReadValue();
+```
+
+### Getting Mouse World Positon on the ground plane
+
+```csharp
+using UnityEngine;
+using UnityEngine.InputSystem;
+
+public class MouseWorldPosition : MonoBehaviour
+{
+    public Vector3 GetPosition()
+    {
+        Ray mouseCameraRay =  Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
+        Plane plane = new Plane(Vector3.up, Vector3.zero);
+        
+        if (plane.Raycast(mouseCameraRay, out float enter))
+            return mouseCameraRay.GetPoint(enter);
+        
+        return Vector3.zero; 
+    }
+}
+```
+

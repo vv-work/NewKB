@@ -99,6 +99,20 @@ public struct Velocity : IComponentData
 }
 ```
 
+### List of built-in components
+
+- `LocalTranform` - position, rotation, scale
+    - `Translation` - position only
+    - `Rotation` - rotation only
+    - `NonUniformScale` - scale only
+- `Parent` - parent entity reference
+- `Child` - child entity reference
+
+- `RenderMesh` - mesh and material for rendering
+
+- `PhysicsVelocity` - velocity and angular velocity
+- `PhysicsCollider` - collider shape
+
 ### Managed vs Unmanaged Components 
 
 **Managed** vs **Unmanaged** components:
@@ -128,7 +142,7 @@ public class ManagedComponent : IComponentData
 - [documentation on Unmanaged](https://docs.unity3d.com/Packages/com.unity.entities@1.3/manual/components-unmanaged.html)
 
 **Can use with types:**
-- Bittble types (`int`, `float`, `bool`,`char`)
+- **Bittble** types (`int`, `float`, `bool`,`char`)
 - Fixed-size structs (`float3`, `quaternion`)
 - `BlobAssetReference<T>` - for large read-only data
 - `Collections.NativeArray<T>`, `NativeList<T>`, `NativeHashMap<TKey, TValue>`, etc.
