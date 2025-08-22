@@ -104,10 +104,15 @@ public struct Velocity : IComponentData
 **Managed** vs **Unmanaged** components:
 `class` vs `struct`:
 
-#### Managed Component
+❗️ **Unmanaged** over **Managed** for performance and `Burst` compatibility and `Jobs`.
 
+#### Managed Component(class)
 
-- [link](https://docs.unity3d.com/Packages/com.unity.entities@1.3/manual/components-managed.html)
+- You can't access them in `Burst` compiled code
+- You can't use them in `jobs`
+- They can hold references to managed objects (like `string`, `List<T>`, etc
+
+- [documenation on Managed](https://docs.unity3d.com/Packages/com.unity.entities@1.3/manual/components-managed.html)
 
 
 ```csharp
@@ -118,9 +123,18 @@ public class ManagedComponent : IComponentData
 }
 ```
 
-#### Unmanaged Components 
+#### Unmanaged Components(struct)
 
-- [link](https://docs.unity3d.com/Packages/com.unity.entities@1.3/manual/components-unmanaged.html)
+- [documentation on Unmanaged](https://docs.unity3d.com/Packages/com.unity.entities@1.3/manual/components-unmanaged.html)
+
+**Can use with types:**
+- Bittble types (`int`, `float`, `bool`,`char`)
+- Fixed-size structs (`float3`, `quaternion`)
+- `BlobAssetReference<T>` - for large read-only data
+- `Collections.NativeArray<T>`, `NativeList<T>`, `NativeHashMap<TKey, TValue>`, etc.
+- `Collections.FixedString32Bytes`, `FixedString64Bytes`, etc.
+- `collections.DynamicBuffer<T>`
+
 
 ```csharp
 public struct UnmanagedComponent : IComponentData
