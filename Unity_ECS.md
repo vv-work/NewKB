@@ -351,6 +351,20 @@ public partial struct SpawnCubesSystem : ISystem
 Entity entity = Entity.Null; // Represents no entity
 ```
 
+### EntityManager 
+
+`EntityManager` is the main API for creating, destroying, and managing entities and their components.
+
+```csharp
+
+EntityManger entityManager = World.DefaultGameObjectInjectionWorld.EntityManager
+Entity entity = entityManager.CreateEntity();
+
+EntityQuery query = new EntityQueryBuilder(Allocator.Temp)
+                        .WithAll<LocalTransform, RotationSpeed>()
+                        .Build(entityManager);
+```
+
 ## Systems
 
 ### SystemBase vs ISystem
@@ -523,6 +537,8 @@ SystemAPI.Query<RefRW<AIState>>()
 ```
 
 ### EntityQueryBuilder (Advanced)
+
+`EntityQuery` - is a more advanced way to define queries, useful for complex filtering and caching. 
 
 For complex queries that need to be cached or reused:
 
@@ -917,6 +933,8 @@ public partial struct HighPerformanceSystem : ISystem
 
 ### Job System Integration
 
+
+
 ```csharp
 [BurstCompile]
 public partial struct MovementJob : IJobEntity
@@ -1020,8 +1038,11 @@ float3 lerped = math.lerp(position, float3.zero, 0.5f);
 ```
 
 **Key Math Functions:**
+
+- `math.up()` - float3(0,1,0)
 - `math.mul()` - Multiply quaternions or matrices
 - `math.lerp()` - Linear interpolation between values
+- `math.slerp()` - Spherical linear interpolation for `quaternion`'s
 - `math.dot()` - Dot product (alignment measure)
 - `math.cross()` - Cross product (perpendicular vector)
 - `math.radians()` - Convert degrees to radians

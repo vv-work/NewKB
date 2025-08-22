@@ -92,6 +92,16 @@ using UnityEngine.InputSystem;
 Mouse.current.position.ReadValue();
 ```
 
+### Getting button clicked
+
+```csharp
+// Old Input Manager
+Input.GetMouseButtonDown(0); // Left Click
+// New Input System
+Mouse.current.leftButton.wasPressedThisFrame;
+```
+
+
 ### Getting Mouse World Positon on the ground plane
 
 ```csharp
@@ -112,4 +122,9 @@ public class MouseWorldPosition : MonoBehaviour
     }
 }
 ```
+### Raycast using Physics
 
+```csharp
+if(Physics.Raycast(mouseCameraRay, out RaycastHit hitInfo, Mathf.Infinity, layerMask)){
+    return hitInfo.point;
+}
