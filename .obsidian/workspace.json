@@ -195,6 +195,10 @@
   },
   "active": "d05a8ba61568d848",
   "lastOpenFiles": [
+    "Dev_Syntaxis/Rust.md~",
+    "Rust.md",
+    "Pasted image 20250821192640.png",
+    "Pasted image 20250821191626.png",
     "TypeScript.md",
     "Pasted image 20250821072044.png",
     "img/Pasted image 20250817131700.png",
@@ -215,8 +219,6 @@
     "IDE/NeoVim-Mermaid.md",
     "IDE/Neovim.md",
     "img/Pasted image 20250812071238.png",
-    "img/Pasted image 20250812074053.png",
-    "img/Pasted image 20250812103741.png",
     "Unity_ECS_Brust_Jobs.md",
     "Unity",
     "Unity_ECS_Advenced.md~",
@@ -238,7 +240,6 @@
     "00_LC_Algo/03_Sorting.md",
     "00_LC_Algo/01_PrefixSum.md",
     "00_LC_Algo/Arrays_String/00_Array_String.md",
-    "00_LC_Algo/BinarySearch/00_BinarySearch.md",
-    "00_LC_Algo/Bonus/04_BitManipuation.md"
+    "00_LC_Algo/BinarySearch/00_BinarySearch.md"
   ]
 }

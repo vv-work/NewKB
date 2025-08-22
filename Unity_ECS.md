@@ -41,6 +41,7 @@ Unity ECS is a data-oriented design pattern that provides high performance and e
    - Mathematics
    - Collections
    - Burst 
+   - Unity Physics (optional)
 
 3. **Create Entity Subscene**
    `Create` > `New subscene` > `Empty scene`
@@ -50,6 +51,13 @@ Unity ECS is a data-oriented design pattern that provides high performance and e
 Access via: `Window` > `Entities` > `Hierarchy`
 ![[Pasted image 20250812103741.png]]
 
+## Entities Inspector Authoring vs Runtime
+
+![[Pasted image 20250821191626.png]]
+
+## Scene view Authoring Data vs Runtime Data
+
+![[Pasted image 20250821192640.png]]
 ## Core Concepts
 
 Unity ECS follows the Entity-Component-System pattern:
