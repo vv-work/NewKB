@@ -99,6 +99,38 @@ public struct Velocity : IComponentData
 }
 ```
 
+### Managed vs Unmanaged Components 
+
+**Managed** vs **Unmanaged** components:
+`class` vs `struct`:
+
+#### Managed Component
+
+
+- [link](https://docs.unity3d.com/Packages/com.unity.entities@1.3/manual/components-managed.html)
+
+
+```csharp
+
+public class ManagedComponent : IComponentData
+{
+    public string Name; // Managed type, not Burst-compatible
+}
+```
+
+#### Unmanaged Components 
+
+- [link](https://docs.unity3d.com/Packages/com.unity.entities@1.3/manual/components-unmanaged.html)
+
+```csharp
+public struct UnmanagedComponent : IComponentData
+{
+    public int Value; // Unmanaged type, Burst-compatible
+}
+```
+
+
+
 ### Authoring and Baking
 
 **Baker** converts `MonoBehaviour` data into ECS components during the baking process.
