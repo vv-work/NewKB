@@ -73,6 +73,32 @@ Unity ECS follows the Entity-Component-System pattern:
 - **Scalability**: Handle thousands of entities efficiently
 - **Predictability**: No inheritance hierarchies or virtual calls
 
+### Archetype concept 
+
+An **Archetype** is a unique combination of components that defines the structure of an entity. Entities with the same archetype share the same memory layout, allowing for efficient processing.
+
+ For example, in the following diagram, all the entities in a world that have the components `Speed`, `Direction`, `Position`, and `Renderer` and no others share the archetype labelled **X**. All the entities that have component types `Speed`, `Direction`, and `Position` and no others share a different archetype labelled **Y**.
+
+[Archetype concept in documentation](https://docs.unity3d.com/Packages/com.unity.entities@1.3/manual/concepts-archetypes.html)
+
+
+![[Pasted image 20250822131906.png]]
+
+> ❗️**IMPORTANT:** 
+>Moving entities frequently is resource-intensive and reduces the performance of your application. For more information, refer to the documentation on **Structural change concepts**.
+
+### Structural Changes
+
+Structureal changes modify the archetype of an entity by adding or removing components. These operations are costly because they may involve memory allocation and data copying.
+
+❗️Structural changes include:
+
+- Adding or removing components
+- Creating or destroying entities
+- Setting a shared component value
+
+
+
 ## Components
 
 ### IComponentData
@@ -931,9 +957,31 @@ public partial struct HighPerformanceSystem : ISystem
 }
 ```
 
-### Job System Integration
+### Job System 
+
+- [Writing multithreaded code with the Job System](https://docs.unity3d.com/Manual/job-system.html)
+
+**ref/in** access modifiers in jobs:
+
+- `ref`-  like `RefRW<>` meaning access **read/write** . 
+- `in` -  like `RefRO<>` meaning access read-only.
 
 
+#### Job Interfaces
+- `IJob` - Basic job interface for single-threaded jobs ❌**ECS**
+- `IJobParallelFor` - Parallel job interface for processing arrays ❌**ECS**
+- `IJobEntity` - Job interface for processing *entities* with components ✅**ECS**
+- `IJobChunk` - Job interface for processing *chunks* of entities ✅**ECS**
+
+#### Job Scheduling
+
+- `job.Run()` - Schedules a job to run immediately (single-threaded) 
+- `job.Schedule()` - Schedules a job to run on the next frame (multi-threaded)
+- `job.ScheduleParallel()` - Schedules a job to run in parallel across multiple threads (multi-threaded)
+- `job.ScheduleBatchedJobs()` - Schedules all pending jobs to run immediately (useful for testing)
+
+
+#### IJobEntity Example
 
 ```csharp
 [BurstCompile]
