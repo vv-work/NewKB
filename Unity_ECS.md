@@ -54,7 +54,6 @@ Access via: `Window` > `Entities` > `Hierarchy`
 ## Entities Inspector Authoring vs Runtime
 
 ![[Pasted image 20250821191626.png]]
-
 ## Scene view Authoring Data vs Runtime Data
 
 ![[Pasted image 20250821192640.png]]
@@ -223,6 +222,13 @@ public struct SelectedTag : IComponentData { }
 ### IEnableableComponent
 
 `IEnableableComponent` allows you to enable or disable components without structural changes (no entity recreation).
+> ❗️ Entities with disabled components are excluded from queries by default.
+
+**Query Method to select enabled components:**
+
+`.WithPreesent<T>()` - to select entities with component T (enabled or disabled)
+`.WithEnnbled<T>()` - only enabled components
+`.WithDisabled<T>()` - only disabled components
 
 ```csharp
 public struct AIEnabled : IComponentData, IEnableableComponent { }
@@ -232,17 +238,11 @@ public partial struct AISystem : ISystem
 {
     public void OnUpdate(ref SystemState state)
     {
-        foreach (var (entity, aiState) in 
-                 SystemAPI.Query<Entity, RefRO<AIState>>()
-                          .WithAll<AIEnabled>())
+        foreach (var (entity, aiState) in SystemAPI.Query<Entity, RefRO<AIState>>().WithAll<AIEnabled>())
         {
-            // Process AI logic
-            
             // Conditionally disable AI
             if (aiState.ValueRO.ShouldStop)
-            {
                 SystemAPI.SetComponentEnabled<AIEnabled>(entity, false);
-            }
         }
     }
 }
@@ -515,6 +515,7 @@ foreach (var (transform, velocity) in
     // Process entities
 }
 ```
+
 
 ### Reference Wrappers
 
@@ -1011,6 +1012,40 @@ public partial struct MovementSystem : ISystem
 
 ### Memory Management
 
+### Allocators 
+
+- [Documenation link](https://docs.unity3d.com/Packages/com.unity.entities@1.0/manual/allocators-overview.html)
+
+Alloocators define the lifetime and preformance characteristics of native collections.
+
+- `Allocator.Temp` - Temporary memory, valid for one frame
+- `Allocator.TempJob` - Temporary memory, valid for the duration of a job
+- `Allocator.Persistent` - Long-term memory, must be manually disposed 
+> ❗️** Avoid using** `Allocator.Persistent` unless necessary to prevent memory leaks. Because it's stays lifetime and is slowest of **Allocators**
+- `Allocator.None` - No allocation, used for stack-allocated data
+
+#### Allocators usecases 
+
+```csharp
+new NativeArray<int>(100, Allocator.Temp); // Valid for one frame
+EntityQuerBuilder(Allocator.TempJob) // Valid for job duration
+EntityQuery query = new EntityQueryBuilder(Allocator.Persistent) // Valid until manually disposed
+EntityManger.CreateArchetype(typeof(ComponentA), typeof(ComponentB), Allocator.Persistent); // Valid until manually disposed
+
+```
+
+### Native Collections 
+
+- `NativeArray<T>` - Fixed-size array
+    - `NativeList<T>` - Dynamic-size list
+    - `NativeHashMap<TKey, TValue>` - Key-value pairs
+    - `NativeQueue<T>` - FIFO queue
+    - `NativeStack<T>` - LIFO stack
+- `DynamicBuffer<T>` - Variable-length array attached to entities
+- `BlobAssetReference<T>` - Immutable, read-only data
+- `EntityQuery` - Is not a collction but used Allocator to define lifetime
+
+
 **NativeArray for temporary data:**
 ```csharp
 using Unity.Collections;
@@ -1167,7 +1202,7 @@ public partial struct MovementSystem : ISystem
 }
 
 public partial struct HealthSystem : ISystem
-{
+{ 
     // Only handles health logic
 }
 ```

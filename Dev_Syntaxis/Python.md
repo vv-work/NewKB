@@ -2,8 +2,16 @@
 
 Python is a high-level, interpreted, interactive and object-oriented scripting language. Python is designed to be highly readable. It uses English keywords frequently where as other languages use punctuation, and it has fewer syntactical constructions than other languages.
 
-## Lambda and Sorting 
+## Numbers operations 
 
+```python
+float('inf')  #infinity
+float('-inf') #-infinity
+float('nan')  # Not a Numbers
+sys.maxsize   # Maximum integer value
+```
+
+## Lambda and Sorting 
 
 ```python
 add = lambda x,y: x+y

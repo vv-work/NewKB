@@ -45,7 +45,15 @@ public partial class PlayerInputSystem : SystemBase
     } 
 ```
 
+## Getting reference from MonoBehaviour to Entity 
+
+```csharp
+    VisualEntity = GetEntity(authoring.VisualEntity, TransformUsageFlags.Dynamic)
+```
+
+
 ## MonoBehaviour getting Entity Reference 
+
 
 
 ```csharp
