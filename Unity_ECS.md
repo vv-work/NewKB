@@ -188,6 +188,7 @@ public struct UnmanagedComponent : IComponentData
 
 **Baker** converts `MonoBehaviour` data into ECS components during the baking process.
 
+
 ```csharp
 using Unity.Entities;
 using UnityEngine;
@@ -905,6 +906,29 @@ customWorld.Dispose();
 
 ### MonoBehaviour Integration
 
+#### Updating values 
+
+```csharp
+
+EntityManager entityManager =  World.DefaultGameObjectInjectionWorld.EntityManager;
+EntityQuery entityQuery = new EntityQueryBuilder(Allocator.Temp).WithPresent<Selected>().Build(entityManager); 
+
+NativeArray<Entity> entityArray = entityQuery.ToEntityArray(Allocator.Temp);;
+NativeArray<Selected> selectedArray = entityQuery.ToComponentDataArray<Selected>(Allocator.Temp);;
+
+//Deselecting Units
+for (int i = 0; i < entityArray.Length; i++) {
+    entityManager.SetComponentEnabled<Selected>(entityArray[i], false);
+    Selected selected = selectedArray[i];
+    selected.OnDeselected = true;
+    selectedArray[i] = selected;
+    entityManager.SetComponent<Selected>(entityArray[i], true);
+} 
+entityQuery.CopyFromComponentDataArray(selectedArray);
+```
+
+#### Eamples
+
 ```csharp
 // Interacting between MonoBehaviour and ECS
 public class GameManager : MonoBehaviour
@@ -931,6 +955,139 @@ public class GameManager : MonoBehaviour
             var gameState = World.DefaultGameObjectInjectionWorld.EntityManager
                                  .GetSingleton<GameState>();
             // Use game state...
+        }
+    }
+}
+```
+
+```csharp
+
+public class UnitSelectionManager : MonoBehaviour
+{
+    public event EventHandler OnSelectionAreaStart; 
+    public event EventHandler OnSelectionAreaEnd; 
+    public static UnitSelectionManager Instance { get; private set; }
+
+    [SerializeField] private LayerMask _unitLayerMask;
+      
+    private Vector2 _selectionStartPosition;
+    private void Awake()
+    {
+        Instance = this;
+    }
+
+    private void Update()
+    {
+        var mousePosition = Mouse.current.position.ReadValue();
+        if (Mouse.current.leftButton.wasPressedThisFrame)
+        {
+            _selectionStartPosition = mousePosition;
+            OnSelectionAreaStart?.Invoke(this, EventArgs.Empty);
+            
+        }
+        if (Mouse.current.leftButton.wasReleasedThisFrame)
+        { 
+            var selectionEndPosition = mousePosition;
+
+            EntityManager entityManager =  World.DefaultGameObjectInjectionWorld.EntityManager;
+            EntityQuery entityQuery = new EntityQueryBuilder(Allocator.Temp).WithPresent<Selected>().Build(entityManager); 
+            
+            NativeArray<Entity> entityArray = entityQuery.ToEntityArray(Allocator.Temp);;
+            NativeArray<Selected> selectedArray = entityQuery.ToComponentDataArray<Selected>(Allocator.Temp);;
+
+            //Deselecting Units
+            for (int i = 0; i < entityArray.Length; i++) {
+                entityManager.SetComponentEnabled<Selected>(entityArray[i], false);
+                Selected selected = selectedArray[i];
+                selected.OnDeselected = true;
+                /selectedArray[i] = selected;
+                entityManager.SetComponentEnabled<Selected>(entityArray[i], true);
+            } 
+            //entityQuery.CopyFromComponentDataArray(selectedArray);
+
+            var selectionAreaRect = GetSelectionAreaRect();
+            float selectionAreaSize = selectionAreaRect.height + selectionAreaRect.width;
+            float multipleSelectionAreaSize = 50f;
+            bool isMultipleSelect = selectionAreaSize > multipleSelectionAreaSize;
+                
+            if (isMultipleSelect) {
+                
+                
+                //Selecting multiple logic
+                entityQuery = new EntityQueryBuilder(Allocator.Temp).WithAll<LocalTransform,Unit>().WithPresent<Selected>().Build(entityManager); 
+                entityArray = entityQuery.ToEntityArray(Allocator.Temp);;
+                NativeArray<LocalTransform> localTransformArray = entityQuery.ToComponentDataArray<LocalTransform>(Allocator.Temp);; 
+             
+                // Selecting units in our rectangle
+                for (int i = 0; i < localTransformArray.Length; i++)
+                {
+                    var unitLocalTransform = localTransformArray[i];
+                    Vector2 unitScreenPosition = Camera.main.WorldToScreenPoint(unitLocalTransform.Position);
+                    if (selectionAreaRect.Contains(unitScreenPosition))
+                        entityManager.SetComponentEnabled<Selected>(entityArray[i], true);
+                }
+            }
+            else
+            { 
+                //todo: Write notes about Physics
+                entityQuery =  entityManager.CreateEntityQuery(typeof(PhysicsWorldSingleton));
+                //todo: Note taking singleton 
+                var physicsWorldSingleton = entityQuery.GetSingleton<PhysicsWorldSingleton>();
+                var collisionWorld = physicsWorldSingleton.CollisionWorld; 
+                var cameraRay = Camera.main.ScreenPointToRay(mousePosition);
+
+                int unitLayer = 7;
+                RaycastInput raycastInput = new RaycastInput()
+                {
+                    //todo:note Geting point
+                    Start = cameraRay.GetPoint(0f),
+                    End = cameraRay.GetPoint(1000f), 
+                    //todo: not Collision filter
+                    Filter = new CollisionFilter()
+                    {
+                        GroupIndex = 0,
+                        BelongsTo = ~0u,
+                        // CollidesWith = (uint)_unitLayerMask.value, 
+                        CollidesWith = 1u<<unitLayer
+                    }
+
+                };
+
+                if (collisionWorld.CastRay(raycastInput, out Unity.Physics.RaycastHit hit)) {
+                    //todo: note .HasComponent<T>
+                    if (entityManager.HasComponent<Unit>(hit.Entity))
+                    { 
+                       entityManager.SetComponentEnabled<Selected>(hit.Entity,true);
+                    } 
+                }
+
+
+
+            }
+            OnSelectionAreaEnd?.Invoke(this, EventArgs.Empty);
+        }
+            
+        if (Mouse.current.rightButton.wasPressedThisFrame)
+        {
+            var mouseWorldPosition = MouseWorldPosition.Instance.GetPosition();
+
+             EntityManager entityManager =  World.DefaultGameObjectInjectionWorld.EntityManager;
+             EntityQuery entityQuery = new EntityQueryBuilder(Allocator.Temp).WithAll<UnitMoverData,Selected>().Build(entityManager);
+             
+             
+             NativeArray<Entity> entityArray = entityQuery.ToEntityArray(Allocator.Temp);;
+             NativeArray<UnitMoverData> unitMoverArray = entityQuery.ToComponentDataArray<UnitMoverData>(Allocator.Temp);; 
+             
+             NativeArray<float3> movePositionArray = GenerateMovePositionArray(mouseWorldPosition, unitMoverArray.Length);
+             
+             for (int i = 0; i < unitMoverArray.Length; i++)
+             {
+                 var unitLocalTransform = unitMoverArray[i];
+                 var unitMover = unitMoverArray[i];
+                 unitMover.TargetPosition = movePositionArray[i];
+                 unitMoverArray[i] = unitMover;
+             }
+             entityQuery.CopyFromComponentDataArray(unitMoverArray);
         }
     }
 }
@@ -1044,7 +1201,6 @@ EntityManger.CreateArchetype(typeof(ComponentA), typeof(ComponentB), Allocator.P
 - `DynamicBuffer<T>` - Variable-length array attached to entities
 - `BlobAssetReference<T>` - Immutable, read-only data
 - `EntityQuery` - Is not a collction but used Allocator to define lifetime
-
 
 **NativeArray for temporary data:**
 ```csharp
@@ -1316,6 +1472,7 @@ foreach (var entity in SystemAPI.Query<Entity>())
 - `ISystem` - High-performance system
 - `SystemAPI` - Main API for queries and singletons
 - `EntityCommandBuffer` - Deferred structural changes
+- `EndSimulationEntityCommandBufferSystem` - Entity command buffer system is used at end of simulation
 
 ### Common Patterns
 ```csharp

@@ -55,7 +55,6 @@ public partial class PlayerInputSystem : SystemBase
 ## MonoBehaviour getting Entity Reference 
 
 
-
 ```csharp
 
 private void Update(){
@@ -64,6 +63,12 @@ private void Update(){
 }
 
 ```
+**or** with `CreateEntityQuery`
+```csharp
+ EntityManager entityManager =  World.DefaultGameObjectInjectionWorld.EntityManager;
+```
+
+
 ### Query ToEntityArray and to ToComponentDataArray
 
 - `ToEntityArray(Allocator.Temp)` - getting NativeArray of `Entiti`'s from entityQuery
@@ -93,4 +98,7 @@ for (int i = 0; i < unitMoverArray.Length; i++)
 // Update the entities with the modified component data
 entityQuery.CopyFromComponentDataArray(unitMoverArray);
 ```
+### Events in ECS 
+
+We just create `bool` and set it to `true` when event happens. Then in other system we check if it's `true` and do the action. After that we set it back to `false`.
 
