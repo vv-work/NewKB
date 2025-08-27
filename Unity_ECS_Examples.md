@@ -2,6 +2,9 @@
 
 This collection showcases practical Unity ECS implementation patterns and common use cases.
 
+## Table of Contents
+
+1. [🧭 System for Looking Where We Move](#-system-for-looking-where-we-move)
 
 ## 🧭 System for Looking Where We Move
 

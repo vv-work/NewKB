@@ -2,6 +2,16 @@
 
 Modern input handling system for Unity with improved performance and flexibility. 
 
+## Table of Contents
+
+1. [📦 Installation](#-installation)
+2. [⚙️ Using with DOTS](#%EF%B8%8F-using-with-dots)
+3. [🔄 Instead of Old Input Manager](#-instead-of-old-input-manager)
+   - [🔭 Getting Mouse Position](#-getting-mouse-position)
+   - [🔍 Getting Button Clicked](#-getting-button-clicked)
+   - [🌍 Getting Mouse World Position on Ground Plane](#-getting-mouse-world-position-on-ground-plane)
+   - [🎯 Raycast using Physics](#-raycast-using-physics)
+
 ## 📦 Installation
 
 1. Open the Unity Package Manager (Window > Package Manager).

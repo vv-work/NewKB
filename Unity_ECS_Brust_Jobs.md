@@ -2,6 +2,14 @@
 
 Optimization techniques for high-performance Unity ECS applications using Burst and Jobs.
 
+## Table of Contents
+
+1. [🚀 Burst Compilation](#-burst-compilation)
+   - [👩‍💼 Job System](#-job-system)
+2. [🗃️ Data Structures](#%EF%B8%8F-data-structures)
+   - [📊 NativeArray](#-nativearray)
+   - [📊 DynamicBuffer](#-dynamicbuffer)
+
 ## 🚀 Burst Compilation
 
 Burst compilation provides massive performance improvements by compiling to highly optimized native code.

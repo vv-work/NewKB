@@ -2,6 +2,37 @@
 
 Unity's Entity Component System (ECS) physics provides high-performance physics simulation using the Unity Physics package. This system is built from the ground up to work seamlessly with DOTS (Data-Oriented Technology Stack).
 
+## Table of Contents
+
+1. [Core Concepts](#core-concepts)
+   - [Physics World](#physics-world)
+   - [Physics world and Collision World Raycastin example in MonoBehaviour](#physics-world--and-collision-world-raycastin-example-in--monobehaviour)
+   - [Collsion Filter](#collsion-filter)
+2. [🧱 Essential Components](#-essential-components)
+   - [PhysicsCollider](#physicscollider)
+   - [PhysicsMass](#physicsmass)
+   - [PhysicsVelocity](#physicsvelocity)
+3. [🔍 Collision Detection](#-collision-detection)
+   - [Collision Events](#collision-events)
+   - [⚡ Raycast Operations](#-raycast-operations)
+4. [💥 Forces and Impulses](#-forces-and-impulses)
+   - [Applying Forces](#applying-forces)
+5. [🔗 Joints and Constraints](#-joints-and-constraints)
+   - [Distance Joint](#distance-joint)
+6. [🎨 Material Properties](#-material-properties)
+   - [Physics Material](#physics-material)
+7. [🚀 Advanced Features](#-advanced-features)
+   - [Custom Physics Step](#custom-physics-step)
+   - [Trigger Events](#trigger-events)
+8. [⚡ Performance Optimization](#-performance-optimization)
+   - [Collision Layers](#collision-layers)
+   - [Broadphase Optimization](#broadphase-optimization)
+9. [🔄 Common Patterns](#-common-patterns)
+   - [Object Pooling with Physics](#object-pooling-with-physics)
+10. [✨ Best Practices](#-best-practices)
+11. [🐛 Debugging Tips](#-debugging-tips)
+    - [Physics Debug Draw](#physics-debug-draw)
+
 ## Core Concepts
 
 ### Physics World
