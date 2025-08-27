@@ -29,6 +29,83 @@ float deltaTime = SystemAPI.Time.DeltaTime;
 quaternion rotation = quaternion.EulerXYZ(0, 0, 0); // Create
 ```
 
+## 🔄 Cleanup Component Lifecycle
+
+🧹 Unity ECS Cleanup Components
+
+❓ What are they?
+
+Cleanup components are special ECS components that automatically get removed when their entity is destroyed, but they remain alive for a short time to let systems handle cleanup logic.
+
+They are like "flags" or "temporary data holders" to let your systems safely react to entity destruction.
+
+⸻
+
+⚙️ How to use them
+
+You define them with the [Cleanup] attribute:
+
+using Unity.Entities;
+
+[Cleanup]
+public struct TrailCleanupData : IComponentData
+{
+    public Entity EffectEntity;
+}
+
+
+⸻
+
+🔄 Lifecycle
+	1.	Entity exists → has the cleanup component.
+	2.	Entity is destroyed → Unity removes all normal components,
+but cleanup components stay for one extra frame.
+	3.	Systems can then:
+	•	Dispose native collections
+	•	Destroy linked entities (like VFX or children)
+	•	Release resources
+	4.	After that frame, cleanup components are also removed automatically.
+
+⸻
+
+📌 Example use case
+
+Imagine a bullet entity that spawns an explosion effect on death:
+
+[Cleanup]
+public struct ExplosionCleanup : IComponentData
+{
+    public Entity ExplosionEntity;
+}
+
+When the bullet is destroyed:
+	•	Normal components (position, velocity, etc.) are gone.
+	•	ExplosionCleanup still exists.
+	•	A system sees it and destroys the ExplosionEntity (the effect).
+	•	Next frame → ExplosionCleanup is gone too.
+
+⸻
+
+✅ Key points
+	•	Mark components with [Cleanup] if they only matter when the entity is destroyed.
+	•	Useful for disposing native containers, cleaning VFX, releasing resources, or notifying systems.
+	•	Saves you from null references or trying to access components that no longer exist.
+
+⸻
+
+```mermaid
+flowchart TD
+    A[Entity Alive] -->|Has normal + cleanup components| B[Entity Destroyed]
+    B -->|Normal components removed| C[Cleanup components remain for 1 frame]
+    C -->|Systems react: dispose / release / VFX cleanup| D[Next Frame]
+    D -->|Cleanup components auto-removed| E[Entity Fully Gone]
+    
+    style A fill:#e8f5e8
+    style B fill:#fff3e0
+    style C fill:#e1f5fe
+    style D fill:#fff3e0
+    style E fill:#ffebee
+```
 
 ## 🏷️ Organizational Tags 
 
@@ -114,4 +191,26 @@ entityQuery.CopyFromComponentDataArray(unitMoverArray);
 ### 📡 Events in ECS 
 
 We just create `bool` and set it to `true` when event happens. Then in other system we check if it's `true` and do the action. After that we set it back to `false`.
+
+```mermaid
+sequenceDiagram
+    participant Input as Input System
+    participant Event as Event Component
+    participant Handler as Handler System
+    
+    Input->>+Event: Set ShootTriggered = true
+    Note over Event: Event flagged
+    
+    Handler->>+Event: Check ShootTriggered
+    Event-->>Handler: Returns true
+    
+    Handler->>Handler: Execute shooting logic
+    Handler->>Event: Set ShootTriggered = false
+    
+    Note over Event: Event consumed
+    
+    Handler->>+Event: Check ShootTriggered (next frame)
+    Event-->>Handler: Returns false
+    Note over Handler: No action taken
+```
 

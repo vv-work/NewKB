@@ -13,3 +13,9 @@ Convert screen coordinates to world space coordinates using the camera.
 ```csharp
 Vector2 unitScreenPosition = Camera.main.WorldToScreenPoint(unitLocalTransform.Position);
 ````
+## Frame count
+
+```csharp
+int currentFrame = UnityEngine.Time.frameCount;
+Debug.Log("Current Frame: " + currentFrame);
+```

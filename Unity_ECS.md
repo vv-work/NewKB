@@ -122,6 +122,33 @@ Unity ECS follows the Entity-Component-System pattern:
 - **Component**: Pure data containers (no behavior)
 - **System**: Logic that processes entities with specific components
 
+```mermaid
+graph TB
+    subgraph "ECS Architecture"
+        E[Entity]
+        C1[Health Component]
+        C2[Position Component]
+        C3[Velocity Component]
+        S1[Movement System]
+        S2[Health System]
+        
+        E -.->|has| C1
+        E -.->|has| C2
+        E -.->|has| C3
+        
+        S1 -->|processes| C2
+        S1 -->|processes| C3
+        S2 -->|processes| C1
+        
+        style E fill:#e1f5fe
+        style C1 fill:#f3e5f5
+        style C2 fill:#f3e5f5
+        style C3 fill:#f3e5f5
+        style S1 fill:#e8f5e8
+        style S2 fill:#e8f5e8
+    end
+```
+
 ### ⚡ Data-Oriented Design Benefits
 
 - **Performance**: Cache-friendly memory layout
@@ -152,6 +179,32 @@ Structureal changes modify the archetype of an entity by adding or removing comp
 - Adding or removing components
 - Creating or destroying entities
 - Setting a shared component value
+
+```mermaid
+flowchart TD
+    A[Entity with Archetype A<br/>Position + Velocity] 
+    B[Add Health Component]
+    C[Entity with Archetype B<br/>Position + Velocity + Health]
+    D[Memory Reallocation]
+    E[Data Copying]
+    F[Performance Impact]
+    
+    A -->|Structural Change| B
+    B --> C
+    B --> D
+    D --> E
+    E --> F
+    
+    style A fill:#e1f5fe
+    style C fill:#e1f5fe
+    style B fill:#fff3e0
+    style D fill:#ffebee
+    style E fill:#ffebee
+    style F fill:#ffebee
+    
+    classDef warning fill:#fff3e0,stroke:#ff9800
+    classDef expensive fill:#ffebee,stroke:#f44336
+```
 
 
 
@@ -245,26 +298,86 @@ public struct UnmanagedComponent : IComponentData
 
 **Baker** converts `MonoBehaviour` data into ECS components during the baking process.
 
+```mermaid
+flowchart LR
+    subgraph "Authoring Phase"
+        A[GameObject with<br/>MonoBehaviour]
+        B[Baker Script]
+    end
+    
+    subgraph "Baking Process"
+        C[Convert to ECS]
+        D[Create Entity]
+        E[Add Components]
+    end
+    
+    subgraph "Runtime"
+        F[Entity with<br/>IComponentData]
+        G[Systems Process<br/>Entities]
+    end
+    
+    A --> B
+    B --> C
+    C --> D
+    D --> E
+    E --> F
+    F --> G
+    
+    style A fill:#fff3e0
+    style B fill:#fff3e0
+    style C fill:#e1f5fe
+    style D fill:#e1f5fe
+    style E fill:#e1f5fe
+    style F fill:#e8f5e8
+    style G fill:#e8f5e8
+```
+
+**Baker Methods:**
+
+- `GetEntity(TransformUsageFlags flags)` - gets or creates an entity for the authoring GameObject
+- `GetEntity(GameObject gameObject, TransformUsageFlags flags)` - gets the entity associated with a GameObject
+
+#### Authoring getting link to Entity from  gameObject
+
 
 ```csharp
 using Unity.Entities;
 using UnityEngine;
 
-public class RotationSpeedAuthoring : MonoBehaviour
+public class MyAuthoring : MonoBehaviour
 {
-    public float value; 
-    
-    private class Baker : Baker<RotationSpeedAuthoring>
+    public GameObject prefab;
+
+    public class Baker : Baker<MyAuthoring>
     {
-        public override void Bake(RotationSpeedAuthoring authoring)
+        public override void Bake(MyAuthoring authoring)
         {
-            Entity entity = GetEntity(TransformUsageFlags.Dynamic);
-            var rs = new RotationSpeed { Value = authoring.value };
-            AddComponent(entity, rs);
+            Entity entity = GetEntity( TransformUsageFlags.Dynamic);
+            Entity prefabEntity = GetEntity(authoring.prefab, TransformUsageFlags.Dynamic);
+            var myData = new MyData { 
+                PrefabEntity = prefabEntity 
+            };
+            AddComponent(entity,myData);
+
+            // Use prefabEntity as needed
         }
-    } 
+    }
+}
+public class MyData : IComponentData{
+    public Entity PrefabEntity;
 }
 ```
+
+#### LinkEntityGroupAuthoring
+
+`LinkEntityGroupAuthoring` ensures that all child entities are included when the parent entity is instantiated or destroyed.
+
+> ❗️ Useful for prefabs with multiple parts.
+```csharp
+[RequireComponent(typeof(LinkEntityGroupAuthoring))]
+
+
+
 
 ### 🏷️ Tag Components  
 
@@ -513,6 +626,33 @@ public partial struct RotationSystem : ISystem
 }
 ```
 
+```mermaid
+stateDiagram-v2
+    [*] --> OnCreate
+    OnCreate --> OnUpdate : System enabled
+    OnUpdate --> OnUpdate : Every frame
+    OnUpdate --> OnDestroy : System destroyed
+    OnDestroy --> [*]
+    
+    note right of OnCreate
+        - Initialize system
+        - Set up requirements
+        - Create queries
+    end note
+    
+    note right of OnUpdate
+        - Process entities
+        - Main system logic
+        - Called every frame
+    end note
+    
+    note right of OnDestroy
+        - Cleanup resources
+        - Dispose containers
+        - Called once on shutdown
+    end note
+```
+
 ### ✅ System Requirements
 
 ```csharp
@@ -583,6 +723,34 @@ public void OnUpdate(ref SystemState state)
     // Rest of system logic...
 }
 ```
+## SystemAPI 
+
+`SystemAPI` provides static methods to interact with ECS in a type-safe manner, replacing many `EntityManager` calls.
+
+**SystemAPI vs EntityManager:**
+| Feature | SystemAPI   | EntityManager |
+|---------|-----------  |---------------|
+| Type Safety | ✅      | ❌            |
+| Burst Compatible | ✅ | ❌            |
+| Ease of Use | Higher  | Lower         |
+| Performance | Higher  | Lower         |
+| Common Use Cases | Querying, accessing singletons, time data | Creating/destroying entities, structural changes |
+
+### SystemAPI Methods:
+
+- `SystemAPI.Query<T1, T2>()` - Query entities with components T1, T2
+- `SystemAPI.GetSingleton<T>()` - Get singleton component T
+
+- `SystemAPI.Time` - Access time data (DeltaTime, ElapsedTime)
+    - `SystemAPI.Time.DeltaTime` - Time since last frame
+    - `SystemAPI.Time.ElapsedTime` - Total time since start
+
+- `SystemAPI.SetComponent<T>(Entity entity, T component)` - Set component T data for entity
+- `SystemAPI.GetComponent<T>(Entity entity)` - Get component T data from entity
+
+- `SystemAPI.Exists<T>()` - Check if any entity has component T
+- `SystemAPI.SetComponentEnabled<T>(Entity entity, bool enabled)` - Enable/disable component T without structural change
+- `SystemAPI.HasComponent<T>(Entity entity)` - Check if entity has component T
 
 ## 🔍 Queries and Filtering
 
@@ -593,6 +761,10 @@ public void OnUpdate(ref SystemState state)
 
 - `query.WithEnabled<T>()` - Include only enabled components `T`
 - `query.WithDisabled<T>()` - Include only disabled components `T`
+
+- `query.WithAll<T1, T2>()` - Include entities with all specified components
+
+- `query.WithEntityAccess()` - Include entity in the query results
 
 
 ### 🔎 SystemAPI.Query Basics
@@ -606,6 +778,26 @@ foreach (var (transform, velocity) in
 {
     // Process entities
 }
+```
+
+```mermaid
+flowchart TD
+    A[SystemAPI.Query] -->|Filter by| B[Component Requirements]
+    B --> C{Has LocalTransform<br/>AND Velocity?}
+    C -->|Yes| D[Include Entity]
+    C -->|No| E[Skip Entity]
+    D --> F[Apply Filters<br/>WithAll, WithNone, WithAny]
+    F --> G[Iterate Through<br/>Matching Entities]
+    G --> H[Process Entity Data]
+    
+    style A fill:#e1f5fe
+    style B fill:#f3e5f5
+    style C fill:#fff3e0
+    style D fill:#e8f5e8
+    style E fill:#ffebee
+    style F fill:#f3e5f5
+    style G fill:#e8f5e8
+    style H fill:#e8f5e8
 ```
 
 
@@ -804,9 +996,77 @@ foreach (var movementAspect in SystemAPI.Query<MovementAspect>().WithAll<PlayerT
 
 ## 📁 Entity Management
 
+### Entity Manager 
+
+`state.EntityManger` or `SystemAPI.EntityManager` or `World.DefaultGameObjectInjectionWorld` 
+> EntityManager does not support structural changes inside a job or during entity iteration. Use `EntityCommandBuffer` for safe modifications.
+
+**Methods:**
+
+- `CreateEntity()` - Create a new entity
+- `DestroyEntity(Entity entity)` - Destroy an entity    
+- `Instantiate(Entity prefab)` - Create a copy of a prefab entity
+- `AddComponent<T>(Entity entity, T component)` - Add component T to entity
+- `RemoveComponent<T>(Entity entity)` - Remove component T from entity
+
+- `SetComponentData<T>(Entity entity, T component)` - Set component T data for entity
+- `GetComponentData<T>(Entity entity)` - Get component T data from entity
+
 ### 📜 EntityCommandBuffer (ECB)
 
 **EntityCommandBuffer (ECB)** records structural changes to entities and applies them later, enabling safe modifications from jobs or during iteration.
+
+```mermaid
+sequenceDiagram
+    participant S as System
+    participant ECB as EntityCommandBuffer
+    participant EM as EntityManager
+    
+    S->>+ECB: Create ECB
+    Note over S,ECB: Recording Phase
+    S->>ECB: AddComponent(entity, component)
+    S->>ECB: DestroyEntity(entity)
+    S->>ECB: Instantiate(prefab)
+    Note over ECB: Commands queued, not executed
+    
+    ECB->>+EM: Playback()
+    Note over ECB,EM: Execution Phase
+    EM->>EM: Apply AddComponent
+    EM->>EM: Apply DestroyEntity
+    EM->>EM: Apply Instantiate
+    EM-->>-ECB: All commands executed
+    ECB-->>-S: Playback complete
+```
+
+#### 🛠️ Methods
+
+- `Playeback(EntityManager entityManager)` - Apply recorded commands to the specified EntityManager
+- `CreateCommandBuffer(WorldUnmanaged world)` - Create a new ECB for the specified world
+- `Instantiate(Entity prefab)` - Record instantiation of a prefab entity
+- `DestroyEntity(Entity entity)` - Record destruction of an entity
+- `AddComponent<T>(Entity entity, T component)` - Record adding component T to entity
+- `RemoveComponent<T>(Entity entity)` - Record removing component T from entity
+- `SetComponent<T>(Entity entity, T component)` - Record setting component T data for
+
+#### Initializing ECB
+
+Use predefined **ECB** systems to create command buffers that execute at specific points in the frame:
+
+```csharp
+var ecb = SystemAPI.GetSingleton<BeginSimulationEntityCommandBufferSystem.Singleton>()
+                     .CreateCommandBuffer(state.WorldUnmanaged);
+
+// second option
+var ecb = new EntityCommandBuffer(Allocator.Temp);
+
+foreach ( var entity in entitiesToDestroy)
+    ecb.DestroyEntity(entity);
+
+ecb.Playback(state.EntityManager);
+ecb.Dispose();
+```
+
+#### Example:
 
 ```csharp
 public partial struct SpawnSystem : ISystem
@@ -1259,7 +1519,8 @@ public partial struct MovementSystem : ISystem
 }
 ```
 
-### 🧠 Memory Management
+
+## 🧠 Memory Management
 
 ### 💰 Allocators 
 
@@ -1343,6 +1604,17 @@ public partial struct PathfindingSystem : ISystem
     }
 }
 ```
+### LocalTransform 
+
+`LocalTransform` is a built-in component for position, rotation, and scale.
+
+**Methods:**
+
+- `LocalTransform.FromPosition(float3 position)` - Create transform from position
+- `LocalTransform.FromRotation(quaternion rotation)` - Create transform from rotation
+- `LocalTransform.FromScale(float scale)` - Create uniform scale transform
+
+
 
 ## 🎆 Advanced Features
 
@@ -1409,6 +1681,56 @@ public partial struct LateSystem : ISystem
 {
     // This system runs last in the group
 }
+```
+
+```mermaid
+flowchart TD
+    subgraph "Frame Execution Order"
+        A[InitializationSystemGroup]
+        B[SimulationSystemGroup]
+        C[PresentationSystemGroup]
+        
+        A --> B
+        B --> C
+    end
+    
+    subgraph "SimulationSystemGroup Detail"
+        D[EarlySystem<br/>OrderFirst = true]
+        E[InputSystem<br/>UpdateBefore MovementSystem]
+        F[MovementSystem]
+        G[PhysicsSystem]
+        H[LateSystem<br/>OrderLast = true]
+        
+        D --> E
+        E --> F
+        F --> G
+        G --> H
+    end
+    
+    subgraph "ECB Systems"
+        I[BeginInitializationEntityCommandBufferSystem]
+        J[EndInitializationEntityCommandBufferSystem]
+        K[BeginSimulationEntityCommandBufferSystem]
+        L[EndSimulationEntityCommandBufferSystem]
+        
+        I --> A
+        A --> J
+        K --> B
+        B --> L
+    end
+    
+    style A fill:#e3f2fd
+    style B fill:#e8f5e8
+    style C fill:#fff3e0
+    style D fill:#f3e5f5
+    style E fill:#f3e5f5
+    style F fill:#f3e5f5
+    style G fill:#f3e5f5
+    style H fill:#f3e5f5
+    style I fill:#ffebee
+    style J fill:#ffebee
+    style K fill:#ffebee
+    style L fill:#ffebee
 ```
 
 ### 🎨 Custom System Groups
