@@ -382,13 +382,37 @@ Entity entity = Entity.Null; // Represents no entity
 
 `EntityManager` is the main API for creating, destroying, and managing entities and their components.
 
+
+#### Methods 
+
+- `CreateEntity()` - Create a new entity
+- `HasComponent<T>(Entity entity)` - Check if entity has component T
+- `SetComponentData<T>(Entity entity, T component)` - Set component T data for entity
+- `GetComponentData<T>(Entity entity)` - Get component T data from entity
+
+- `SetComponentEnabled<T>(Entity entity, bool enabled)` - Enable/disable component T without
+
+> ❗️structural changes
+- `AddComponent<T>(Entity entity, T component)` - Add component T to entity
+- `RemoveComponent<T>(Entity entity)` - Remove component T from entity
+
+
+
+#### Example
+
+**Creating entity Manager in Monoe Behavior + EntityQueryBuilder to query entities:**
+```csharp
+EntityManager entityManager =  World.DefaultGameObjectInjectionWorld.EntityManager;
+EntityQuery entityQuery = new EntityQueryBuilder(Allocator.Temp).WithPresent<Selected>().Build(entityManager); 
+```
+**Usage in ISystem:**
+
 ```csharp
 
 EntityManger entityManager = World.DefaultGameObjectInjectionWorld.EntityManager
 Entity entity = entityManager.CreateEntity();
 
-EntityQuery query = new EntityQueryBuilder(Allocator.Temp)
-                        .WithAll<LocalTransform, RotationSpeed>()
+EntityQuery query = new EntityQueryBuilder(Allocator.Temp) .WithAll<LocalTransform, RotationSpeed>()
                         .Build(entityManager);
 ```
 
