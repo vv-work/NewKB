@@ -5,8 +5,7 @@ Unity ECS is a data-oriented design pattern that provides high performance and e
 ## Table of Contents
 
 1. [📚 Resources](#-resources)
-2. [⚙️ Setup and Configuration](#%EF%B8%8F-setup-and-configuration)
-   - [🚀 Initial Setup](#-initial-setup)
+2. [⚙️ Setup and Configuration](#%EF%B8%8F-setup-and-configuration) - [🚀 Initial Setup](#-initial-setup)
    - [🪟 Entities Hierarchy Window](#-entities-hierarchy-window)
 3. [👁️ Entities Inspector Authoring vs Runtime](#%EF%B8%8F-entities-inspector-authoring-vs-runtime)
 4. [🎬 Scene view Authoring Data vs Runtime Data](#-scene-view-authoring-data-vs-runtime-data)
@@ -440,6 +439,7 @@ Entity entity = Entity.Null; // Represents no entity
 
 `EntityManager` is the main API for creating, destroying, and managing entities and their components.
 
+> you can also get `EntityManager` through `state.EntityManager` in `ISystem`.
 
 #### 🛠️ Methods 
 
@@ -1293,6 +1293,13 @@ EntityManger.CreateArchetype(typeof(ComponentA), typeof(ComponentB), Allocator.P
 - `DynamicBuffer<T>` - Variable-length array attached to entities
 - `BlobAssetReference<T>` - Immutable, read-only data
 - `EntityQuery` - Is not a collction but used Allocator to define lifetime
+
+**NativeLisst** methods:
+
+- `Add(T item)` - Add item to the end
+- `RemoveAt(int index)` - Remove item at index
+- `Clear()` - Remove all items
+- `Dispose()` - Free memory (if not using `using` statement)
 
 **NativeArray for temporary data:**
 ```csharp

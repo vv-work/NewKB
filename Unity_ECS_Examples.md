@@ -27,3 +27,19 @@ This system demonstrates how to make entities look in the direction they are mov
                 
             }
 ```
+
+## Updating on time spend for preformance optimization 
+
+```csharp
+public void OnUpdate(ref SystemState state)
+{
+    foreach (var shootAttack in SystemAPI.Query<RefRW<ShootAttackData>>()) {
+        
+        shootAttack.ValueRW.Timer -= SystemAPI.Time.DeltaTime;
+        if (shootAttack.ValueRW.Timer > 0f)
+            continue;
+        shootAttack.ValueRW.Timer = shootAttack.ValueRO.TimerMax; 
+        //Do something
+    }
+}
+```

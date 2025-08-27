@@ -195,6 +195,89 @@ public struct CollisionEventJob : ICollisionEventsJob
     }
 }
 ```
+### Overlap Events
+
+#### List of Overlapers 
+
+```csharp
+bool OverlapSphere(
+    float3 position,
+    float radius,
+    ref NativeList<DistanceHit> outHits,
+    CollisionFilter filter,
+    QueryInteraction queryInteraction = QueryInteraction.Default);
+
+// Capusle 
+bool OverlapCapsule(
+    float3 point1,
+    float3 point2,
+    float radius,
+    ref NativeList<DistanceHit> outHits,
+    CollisionFilter filter,
+    QueryInteraction queryInteraction = QueryInteraction.Default);
+
+// Colider
+bool OverlapCollider( 
+    Collider collider,
+    RigidTransform transform,
+    ref NativeList<DistanceHit> outHits,
+    CollisionFilter filter,
+    QueryInteraction queryInteraction = QueryInteraction.Default);
+
+//AABB
+bool OverlapAabb(
+    Aabb aabb,
+    ref NativeList<OverlapHit> outHits,
+    CollisionFilter filter,
+    QueryInteraction queryInteraction = QueryInteraction.Default);
+
+```
+#### Overlap AABB
+
+Handle overlap events using the overlap event stream.
+
+```csharp
+var aabb = new Aabb { Min = new float3(-1), Max = new float3(1) };
+var collector = new NativeList<OverlapHit>(Allocator.Temp);
+collisionWorld.OverlapAabb(aabb, ref collector);
+```
+
+#### Overlap Spwhere
+
+```csharp
+bool OverlapSphere(
+    float3 position,
+    float radius,
+    ref NativeList<DistanceHit> outHits,
+    CollisionFilter filter,
+    QueryInteraction queryInteraction = QueryInteraction.Default);
+```
+**Example OverlapSphere**
+
+```csharp
+var world = SystemAPI.GetSingleton<PhysicsWorldSingleton>().PhysicsWorld;
+var hits = new NativeList<DistanceHit>(Allocator.Temp);
+
+var filter = new CollisionFilter
+{
+    BelongsTo = ~0u,
+    CollidesWith = 1u << 7u,
+    GroupIndex = 0
+};
+bool hasHit = world.OverlapSphere(
+    localTransform.Position
+    findTarget.ValueRO.Range,
+    ref hits,
+    filter,
+    QueryInteraction.Default
+);
+for (int i = 0; i < hits.Length; i++)
+{
+    var hit = hits[i];
+}
+
+```
+
 
 ### Raycast Operations ⚡
 Perform efficient raycasts in ECS.
