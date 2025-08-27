@@ -1610,6 +1610,16 @@ public partial struct PathfindingSystem : ISystem
 
 **Methods:**
 
+- `LocalTransform.Identity` - Default transform (position=0, rotation=identity, scale=1)
+
+- `LocalTransform.TransformPoint(float3 point)` - Transform a point by the local transform
+- `LocalTransform.InverseTransformPoint(float3 point)` - Inverse transform a point
+
+- `LocalTransform.Forward()` - Get forward direction (Z+)
+- `LocalTransform.Up()` - Get up direction (Y+)
+- `LocalTransform.Translaste(float3 translation)` - Move by translation vector
+
+- `LocalTransform.FromTRS(float3 position, quaternion rotation, float scale)` - Create
 - `LocalTransform.FromPosition(float3 position)` - Create transform from position
 - `LocalTransform.FromRotation(quaternion rotation)` - Create transform from rotation
 - `LocalTransform.FromScale(float scale)` - Create uniform scale transform
