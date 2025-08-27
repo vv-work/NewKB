@@ -528,6 +528,15 @@ public void OnUpdate(ref SystemState state)
 
 ## Queries and Filtering
 
+### Queries methods
+
+- `query.GetSingleton<T>()` - Get singleton component `T`
+- `query.WithPresent<T>()` - Include entities with component `T` (enabled or disabled)
+
+- `query.WithEnabled<T>()` - Include only enabled components `T`
+- `query.WithDisabled<T>()` - Include only disabled components `T`
+
+
 ### SystemAPI.Query Basics
 
 SystemAPI.Query provides type-safe, Burst-friendly entity iteration:
@@ -550,6 +559,7 @@ foreach (var (transform, velocity) in
 | `RefRW<T>` | Read-write | `RefRW<LocalTransform>` |
 | `EnabledRefRO<T>` | Read-only enabled components | For IEnableableComponent |
 | `EnabledRefRW<T>` | Read-write enabled components | For IEnableableComponent |
+
 
 ### Query Filtering
 

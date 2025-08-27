@@ -25,6 +25,56 @@ public partial class CustomPhysicsSystem : SystemBase
 }
 ```
 
+### Physics world  and Collision World Raycastin example in  MonoBehaviour
+
+```csharp
+
+EntityManager entityManager =  World.DefaultGameObjectInjectionWorld.EntityManager;
+entityQuery =  entityManager.CreateEntityQuery(typeof(PhysicsWorldSingleton));
+//todo: Note taking singleton 
+var physicsWorldSingleton = entityQuery.GetSingleton<PhysicsWorldSingleton>();
+var collisionWorld = physicsWorldSingleton.CollisionWorld; 
+
+var cameraRay = Camera.main.ScreenPointToRay(mousePosition);
+
+int unitLayer = 7;
+RaycastInput raycastInput = new RaycastInput()
+{
+    //todo:note Geting point
+    Start = cameraRay.GetPoint(0f),
+    End = cameraRay.GetPoint(1000f), 
+
+    Filter = new CollisionFilter()
+    {
+        BelongsTo = ~0u,
+        CollidesWith = GameAssets.UNITY_LAYER,
+        GroupIndex = 0,
+    }
+
+};
+
+if (collisionWorld.CastRay(raycastInput, out Unity.Physics.RaycastHit hit)) {
+    //todo: note .HasComponent<T>
+    if (entityManager.HasComponent<Unit>(hit.Entity))
+    { 
+        entityManager.SetComponentEnabled<Selected>(hit.Entity,true);
+        Selected selected = entityManager.GetComponentData<Selected>(hit.Entity);
+        selected.OnSelected = true;
+        entityManager.SetComponentData(hit.Entity,selected);
+    } 
+}
+
+```
+
+#### Collsion Filter 
+
+Collision filters allow you to define which layers of objects should interact with each other.
+- `CollisionFilter.BelongsTo` - often set to `~0u` to indicate the object belongs to all layers.
+- `CollisionFilter.CollidesWith` - specifies `1u<<7u` which layers the object can collide with.
+- `CollisionFilter.GroupIndex` - used to group `0` objects for custom collision rules.
+
+```csharp
+
 ## Essential Components 🧱
 
 ### PhysicsCollider
@@ -75,6 +125,7 @@ entityManager.AddComponentData(entity, new PhysicsVelocity
 ## Collision Detection 🔍
 
 ### Collision Events
+
 Handle collisions using the collision event stream.
 
 ```csharp
