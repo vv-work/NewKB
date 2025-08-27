@@ -1,7 +1,11 @@
-# Unity ECS Examples
+# 🎮 Unity ECS Examples
+
+This collection showcases practical Unity ECS implementation patterns and common use cases.
 
 
-## System of looking where we move 
+## 🧭 System for Looking Where We Move
+
+This system demonstrates how to make entities look in the direction they are moving, combining movement and rotation logic. 
 ```csharp
         public void OnUpdate(ref SystemState state) {
 

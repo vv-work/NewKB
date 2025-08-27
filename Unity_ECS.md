@@ -1,4 +1,4 @@
-# Unity ECS (Entity Component System)
+# 🎮 Unity ECS (Entity Component System)
 
 Unity ECS is a data-oriented design pattern that provides high performance and enables massive parallelization through the Burst compiler and Job System.
 
@@ -21,15 +21,15 @@ Unity ECS is a data-oriented design pattern that provides high performance and e
 15. [Debugging and Troubleshooting](#debugging-and-troubleshooting)
 16. [Quick Reference](#quick-reference)
 
-## Resources
+## 📚 Resources
 
 - [Code Monkey ECS RTS game](https://www.youtube.com/watch?v=1gSnTlUjs-s)
 - [Code Monkey 1h ECS Extreme Performance](https://www.youtube.com/watch?v=4ZYn9sR3btg)
 - [Unity ECS Documentation](https://docs.unity3d.com/Packages/com.unity.entities@1.0/manual/index.html)
 
-## Setup and Configuration
+## ⚙️ Setup and Configuration
 
-### Initial Setup
+### 🚀 Initial Setup
 
 1. **Disable Domain Reloading**
    ![[Pasted image 20250812071238.png]]
@@ -46,18 +46,18 @@ Unity ECS is a data-oriented design pattern that provides high performance and e
 3. **Create Entity Subscene**
    `Create` > `New subscene` > `Empty scene`
 
-### Entities Hierarchy Window
+### 🪟 Entities Hierarchy Window
 
 Access via: `Window` > `Entities` > `Hierarchy`
 ![[Pasted image 20250812103741.png]]
 
-## Entities Inspector Authoring vs Runtime
+## 👁️ Entities Inspector Authoring vs Runtime
 
 ![[Pasted image 20250821191626.png]]
-## Scene view Authoring Data vs Runtime Data
+## 🎬 Scene view Authoring Data vs Runtime Data
 
 ![[Pasted image 20250821192640.png]]
-## Core Concepts
+## 🧠 Core Concepts
 
 Unity ECS follows the Entity-Component-System pattern:
 
@@ -65,14 +65,14 @@ Unity ECS follows the Entity-Component-System pattern:
 - **Component**: Pure data containers (no behavior)
 - **System**: Logic that processes entities with specific components
 
-### Data-Oriented Design Benefits
+### ⚡ Data-Oriented Design Benefits
 
 - **Performance**: Cache-friendly memory layout
 - **Parallelization**: Easy to process entities in parallel
 - **Scalability**: Handle thousands of entities efficiently
 - **Predictability**: No inheritance hierarchies or virtual calls
 
-### Archetype concept 
+### 🏗️ Archetype Concept 
 
 An **Archetype** is a unique combination of components that defines the structure of an entity. Entities with the same archetype share the same memory layout, allowing for efficient processing.
 
@@ -86,7 +86,7 @@ An **Archetype** is a unique combination of components that defines the structur
 > ❗️**IMPORTANT:** 
 >Moving entities frequently is resource-intensive and reduces the performance of your application. For more information, refer to the documentation on **Structural change concepts**.
 
-### Structural Changes
+### 🔄 Structural Changes
 
 Structureal changes modify the archetype of an entity by adding or removing components. These operations are costly because they may involve memory allocation and data copying.
 
@@ -98,9 +98,9 @@ Structureal changes modify the archetype of an entity by adding or removing comp
 
 
 
-## Components
+## 🧩 Components
 
-### IComponentData
+### 📊 IComponentData
 
 `IComponentData` defines data components that store information for entities. These are pure data structures without behavior.
 
@@ -124,7 +124,7 @@ public struct Velocity : IComponentData
 }
 ```
 
-### List of built-in components
+### 📋 List of Built-in Components
 
 - `LocalTranform` - position, rotation, scale
     - `Translation` - position only
@@ -138,14 +138,14 @@ public struct Velocity : IComponentData
 - `PhysicsVelocity` - velocity and angular velocity
 - `PhysicsCollider` - collider shape
 
-### Managed vs Unmanaged Components 
+### ⚖️ Managed vs Unmanaged Components 
 
 **Managed** vs **Unmanaged** components:
 `class` vs `struct`:
 
 ❗️ **Unmanaged** over **Managed** for performance and `Burst` compatibility and `Jobs`.
 
-#### Managed Component(class)
+#### 🛠️ Managed Component (class)
 
 - You can't access them in `Burst` compiled code
 - You can't use them in `jobs`
@@ -162,7 +162,7 @@ public class ManagedComponent : IComponentData
 }
 ```
 
-#### Unmanaged Components(struct)
+#### ⚡ Unmanaged Components (struct)
 
 - [documentation on Unmanaged](https://docs.unity3d.com/Packages/com.unity.entities@1.3/manual/components-unmanaged.html)
 
@@ -184,7 +184,7 @@ public struct UnmanagedComponent : IComponentData
 
 
 
-### Authoring and Baking
+### 🍰 Authoring and Baking
 
 **Baker** converts `MonoBehaviour` data into ECS components during the baking process.
 
@@ -209,7 +209,7 @@ public class RotationSpeedAuthoring : MonoBehaviour
 }
 ```
 
-### Tag Components  
+### 🏷️ Tag Components  
 
 Tag components are `IComponentData` without data, used purely for identification and filtering.
 
@@ -220,7 +220,7 @@ public struct DeadTag : IComponentData { }
 public struct SelectedTag : IComponentData { }
 ```
 
-### IEnableableComponent
+### 🔘 IEnableableComponent
 
 `IEnableableComponent` allows you to enable or disable components without structural changes (no entity recreation).
 > ❗️ Entities with disabled components are excluded from queries by default.
@@ -249,7 +249,7 @@ public partial struct AISystem : ISystem
 }
 ```
 
-### ISharedComponentData
+### 🤝 ISharedComponentData
 
 Shared components group entities with the same data values together, enabling efficient batch processing.
 
@@ -277,7 +277,7 @@ SystemAPI.EntityManager.SetSharedComponent(entity, new TeamData
 });
 ```
 
-### ISystemStateComponent
+### 🔄 ISystemStateComponent
 
 System state components persist when regular components are removed, enabling proper cleanup.
 
@@ -305,13 +305,13 @@ public partial struct AudioCleanupSystem : ISystem
 }
 ```
 
-## Entities
+## 🎆 Entities
 
 `Entity` is a struct that represents an entity in Unity ECS. Contains ID and version for identification.
 
 > **Think of it like `GameObject` in Unity, but without any components.**
 
-### Creating Entities
+### ✨ Creating Entities
 
 ```csharp
 // Create empty entity
@@ -328,7 +328,7 @@ Entity entity = SystemAPI.EntityManager.CreateEntity(archetype);
 SystemAPI.EntityManager.AddComponentData(entity, new RotationSpeed { Value = 1.0f });
 ```
 
-### TransformUsageFlags
+### 🏴 TransformUsageFlags
 
 `TransformUsageFlags` defines how the transform of an entity will be used:
 
@@ -343,7 +343,7 @@ Entity staticEntity = GetEntity(TransformUsageFlags.None);
 Entity worldEntity = GetEntity(TransformUsageFlags.WorldSpace);
 ```
 
-### Singleton Entities
+### 📍 Singleton Entities
 
 A singleton entity has only one instance in the world, used for global data.
 
@@ -372,18 +372,18 @@ public partial struct SpawnCubesSystem : ISystem
 }
 ```
 
-### Entity static class 
+### 🏠 Entity Static Class 
 
 ```csharp 
 Entity entity = Entity.Null; // Represents no entity
 ```
 
-### EntityManager 
+### 👨‍💼 EntityManager 
 
 `EntityManager` is the main API for creating, destroying, and managing entities and their components.
 
 
-#### Methods 
+#### 🛠️ Methods 
 
 - `CreateEntity()` - Create a new entity
 - `HasComponent<T>(Entity entity)` - Check if entity has component T
@@ -398,7 +398,7 @@ Entity entity = Entity.Null; // Represents no entity
 
 
 
-#### Example
+#### 📝 Example
 
 **Creating entity Manager in Monoe Behavior + EntityQueryBuilder to query entities:**
 ```csharp
@@ -416,9 +416,9 @@ EntityQuery query = new EntityQueryBuilder(Allocator.Temp) .WithAll<LocalTransfo
                         .Build(entityManager);
 ```
 
-## Systems
+## ⚙️ Systems
 
-### SystemBase vs ISystem
+### 🥊 SystemBase vs ISystem
 
 | Feature | SystemBase | ISystem |
 |---------|------------|----------|
@@ -430,7 +430,7 @@ EntityQuery query = new EntityQueryBuilder(Allocator.Temp) .WithAll<LocalTransfo
 
 **Recommendation**: Use `ISystem` for performance-critical systems.
 
-### ISystem Structure and Lifecycle
+### 📈 ISystem Structure and Lifecycle
 
 ```csharp
 public partial struct RotationSystem : ISystem
@@ -455,7 +455,7 @@ public partial struct RotationSystem : ISystem
 }
 ```
 
-### System Requirements
+### ✅ System Requirements
 
 ```csharp
 public partial struct MovementSystem : ISystem
@@ -469,7 +469,7 @@ public partial struct MovementSystem : ISystem
 }
 ```
 
-### System Examples
+### 📝 System Examples
 
 **Simple Rotation System:**
 ```csharp
@@ -526,9 +526,9 @@ public void OnUpdate(ref SystemState state)
 }
 ```
 
-## Queries and Filtering
+## 🔍 Queries and Filtering
 
-### Queries methods
+### 🛠️ Query Methods
 
 - `query.GetSingleton<T>()` - Get singleton component `T`
 - `query.WithPresent<T>()` - Include entities with component `T` (enabled or disabled)
@@ -537,7 +537,7 @@ public void OnUpdate(ref SystemState state)
 - `query.WithDisabled<T>()` - Include only disabled components `T`
 
 
-### SystemAPI.Query Basics
+### 🔎 SystemAPI.Query Basics
 
 SystemAPI.Query provides type-safe, Burst-friendly entity iteration:
 
@@ -551,7 +551,7 @@ foreach (var (transform, velocity) in
 ```
 
 
-### Reference Wrappers
+### 🎁 Reference Wrappers
 
 | Wrapper | Access | Usage |
 |---------|--------|---------|
@@ -561,7 +561,7 @@ foreach (var (transform, velocity) in
 | `EnabledRefRW<T>` | Read-write enabled components | For IEnableableComponent |
 
 
-### Query Filtering
+### 🔍 Query Filtering
 
 **Include entities with specific components:**
 ```csharp
@@ -598,7 +598,7 @@ SystemAPI.Query<RefRW<AIState>>()
          .WithDisabled<AIEnabled>();
 ```
 
-### EntityQueryBuilder (Advanced)
+### 🛠️ EntityQueryBuilder (Advanced)
 
 `EntityQuery` - is a more advanced way to define queries, useful for complex filtering and caching. 
 
@@ -630,7 +630,7 @@ public partial struct ComplexQuerySystem : ISystem
 }
 ```
 
-### Component Lookups
+### 🔍 Component Lookups
 
 For random access to component data outside of queries:
 
@@ -664,7 +664,7 @@ public partial struct LookupSystem : ISystem
 }
 ```
 
-### Singletons and Special Cases
+### 🎨 Singletons and Special Cases
 
 **Getting a Single Component:**
 ```csharp
@@ -679,11 +679,11 @@ var ecb = SystemAPI.GetSingleton<BeginInitializationEntityCommandBufferSystem.Si
 - Chain filters to reduce the number of entities processed
 - Use `.WithEntityAccess()` only if you really need the entity ID
 
-## Aspects
+## 👁️ Aspects
 
 `IAspect` groups related component data into a cohesive interface, improving code organization and reusability.
 
-### Aspect Definition
+### 📝 Aspect Definition
 
 ```csharp
 using Unity.Entities;
@@ -723,7 +723,7 @@ public readonly partial struct MovementAspect : IAspect
 }
 ```
 
-### Using Aspects
+### 🎯 Using Aspects
 
 **Before (verbose query):**
 ```csharp
@@ -744,9 +744,9 @@ foreach (var movementAspect in SystemAPI.Query<MovementAspect>().WithAll<PlayerT
 }
 ```
 
-## Entity Management
+## 📁 Entity Management
 
-### EntityCommandBuffer (ECB)
+### 📜 EntityCommandBuffer (ECB)
 
 **EntityCommandBuffer (ECB)** records structural changes to entities and applies them later, enabling safe modifications from jobs or during iteration.
 
@@ -775,7 +775,7 @@ public partial struct SpawnSystem : ISystem
 }
 ```
 
-### ECB System Groups
+### 📅 ECB System Groups
 
 Different ECB systems for different timing:
 
@@ -785,7 +785,7 @@ Different ECB systems for different timing:
 - `EndSimulationEntityCommandBufferSystem`: End of simulation
 - `BeginPresentationEntityCommandBufferSystem`: Start of presentation
 
-### Entity Destruction with Cleanup
+### 🖮️ Entity Destruction with Cleanup
 
 ```csharp
 public partial struct DestroySystem : ISystem
@@ -811,9 +811,9 @@ public partial struct DestroySystem : ISystem
 }
 ```
 
-## Prefabs and Spawning
+## 🏭 Prefabs and Spawning
 
-### Entity Prefabs
+### 🏠 Entity Prefabs
 
 Entity prefabs are baked versions of GameObjects that can be instantiated efficiently:
 
@@ -850,7 +850,7 @@ public class SpawnerAuthoring : MonoBehaviour
 }
 ```
 
-### Instantiation Patterns
+### ✨ Instantiation Patterns
 
 **Basic Instantiation:**
 ```csharp
@@ -912,9 +912,9 @@ public partial struct WaveSpawnerSystem : ISystem
 }
 ```
 
-## World Management
+## 🌍 World Management
 
-### Multiple Worlds
+### 🌌 Multiple Worlds
 
 Unity ECS supports multiple worlds for different purposes:
 
@@ -932,15 +932,15 @@ World.DefaultGameObjectInjectionWorld = customWorld;
 customWorld.Dispose();
 ```
 
-### World Types
+### 🏷️ World Types
 
 - **Default World**: Main game world with standard systems
 - **Custom Worlds**: Specialized worlds (e.g., UI, background simulation)
 - **Client/Server Worlds**: For netcode applications
 
-### MonoBehaviour Integration
+### 🔗 MonoBehaviour Integration
 
-#### Updating values 
+#### 🔄 Updating Values 
 
 ```csharp
 
@@ -961,7 +961,7 @@ for (int i = 0; i < entityArray.Length; i++) {
 entityQuery.CopyFromComponentDataArray(selectedArray);
 ```
 
-#### Eamples
+#### 📝 Examples
 
 ```csharp
 // Interacting between MonoBehaviour and ECS
@@ -1127,9 +1127,9 @@ public class UnitSelectionManager : MonoBehaviour
 }
 ```
 
-## Performance Optimization
+## ⚡ Performance Optimization
 
-### Burst Compilation
+### 🚀 Burst Compilation
 
 Burst compilation provides massive performance improvements by compiling to highly optimized native code.
 
@@ -1149,7 +1149,7 @@ public partial struct HighPerformanceSystem : ISystem
 }
 ```
 
-### Job System 
+### 👩‍💼 Job System 
 
 - [Writing multithreaded code with the Job System](https://docs.unity3d.com/Manual/job-system.html)
 
@@ -1159,13 +1159,13 @@ public partial struct HighPerformanceSystem : ISystem
 - `in` -  like `RefRO<>` meaning access read-only.
 
 
-#### Job Interfaces
+#### 🔌 Job Interfaces
 - `IJob` - Basic job interface for single-threaded jobs ❌**ECS**
 - `IJobParallelFor` - Parallel job interface for processing arrays ❌**ECS**
 - `IJobEntity` - Job interface for processing *entities* with components ✅**ECS**
 - `IJobChunk` - Job interface for processing *chunks* of entities ✅**ECS**
 
-#### Job Scheduling
+#### 📅 Job Scheduling
 
 - `job.Run()` - Schedules a job to run immediately (single-threaded) 
 - `job.Schedule()` - Schedules a job to run on the next frame (multi-threaded)
@@ -1173,7 +1173,7 @@ public partial struct HighPerformanceSystem : ISystem
 - `job.ScheduleBatchedJobs()` - Schedules all pending jobs to run immediately (useful for testing)
 
 
-#### IJobEntity Example
+#### 📝 IJobEntity Example
 
 ```csharp
 [BurstCompile]
@@ -1201,9 +1201,9 @@ public partial struct MovementSystem : ISystem
 }
 ```
 
-### Memory Management
+### 🧠 Memory Management
 
-### Allocators 
+### 💰 Allocators 
 
 - [Documenation link](https://docs.unity3d.com/Packages/com.unity.entities@1.0/manual/allocators-overview.html)
 
@@ -1215,7 +1215,7 @@ Alloocators define the lifetime and preformance characteristics of native collec
 > ❗️** Avoid using** `Allocator.Persistent` unless necessary to prevent memory leaks. Because it's stays lifetime and is slowest of **Allocators**
 - `Allocator.None` - No allocation, used for stack-allocated data
 
-#### Allocators usecases 
+#### 🎯 Allocator Use Cases 
 
 ```csharp
 new NativeArray<int>(100, Allocator.Temp); // Valid for one frame
@@ -1225,7 +1225,7 @@ EntityManger.CreateArchetype(typeof(ComponentA), typeof(ComponentB), Allocator.P
 
 ```
 
-### Native Collections 
+### 🗃️ Native Collections 
 
 - `NativeArray<T>` - Fixed-size array
     - `NativeList<T>` - Dynamic-size list
@@ -1279,9 +1279,9 @@ public partial struct PathfindingSystem : ISystem
 }
 ```
 
-## Advanced Features
+## 🎆 Advanced Features
 
-### Mathematics Package
+### 🧮 Mathematics Package
 
 Unity Mathematics provides Burst-compatible math types:
 
@@ -1323,7 +1323,7 @@ float3 lerped = math.lerp(position, float3.zero, 0.5f);
 - `math.normalize()` - Normalize vector to unit length
 - `math.length()` - Get vector magnitude
 
-### System Groups and Ordering
+### 📅 System Groups and Ordering
 
 ```csharp
 [UpdateInGroup(typeof(SimulationSystemGroup))]
@@ -1346,7 +1346,7 @@ public partial struct LateSystem : ISystem
 }
 ```
 
-### Custom System Groups
+### 🎨 Custom System Groups
 
 ```csharp
 [UpdateInGroup(typeof(SimulationSystemGroup))]
@@ -1359,9 +1359,9 @@ public partial struct AIMovementSystem : ISystem { }
 public partial struct AIDecisionSystem : ISystem { }
 ```
 
-## Best Practices
+## ✨ Best Practices
 
-### Component Design
+### 🎨 Component Design
 
 ✅ **Good - Pure data:**
 ```csharp
@@ -1382,7 +1382,7 @@ public struct BadComponent : IComponentData
 }
 ```
 
-### System Design
+### ⚙️ System Design
 
 ✅ **Good - Single responsibility:**
 ```csharp
@@ -1405,7 +1405,7 @@ public partial struct EverythingSystem : ISystem
 }
 ```
 
-### Performance Guidelines
+### 🚀 Performance Guidelines
 
 1. **Use `ISystem` over `SystemBase`** for better performance
 2. **Minimize entity structural changes** during gameplay
@@ -1414,7 +1414,7 @@ public partial struct EverythingSystem : ISystem
 5. **Use appropriate `Allocator`** types for temporary data
 6. **Profile and measure** performance improvements
 
-### Memory Management
+### 🧠 Memory Management
 
 ```csharp
 // Good - Automatic disposal
@@ -1430,9 +1430,9 @@ var leakyArray = new NativeArray<float>(100, Allocator.Persistent);
 // Missing Dispose() call
 ```
 
-## Debugging and Troubleshooting
+## 🐛 Debugging and Troubleshooting
 
-### Entity Debugger
+### 🔎 Entity Debugger
 
 Access via: `Window` > `Entities` > `Systems` or `Hierarchy`
 
@@ -1442,7 +1442,7 @@ Access via: `Window` > `Entities` > `Systems` or `Hierarchy`
 - Track entity creation/destruction
 - Inspect chunk utilization
 
-### Common Issues and Solutions
+### ⚙️ Common Issues and Solutions
 
 **Issue: System not running**
 ```csharp
@@ -1477,14 +1477,14 @@ foreach (var entity in SystemAPI.Query<Entity>())
 - Verify systems are using `ISystem` and `[BurstCompile]`
 - Monitor chunk utilization in Entity Debugger
 
-### Profiling Tips
+### 📈 Profiling Tips
 
 1. **Use Unity Profiler** with ECS-specific markers
 2. **Enable Burst Inspector** for job analysis
 3. **Monitor memory allocation** in Memory Profiler
 4. **Check entity chunk fragmentation** in Entity Debugger
 
-### Error Messages Guide
+### 🚨 Error Messages Guide
 
 **"SystemState.RequireForUpdate" not met:**
 - Ensure required components exist in the world
@@ -1498,9 +1498,9 @@ foreach (var entity in SystemAPI.Query<Entity>())
 - Don't perform structural changes during entity iteration
 - Use EntityCommandBuffer for deferred operations
 
-## Quick Reference
+## ⚡ Quick Reference
 
-### Key Types
+### 🔑 Key Types
 - `Entity` - Unique identifier
 - `IComponentData` - Pure data component
 - `ISystem` - High-performance system
@@ -1508,7 +1508,7 @@ foreach (var entity in SystemAPI.Query<Entity>())
 - `EntityCommandBuffer` - Deferred structural changes
 - `EndSimulationEntityCommandBufferSystem` - Entity command buffer system is used at end of simulation
 
-### Common Patterns
+### 🔄 Common Patterns
 ```csharp
 // Query with filtering
 foreach (var (transform, health) in 

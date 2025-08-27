@@ -1,6 +1,8 @@
-# Unity Input System 
+# 🎮 Unity Input System
 
-## Installation
+Modern input handling system for Unity with improved performance and flexibility. 
+
+## 📦 Installation
 
 1. Open the Unity Package Manager (Window > Package Manager).
 2. Unity Registry > Input 
@@ -22,7 +24,7 @@
 ![[Pasted image 20250817131700.png]]
 
 
-## Using witn DOTS 
+## ⚙️ Using with DOTS 
 
 ```csharp
 [UpdateInGroup(typeof(SimulationSystemGroup))]
@@ -78,9 +80,9 @@ pro
 ```
 
 
-## Instead of old Input Manager
+## 🔄 Instead of Old Input Manager
 
-### Getting mouse position 
+### 🔭 Getting Mouse Position 
 
 ```csharp
 // Old Input Manager
@@ -92,7 +94,7 @@ using UnityEngine.InputSystem;
 Mouse.current.position.ReadValue();
 ```
 
-### Getting button clicked
+### 🔍 Getting Button Clicked
 
 ```csharp
 // Old Input Manager
@@ -102,7 +104,7 @@ Mouse.current.leftButton.wasPressedThisFrame;
 ```
 
 
-### Getting Mouse World Positon on the ground plane
+### 🌍 Getting Mouse World Position on Ground Plane
 
 ```csharp
 using UnityEngine;
@@ -122,7 +124,7 @@ public class MouseWorldPosition : MonoBehaviour
     }
 }
 ```
-### Raycast using Physics
+### 🎯 Raycast using Physics
 
 ```csharp
 if(Physics.Raycast(mouseCameraRay, out RaycastHit hitInfo, Mathf.Infinity, layerMask)){

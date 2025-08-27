@@ -1,6 +1,8 @@
-# Performance Optimization
+# ⚡ Performance Optimization
 
-## Burst Compilation
+Optimization techniques for high-performance Unity ECS applications using Burst and Jobs.
+
+## 🚀 Burst Compilation
 
 Burst compilation provides massive performance improvements by compiling to highly optimized native code.
 
@@ -23,7 +25,7 @@ public partial struct MySystem : ISystem
 }
 ```
 
-### Job System
+### 👩‍💼 Job System
 
 The Job System enables parallel processing of entities for maximum performance.
 
@@ -76,9 +78,9 @@ public void OnUpdate(ref SystemState state)
 | `IJob` | Manual iteration required | Custom logic, single operations |
 
 
-## Data Structures
+## 🗃️ Data Structures
 
-### NativeArray
+### 📊 NativeArray
 
  `NativeArray<T>` - is a Burst-compatible array that provides safe memory management and parallel job access.
 
@@ -172,7 +174,7 @@ finally
 }
 ```
 
-### DynamicBuffer
+### 📊 DynamicBuffer
 
 `DynamicBuffer<T>` provides variable-length arrays as ECS components, perfect for collections that change size.
 

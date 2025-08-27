@@ -1,8 +1,11 @@
-# Unity Examples 
+# 🎮 Unity Examples
 
-This repository of Examples of code for Unity.
+A collection of useful Unity code snippets and implementation patterns. 
 
-## Screen position to world position
+
+## 🗺️ Screen Position to World Position
+
+Convert screen coordinates to world space coordinates using the camera.
 
 ```csharp
 Vector2 unitScreenPosition = Camera.main.WorldToScreenPoint(unitLocalTransform.Position);

@@ -1,7 +1,9 @@
-# Unity ECS Advanced Concepts
+# 🎆 Unity ECS Advanced Concepts
+
+Advanced techniques and patterns for Unity ECS development.
 
 
-## SystemAPI 
+## 🔌 SystemAPI 
 
 ```csharp
 
@@ -10,21 +12,21 @@ InputState inputState = SystemAPI.GetSingleton<InputState>();
 float deltaTime = SystemAPI.Time.DeltaTime;
 ```
 
-### quaternion
+### 🔄 Quaternion
 
 ```csharp
 quaternion rotation = quaternion.EulerXYZ(0, 0, 0); // Create
 ```
 
 
-## Organizational tags 
+## 🏷️ Organizational Tags 
 
 ```csharp
 [UpdateInGroup(typeof(InitializationSystemGroup), OrderLast = true)] //Intilize in System group
 [UpdateBefore(typeof(PlayerShootingSystem))]               // Update before PlayerShootingSystem
 ```
 
-## Making Singleton for input System
+## 🎯 Making Singleton for Input System
 
 ```csharp
 [UpdateInGroup(typeof(SimulationSystemGroup))]
@@ -45,14 +47,14 @@ public partial class PlayerInputSystem : SystemBase
     } 
 ```
 
-## Getting reference from MonoBehaviour to Entity 
+## 🔗 Getting Reference from MonoBehaviour to Entity 
 
 ```csharp
     VisualEntity = GetEntity(authoring.VisualEntity, TransformUsageFlags.Dynamic)
 ```
 
 
-## MonoBehaviour getting Entity Reference 
+## 👩‍💼 MonoBehaviour Getting Entity Reference 
 
 
 ```csharp
@@ -69,7 +71,7 @@ private void Update(){
 ```
 
 
-### Query ToEntityArray and to ToComponentDataArray
+### 📊 Query ToEntityArray and ToComponentDataArray
 
 - `ToEntityArray(Allocator.Temp)` - getting NativeArray of `Entiti`'s from entityQuery
 - `ToComponentDataArray<UnitMoverData>(Allocator.Temp)` - getting `NativeArray` of UnitMoverData from entityQuery
@@ -80,7 +82,7 @@ NativeArray<Entity> entityArray = entityQuery.ToEntityArray(Allocator.Temp);;
 NativeArray<UnitMoverData> unitMoverArray = entityQuery.ToComponentDataArray<UnitMoverData>(Allocator.Temp);;
 ```
 
-### Updating Query using CopyFromComponentDataArray
+### 🔄 Updating Query using CopyFromComponentDataArray
 
 `CopyFromComponentDataArray` - updates **Query**(`EntityQuery`) with modified `NativeArray` of component data.
 
@@ -98,7 +100,7 @@ for (int i = 0; i < unitMoverArray.Length; i++)
 // Update the entities with the modified component data
 entityQuery.CopyFromComponentDataArray(unitMoverArray);
 ```
-### Events in ECS 
+### 📡 Events in ECS 
 
 We just create `bool` and set it to `true` when event happens. Then in other system we check if it's `true` and do the action. After that we set it back to `false`.
 
