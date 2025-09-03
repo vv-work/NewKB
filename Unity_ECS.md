@@ -1014,6 +1014,8 @@ foreach (var movementAspect in SystemAPI.Query<MovementAspect>().WithAll<PlayerT
 
 ### 📜 EntityCommandBuffer (ECB)
 
+>❗️If you have visual bug use `BeginSimulationEntityCommandBufferSystem` instead of `EndSimulationEntityCommandBufferSystem`
+
 **EntityCommandBuffer (ECB)** records structural changes to entities and applies them later, enabling safe modifications from jobs or during iteration.
 
 ```mermaid
