@@ -1,5 +1,6 @@
 # 🎮 Unity ECS (Entity Component System)
 
+
 Unity ECS is a data-oriented design pattern that provides high performance and enables massive parallelization through the Burst compiler and Job System.
 
 ## Table of Contents
@@ -89,7 +90,11 @@ Unity ECS is a data-oriented design pattern that provides high performance and e
 ### 🚀 Initial Setup
 
 1. **Disable Domain Reloading**
-   ![[Pasted image 20250812071238.png]]
+
+![[Pasted image 20250812071238.png]]
+
+    - `Edit` > `Project Settings` > `Editor` > `Enter Play Mode Settings` > Check `Enter Play Mode Options` > Uncheck `Domain Reloading`
+
 
 2. **Install Required Packages**
    ![[Pasted image 20250812074053.png]]

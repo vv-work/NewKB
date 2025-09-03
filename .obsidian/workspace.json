@@ -168,6 +168,8 @@
   "active": "d05a8ba61568d848",
   "lastOpenFiles": [
     "Unity_ECS.md~",
+    "Pasted.md",
+    "Unity_ECS.md",
     "Unity_Examples~",
     "Unity_Examples.md",
     "Unity_Examples",
@@ -176,7 +178,6 @@
     "Unity_NewInputSystem.md~",
     "Unity_ECS_Examples.md",
     "Unity_NewInputSystem.md",
-    "Unity_ECS.md",
     "Dev_Syntaxis/Rust.md~",
     "Rust.md",
     "Pasted image 20250821192640.png",
@@ -200,7 +201,6 @@
     "Unity",
     "UE_cpp.md",
     "Dev_Syntaxis/Python_CrashCourse.md",
-    "Unity_ECS.md.tmp.72296.1755183042963",
     "CLAUDE.md",
     "Dev_Syntaxis/Python_NeetCode_Interviews.md",
     "Readme.md",
@@ -211,7 +211,6 @@
     "00_LC_Algo/Graph/Adjacency_List.md",
     "01_Tech_Interview/NeetCode.md",
     "01_Tech_Interview/CodeSnipets.md",
-    "00_LC_Algo/03_Sorting.md",
-    "00_LC_Algo/01_PrefixSum.md"
+    "00_LC_Algo/03_Sorting.md"
   ]
 }
