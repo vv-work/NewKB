@@ -59,6 +59,9 @@
 ![[Getting started with networking concepts [kVt0I6zZsf0].jpg]]
 [YT:Getting started with networking concepts ](https://www.youtube.com/watch?v=kVt0I6zZsf0)
 
+![[The Ultimate Multiplayer Tutorial for Unity - Netcode for GameObjects [swIM2z6Foxk].jpg]]
+[The Ultimate Multiplayer Tutorials for Unity](https://www.youtube.com/watch?v=swIM2z6Foxk)
+
 ![[Pasted image 20250917054620.png]]
 [UGS Documentation](https://docs.unity.com/ugs/manual/overview/manual/getting-started)
 
@@ -87,7 +90,7 @@
 ## Packages & repos
 
 ## New Input System
-![[Prototype mobile games faster with the Input System in Unity 6 ｜ Unite 2024 [ptvjumIHxYg] 1.jpg]]
+![[Prototype mobile games faster with the Input System in Unity 6 ｜ Unite 2024 [ptvjumIHxYg].jpg]]
 [YT:Prototype Mobile Game faster with Input System in Unity 6](https://www.youtube.com/watch?v=ptvjumIHxYg)
 
 ![[Pasted image 20250917051553.png]]
