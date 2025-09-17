@@ -13,15 +13,42 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Unity_ECS.md",
+                "file": "Unity_NewInputSystem.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Unity_ECS"
+              "title": "Unity_NewInputSystem"
+            }
+          },
+          {
+            "id": "852ff76be31f0436",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Unity_Learning_Resources.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Unity_Learning_Resources"
+            }
+          },
+          {
+            "id": "d882bb37c2ff239a",
+            "type": "leaf",
+            "state": {
+              "type": "release-notes",
+              "state": {
+                "currentVersion": "1.9.12"
+              },
+              "icon": "lucide-book-up",
+              "title": "Release Notes 1.9.12"
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -78,8 +105,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 384.5,
-    "collapsed": true
+    "width": 310.5
   },
   "right": {
     "id": "9fcca2f1ec67f423",
@@ -165,39 +191,45 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "d05a8ba61568d848",
+  "active": "852ff76be31f0436",
   "lastOpenFiles": [
+    "Pasted image 20250916223159.png",
+    "Pasted image 20250916223148.png",
+    "Pasted image 20250916203015.png",
+    "Unity_NewInputSystem.md",
+    "Unity_Learning_Resources.md",
+    "Pasted image 20250915125409.png",
+    "img/Pasted image 20250908141141.png",
+    "img/Pasted image 20250908135319.png",
+    "img/Pasted image 20250908132018.png",
+    "Meta_Horizon_Scripting.md",
+    "CracingCodingInterview.md",
+    "Meta_Horizon_Creator.md",
+    "img/Pasted image 20250908125241.png",
+    "img/Pasted image 20250908130048.png",
+    "img/Pasted image 20250908125557.png",
+    "Unity_Examples.md",
+    "Unity_ECS_Physics.md",
+    "Unity_ECS_Examples.md",
+    "Unity_ECS_Brust_Jobs.md",
+    "Unity_ECS_Advenced.md",
+    "Unity_ECS.md",
+    "img/Pasted image 20250822131906.png",
     "Unity_ECS.md~",
     "Pasted.md",
-    "Unity_ECS.md",
     "Unity_Examples~",
-    "Unity_Examples.md",
     "Unity_Examples",
-    "Pasted image 20250822131906.png",
     "Unity_ECS_Advenced.md~",
     "Unity_NewInputSystem.md~",
-    "Unity_ECS_Examples.md",
-    "Unity_NewInputSystem.md",
     "Dev_Syntaxis/Rust.md~",
     "Rust.md",
-    "Pasted image 20250821192640.png",
-    "Pasted image 20250821191626.png",
     "TypeScript.md",
-    "Pasted image 20250821072044.png",
-    "img/Pasted image 20250817131700.png",
-    "img/Pasted image 20250817131301.png",
-    "img/Pasted image 20250817130917.png",
-    "img/Pasted image 20250817130811.png",
-    "img/Pasted image 20250817125058.png",
-    "img/Pasted image 20250817124920.png",
     "some.cs",
     "some.ts",
     "some.js",
-    "Unity_ECS_Advenced.md",
     "IDE/Tmux.md",
     "IDE/NeoVim-Mermaid.md",
     "IDE/Neovim.md",
-    "Unity_ECS_Brust_Jobs.md",
     "Unity",
     "UE_cpp.md",
     "Dev_Syntaxis/Python_CrashCourse.md",
@@ -206,11 +238,6 @@
     "Readme.md",
     "cpp.md",
     "Edu/Rules.md",
-    "Edu/EndjoyTheProcess.md",
-    "00_LC_Algo/00_Intro.md",
-    "00_LC_Algo/Graph/Adjacency_List.md",
-    "01_Tech_Interview/NeetCode.md",
-    "01_Tech_Interview/CodeSnipets.md",
-    "00_LC_Algo/03_Sorting.md"
+    "Edu/EndjoyTheProcess.md"
   ]
 }
