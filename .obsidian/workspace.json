@@ -13,20 +13,6 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Unity_NewInputSystem.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "Unity_NewInputSystem"
-            }
-          },
-          {
-            "id": "852ff76be31f0436",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
                 "file": "Unity_Learning_Resources.md",
                 "mode": "source",
                 "source": false
@@ -34,21 +20,8 @@
               "icon": "lucide-file",
               "title": "Unity_Learning_Resources"
             }
-          },
-          {
-            "id": "d882bb37c2ff239a",
-            "type": "leaf",
-            "state": {
-              "type": "release-notes",
-              "state": {
-                "currentVersion": "1.9.12"
-              },
-              "icon": "lucide-book-up",
-              "title": "Release Notes 1.9.12"
-            }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "vertical"
@@ -191,30 +164,30 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "852ff76be31f0436",
+  "active": "d05a8ba61568d848",
   "lastOpenFiles": [
-    "Pasted image 20250916223159.png",
-    "Pasted image 20250916223148.png",
-    "Pasted image 20250916203015.png",
+    "Understanding URP settings and essentials [HCXCmHgV7Sk] 1.jpg",
+    "Understanding URP settings and essentials [HCXCmHgV7Sk].jpg",
+    "ProBuilder for grey-boxing in Unity ｜ Tutorial [YsBniZ5ya7k].jpg",
+    "Getting started with networking concepts [kVt0I6zZsf0].jpg",
+    "Getting Started with Netcode.mp4 [be37XiDn1mU].jpg",
     "Unity_NewInputSystem.md",
+    "img/Pasted image 20250916223641.png",
     "Unity_Learning_Resources.md",
-    "Pasted image 20250915125409.png",
+    "img/Pasted image 20250916223159.png",
+    "img/Pasted image 20250916223148.png",
+    "img/Pasted image 20250916203015.png",
+    "img/Pasted image 20250915125409.png",
     "img/Pasted image 20250908141141.png",
-    "img/Pasted image 20250908135319.png",
-    "img/Pasted image 20250908132018.png",
     "Meta_Horizon_Scripting.md",
     "CracingCodingInterview.md",
     "Meta_Horizon_Creator.md",
-    "img/Pasted image 20250908125241.png",
-    "img/Pasted image 20250908130048.png",
-    "img/Pasted image 20250908125557.png",
     "Unity_Examples.md",
     "Unity_ECS_Physics.md",
     "Unity_ECS_Examples.md",
     "Unity_ECS_Brust_Jobs.md",
     "Unity_ECS_Advenced.md",
     "Unity_ECS.md",
-    "img/Pasted image 20250822131906.png",
     "Unity_ECS.md~",
     "Pasted.md",
     "Unity_Examples~",
