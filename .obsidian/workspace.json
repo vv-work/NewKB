@@ -11,6 +11,44 @@
             "id": "d05a8ba61568d848",
             "type": "leaf",
             "state": {
+              "type": "image",
+              "state": {
+                "file": "img/Unity 6 & XR Toolkit 3.0 ： Features You Can't Ignore as a VR⧸XR⧸AR Developer [Seghspj6kow].jpg"
+              },
+              "icon": "lucide-image",
+              "title": "Unity 6 & XR Toolkit 3.0 ： Features You Can't Ignore as a VR⧸XR⧸AR Developer [Seghspj6kow]"
+            }
+          },
+          {
+            "id": "5fc1fb51c8e383ac",
+            "type": "leaf",
+            "state": {
+              "type": "image",
+              "state": {
+                "file": "img/ProBuilder for grey-boxing in Unity ｜ Tutorial [YsBniZ5ya7k].jpg"
+              },
+              "icon": "lucide-image",
+              "title": "ProBuilder for grey-boxing in Unity ｜ Tutorial [YsBniZ5ya7k]"
+            }
+          },
+          {
+            "id": "bbd3fbb8c59585c3",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Unity_ECS.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Unity_ECS"
+            }
+          },
+          {
+            "id": "5c489ff0770e8399",
+            "type": "leaf",
+            "state": {
               "type": "markdown",
               "state": {
                 "file": "Unity_Learning_Resources.md",
@@ -20,8 +58,23 @@
               "icon": "lucide-file",
               "title": "Unity_Learning_Resources"
             }
+          },
+          {
+            "id": "9e264b8732249c7b",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Unity Multiplayer.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Unity Multiplayer"
+            }
           }
-        ]
+        ],
+        "currentTab": 4
       }
     ],
     "direction": "vertical"
@@ -164,39 +217,46 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "d05a8ba61568d848",
+  "active": "9e264b8732249c7b",
   "lastOpenFiles": [
-    "Understanding URP settings and essentials [HCXCmHgV7Sk] 1.jpg",
-    "Understanding URP settings and essentials [HCXCmHgV7Sk].jpg",
-    "ProBuilder for grey-boxing in Unity ｜ Tutorial [YsBniZ5ya7k].jpg",
-    "Getting started with networking concepts [kVt0I6zZsf0].jpg",
-    "Getting Started with Netcode.mp4 [be37XiDn1mU].jpg",
-    "Unity_NewInputSystem.md",
-    "img/Pasted image 20250916223641.png",
+    "Unity_CSharp_Scripting.md~",
+    "Pasted image 20250917060047.png",
     "Unity_Learning_Resources.md",
-    "img/Pasted image 20250916223159.png",
-    "img/Pasted image 20250916223148.png",
-    "img/Pasted image 20250916203015.png",
-    "img/Pasted image 20250915125409.png",
-    "img/Pasted image 20250908141141.png",
-    "Meta_Horizon_Scripting.md",
-    "CracingCodingInterview.md",
-    "Meta_Horizon_Creator.md",
-    "Unity_Examples.md",
-    "Unity_ECS_Physics.md",
+    "Unity Multiplayer.md",
     "Unity_ECS_Examples.md",
-    "Unity_ECS_Brust_Jobs.md",
+    "Unity_ECS_Physics.md",
+    "Unity_Examples.md",
+    "Unity_Optimization.md",
+    "Unity_NewInputSystem.md",
     "Unity_ECS_Advenced.md",
+    "Pasted image 20250917054620.png",
+    "Pasted image 20250917054220.png",
+    "Unity_CSharp_Scripting.md",
     "Unity_ECS.md",
-    "Unity_ECS.md~",
+    "Unity_ECS_Brust_Jobs.md",
+    "Pasted image 20250917051553.png",
+    "Prototype mobile games faster with the Input System in Unity 6 ｜ Unite 2024 [ptvjumIHxYg] 1.jpg",
+    "Prototype mobile games faster with the Input System in Unity 6 ｜ Unite 2024 [ptvjumIHxYg].jpg",
+    "Pasted image 20250917035645.png",
+    "img/Unlocking The Power Of Unity's Scriptable Render Pipeline [9fa4uFm1eCE].jpg",
+    "img/Unlocking The Power Of Unity's Scriptable Render Pipeline [9fa4uFm1eCE] 1.jpg",
+    "img/Worldbuilding in VR with Unity's XR Interaction Toolkit [DhqCLamOIQk].jpg",
+    "UE_cpp.md",
+    "TypeScript.md",
+    "Portfolio.md",
     "Pasted.md",
+    "Meta_Horizon_Scripting.md",
+    "Meta_Horizon_Creator.md",
+    "CracingCodingInterview.md",
+    "CLAUDE.md",
+    "cpp.md",
+    "Unity_ECS.md~",
     "Unity_Examples~",
     "Unity_Examples",
     "Unity_ECS_Advenced.md~",
     "Unity_NewInputSystem.md~",
     "Dev_Syntaxis/Rust.md~",
     "Rust.md",
-    "TypeScript.md",
     "some.cs",
     "some.ts",
     "some.js",
@@ -204,13 +264,6 @@
     "IDE/NeoVim-Mermaid.md",
     "IDE/Neovim.md",
     "Unity",
-    "UE_cpp.md",
-    "Dev_Syntaxis/Python_CrashCourse.md",
-    "CLAUDE.md",
-    "Dev_Syntaxis/Python_NeetCode_Interviews.md",
-    "Readme.md",
-    "cpp.md",
-    "Edu/Rules.md",
-    "Edu/EndjoyTheProcess.md"
+    "Dev_Syntaxis/Python_CrashCourse.md"
   ]
 }
