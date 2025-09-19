@@ -24,7 +24,7 @@ In unity **NGO** use UDP protocol for networking.
 
 
 ![[UDP.gif]]
-
+![[Pasted image 20250917093807.png]]
 ### Network Synchronization 
 
 ![[Pasted image 20250917090454.png]]

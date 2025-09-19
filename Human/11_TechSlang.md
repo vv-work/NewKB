@@ -1,4 +1,10 @@
+## MCP 
+
+Model Context Protocol
+
 # Tech Slang 
+
+
 
 In this docment I try to add and mentaine usefull tech lang solutions. 
 

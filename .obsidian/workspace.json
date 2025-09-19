@@ -63,12 +63,14 @@
             "id": "9e264b8732249c7b",
             "type": "leaf",
             "state": {
-              "type": "image",
+              "type": "markdown",
               "state": {
-                "file": "img/UDP.gif"
+                "file": "Human/YoutubePersonal.md",
+                "mode": "source",
+                "source": false
               },
-              "icon": "lucide-image",
-              "title": "UDP"
+              "icon": "lucide-file",
+              "title": "YoutubePersonal"
             }
           }
         ],
@@ -217,22 +219,23 @@
   },
   "active": "0f309310c358f964",
   "lastOpenFiles": [
+    "Human/11_TechSlang.md",
+    "Unity_Multiplayer.md",
+    "Pasted image 20250917093807.png",
+    "img/UDP.gif",
     "img/The Ultimate Multiplayer Tutorial for Unity - Netcode for GameObjects [swIM2z6Foxk].jpg",
     "img/ClientServer.gif",
     "img/Pasted image 20250917091746.png",
-    "Unity_Multiplayer.md",
     "img/Pasted image 20250917091054.png",
     "img/Pasted image 20250917090454.png",
     "Unity_Multiplayer.md~",
     "img/Pasted image 20250917074617.png",
-    "img/UDP.gif",
     "img/Pasted image 20250917070702.png",
     "img/Pasted image 20250917070041.png",
     "Unity_Learning_Resources.md",
     "Unity_NewInputSystem.md",
     "Unity_Optimization.md",
     "Unity_ECS_Examples.md",
-    "img/Worldbuilding in VR with Unity's XR Interaction Toolkit [DhqCLamOIQk].jpg",
     "Unity_CSharp_Scripting.md~",
     "Unity_ECS_Physics.md",
     "Unity_Examples.md",
