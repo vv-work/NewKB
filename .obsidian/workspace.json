@@ -4,77 +4,20 @@
     "type": "split",
     "children": [
       {
-        "id": "dfa44c1dde4032ee",
+        "id": "0f2d552643b5d25b",
         "type": "tabs",
         "children": [
           {
-            "id": "d05a8ba61568d848",
+            "id": "cfc06b74b7b7ffc2",
             "type": "leaf",
             "state": {
-              "type": "image",
-              "state": {
-                "file": "img/Unity 6 & XR Toolkit 3.0 ： Features You Can't Ignore as a VR⧸XR⧸AR Developer [Seghspj6kow].jpg"
-              },
-              "icon": "lucide-image",
-              "title": "Unity 6 & XR Toolkit 3.0 ： Features You Can't Ignore as a VR⧸XR⧸AR Developer [Seghspj6kow]"
-            }
-          },
-          {
-            "id": "5fc1fb51c8e383ac",
-            "type": "leaf",
-            "state": {
-              "type": "image",
-              "state": {
-                "file": "img/ProBuilder for grey-boxing in Unity ｜ Tutorial [YsBniZ5ya7k].jpg"
-              },
-              "icon": "lucide-image",
-              "title": "ProBuilder for grey-boxing in Unity ｜ Tutorial [YsBniZ5ya7k]"
-            }
-          },
-          {
-            "id": "bbd3fbb8c59585c3",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Unity_ECS.md",
-                "mode": "source",
-                "source": false
-              },
+              "type": "empty",
+              "state": {},
               "icon": "lucide-file",
-              "title": "Unity_ECS"
-            }
-          },
-          {
-            "id": "5c489ff0770e8399",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Unity_Learning_Resources.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "Unity_Learning_Resources"
-            }
-          },
-          {
-            "id": "9e264b8732249c7b",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Human/YoutubePersonal.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "YoutubePersonal"
+              "title": "New tab"
             }
           }
-        ],
-        "currentTab": 4
+        ]
       }
     ],
     "direction": "vertical"
@@ -217,8 +160,23 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "0f309310c358f964",
+  "active": "cfc06b74b7b7ffc2",
   "lastOpenFiles": [
+    "img/Unity 6 & XR Toolkit 3.0 ： Features You Can't Ignore as a VR⧸XR⧸AR Developer [Seghspj6kow].jpg",
+    "img/ProBuilder for grey-boxing in Unity ｜ Tutorial [YsBniZ5ya7k].jpg",
+    "Unity_ECS.md",
+    "Unity_Learning_Resources.md",
+    "00_LC_Algo/06_DFS_BFS.md",
+    "00_LC_Algo/05_Heap.md",
+    "00_LC_Algo/04_SlidingWindow.md",
+    "00_LC_Algo/03_Sorting.md",
+    "00_LC_Algo/02_Trie.md",
+    "00_LC_Algo/01_PrefixSum.md",
+    "00_LC_Algo/00_Intro.md",
+    "01_Tech_Interview/CodeSnipets.md",
+    "01_Tech_Interview/NeetCode.md",
+    "01_Tech_Interview/Resource_for_TechInterview.md",
+    "Human/YoutubePersonal.md",
     "Human/11_TechSlang.md",
     "Unity_Multiplayer.md",
     "Pasted image 20250917093807.png",
@@ -231,8 +189,6 @@
     "Unity_Multiplayer.md~",
     "img/Pasted image 20250917074617.png",
     "img/Pasted image 20250917070702.png",
-    "img/Pasted image 20250917070041.png",
-    "Unity_Learning_Resources.md",
     "Unity_NewInputSystem.md",
     "Unity_Optimization.md",
     "Unity_ECS_Examples.md",
@@ -241,29 +197,16 @@
     "Unity_Examples.md",
     "Unity_ECS_Advenced.md",
     "Unity_CSharp_Scripting.md",
-    "Unity_ECS.md",
     "Unity_ECS_Brust_Jobs.md",
     "UE_cpp.md",
     "TypeScript.md",
-    "Portfolio.md",
-    "Pasted.md",
-    "Meta_Horizon_Scripting.md",
-    "Meta_Horizon_Creator.md",
-    "CracingCodingInterview.md",
-    "CLAUDE.md",
-    "cpp.md",
     "Unity_ECS.md~",
     "Unity_Examples~",
     "Unity_Examples",
     "Unity_ECS_Advenced.md~",
     "Unity_NewInputSystem.md~",
     "Dev_Syntaxis/Rust.md~",
-    "Rust.md",
     "some.cs",
-    "some.ts",
-    "IDE/Tmux.md",
-    "IDE/NeoVim-Mermaid.md",
-    "IDE/Neovim.md",
-    "Dev_Syntaxis/Python_CrashCourse.md"
+    "some.ts"
   ]
 }
