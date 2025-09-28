@@ -29,3 +29,26 @@ heapq.nsmallest(3,arr)
 # [2, 3, 4]
  ```
 
+
+```python
+from collections import Counter
+
+import heapq
+
+  
+  
+
+class Solution:
+
+def topKFrequent(self, nums: List[int], k: int) -> List[int]:
+
+# TC:O(N)
+
+# SC:O(N)
+
+count = Counter(nums)
+
+  
+
+return heapq.nlargest(k,count.keys(),key=count.get)
+```

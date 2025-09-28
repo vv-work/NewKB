@@ -1,0 +1,3 @@
+- [ ] Cracking Coding Interview Chapter
+- [ ] 5 LeetCode problems 
+- [ ] 2 short videos 

@@ -11,13 +11,46 @@
             "id": "cfc06b74b7b7ffc2",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {},
+              "type": "markdown",
+              "state": {
+                "file": "#100d2Meta/Memento_python.md",
+                "mode": "source",
+                "source": false
+              },
               "icon": "lucide-file",
-              "title": "New tab"
+              "title": "Memento_python"
+            }
+          },
+          {
+            "id": "471fad7679b163d9",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "#100d2Meta/DEEP WORK.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "DEEP WORK"
+            }
+          },
+          {
+            "id": "dcf3ee61c50fa0d0",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "#100d2Meta/Memenot_csharp.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Memenot_csharp"
             }
           }
-        ]
+        ],
+        "currentTab": 2
       }
     ],
     "direction": "vertical"
@@ -160,16 +193,28 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "cfc06b74b7b7ffc2",
+  "active": "dcf3ee61c50fa0d0",
   "lastOpenFiles": [
+    "#100d2Meta/Memento_python.md",
+    "#100d2Meta/Resources.md",
+    "#100d2Meta/Readme.md",
+    "#100d2Meta/Memenot_csharp.md",
+    "#100d2Meta/DEEP WORK.md",
+    "#100d2Meta/Daily.md",
+    "CracingCodingInterview.md",
+    "img/Pasted image 20250926091706.png",
+    "#100d2Meta/AGENTS.md",
+    "00_LC_Algo/Graph/Adjacency_List.md",
+    "img/Pasted image 20250926032519.png",
+    "img/Pasted image 20250926025857.png",
+    "00_LC_Algo/05_Heap.md",
+    "00_LC_Algo/03_Sorting.md",
+    "00_LC_Algo/04_SlidingWindow.md",
+    "00_LC_Algo/06_DFS_BFS.md",
     "img/Unity 6 & XR Toolkit 3.0 ： Features You Can't Ignore as a VR⧸XR⧸AR Developer [Seghspj6kow].jpg",
     "img/ProBuilder for grey-boxing in Unity ｜ Tutorial [YsBniZ5ya7k].jpg",
     "Unity_ECS.md",
     "Unity_Learning_Resources.md",
-    "00_LC_Algo/06_DFS_BFS.md",
-    "00_LC_Algo/05_Heap.md",
-    "00_LC_Algo/04_SlidingWindow.md",
-    "00_LC_Algo/03_Sorting.md",
     "00_LC_Algo/02_Trie.md",
     "00_LC_Algo/01_PrefixSum.md",
     "00_LC_Algo/00_Intro.md",
@@ -179,27 +224,15 @@
     "Human/YoutubePersonal.md",
     "Human/11_TechSlang.md",
     "Unity_Multiplayer.md",
-    "Pasted image 20250917093807.png",
+    "img/Pasted image 20250917093807.png",
     "img/UDP.gif",
     "img/The Ultimate Multiplayer Tutorial for Unity - Netcode for GameObjects [swIM2z6Foxk].jpg",
     "img/ClientServer.gif",
     "img/Pasted image 20250917091746.png",
-    "img/Pasted image 20250917091054.png",
-    "img/Pasted image 20250917090454.png",
     "Unity_Multiplayer.md~",
-    "img/Pasted image 20250917074617.png",
-    "img/Pasted image 20250917070702.png",
     "Unity_NewInputSystem.md",
     "Unity_Optimization.md",
-    "Unity_ECS_Examples.md",
     "Unity_CSharp_Scripting.md~",
-    "Unity_ECS_Physics.md",
-    "Unity_Examples.md",
-    "Unity_ECS_Advenced.md",
-    "Unity_CSharp_Scripting.md",
-    "Unity_ECS_Brust_Jobs.md",
-    "UE_cpp.md",
-    "TypeScript.md",
     "Unity_ECS.md~",
     "Unity_Examples~",
     "Unity_Examples",

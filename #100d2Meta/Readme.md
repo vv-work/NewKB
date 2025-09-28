@@ -8,7 +8,7 @@ Day 00: `21/09/2025`
 Day 100: `29/12/2025`
 
 ## Goals
-- Land a role at Meta by Day 100.
+- Land a role at Meta by Day **100**.
 - Finish two books: Cracking the Coding Interview and System Design Interview (Alex Xu).
 - Publish daily short-form updates to LinkedIn, YouTube Shorts, and TikTok.
 
