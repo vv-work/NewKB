@@ -11,14 +11,10 @@
             "id": "cfc06b74b7b7ffc2",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "#100d2Meta/Memento_python.md",
-                "mode": "source",
-                "source": false
-              },
+              "type": "empty",
+              "state": {},
               "icon": "lucide-file",
-              "title": "Memento_python"
+              "title": "New tab"
             }
           },
           {
@@ -31,8 +27,7 @@
               "title": "New tab"
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "vertical"
@@ -175,7 +170,7 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "0f309310c358f964",
+  "active": "cfc06b74b7b7ffc2",
   "lastOpenFiles": [
     "#100d2Meta/Memenot_csharp.md",
     "#100d2Meta/DEEP WORK.md",
