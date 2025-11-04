@@ -11,10 +11,14 @@
             "id": "cfc06b74b7b7ffc2",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {},
+              "type": "markdown",
+              "state": {
+                "file": "Dev_Syntaxis/CSharp.md",
+                "mode": "source",
+                "source": false
+              },
               "icon": "lucide-file",
-              "title": "New tab"
+              "title": "CSharp"
             }
           },
           {
@@ -172,6 +176,11 @@
   },
   "active": "cfc06b74b7b7ffc2",
   "lastOpenFiles": [
+    "Pasted image 20251029231536.png",
+    "Dev_Syntaxis/MarkDown.md",
+    "Dev_Syntaxis/CSharp.md",
+    "Dev_Syntaxis/Python_NeetCode_Interviews.md",
+    "Dev_Syntaxis/Python_CrashCourse.md",
     "#100d2Meta/Memenot_csharp.md",
     "#100d2Meta/DEEP WORK.md",
     "#100d2Meta/Resources.md",
@@ -198,17 +207,12 @@
     "01_Tech_Interview/CodeSnipets.md",
     "01_Tech_Interview/NeetCode.md",
     "01_Tech_Interview/Resource_for_TechInterview.md",
-    "Human/YoutubePersonal.md",
-    "Human/11_TechSlang.md",
-    "Unity_Multiplayer.md",
     "img/Pasted image 20250917093807.png",
     "img/UDP.gif",
     "img/The Ultimate Multiplayer Tutorial for Unity - Netcode for GameObjects [swIM2z6Foxk].jpg",
     "img/ClientServer.gif",
     "img/Pasted image 20250917091746.png",
     "Unity_Multiplayer.md~",
-    "Unity_NewInputSystem.md",
-    "Unity_Optimization.md",
     "Unity_CSharp_Scripting.md~",
     "Unity_ECS.md~",
     "Unity_Examples~",

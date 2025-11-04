@@ -2,7 +2,7 @@
 
 ## Latex
 
-Adding Latex to Markdown to display mathematical formul, examples:
+Adding Latex to Markdown to display mathematical formulas examples:
 
 $O(N)$
 $O(N \log N)$
