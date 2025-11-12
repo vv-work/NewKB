@@ -9,6 +9,30 @@
 | `remove()`  | $O(\log N)$ |     |
 | `heapify()` | $O(N)$      |     |
 
+
+## Heap example 
+
+`arr = [1, 3, 6, 5, 9, 8, 10]`
+
+```mermaid
+
+graph TD
+    A((1))
+    B((3))
+    C((6))
+    E((5))
+    D((9))
+    F((8))
+    G((10))
+  
+    A --> B
+    A --> C
+    B --> E
+    B --> D
+    C --> F
+    C --> G 
+```
+
 ```python
 import heapq
 
