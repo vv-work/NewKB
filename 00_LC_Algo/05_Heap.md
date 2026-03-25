@@ -24,6 +24,7 @@ graph TD
     D((9))
     F((8))
     G((10))
+    I((128))
   
     A --> B
     A --> C
@@ -31,6 +32,7 @@ graph TD
     B --> D
     C --> F
     C --> G 
+	E --> I
 ```
 
 ```python
