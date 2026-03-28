@@ -1,0 +1,54 @@
+# Sr AR/VR Software Engineer - visionOS Apps, Vision Products Software
+
+**Location:** San Francisco Bay Area, California, United States  
+**Department:** Software and Services  
+
+## Submit Resume
+
+### Summary
+
+**Posted:** Mar 03, 2026  
+**Role Number:** 200649673  
+
+Apple is where individual imaginations gather together, committing to the values that lead to great work. Every new product we build, service we create, or Apple Store experience we deliver is the result of us making each other's ideas stronger. That happens because every one of us shares a belief that we can make something wonderful and share it with the world, changing lives for the better. It's the diversity of our people and their thinking that inspires the innovation that runs through everything we do. When we bring everybody in, we can do the best work of our lives. Here, you'll do more than join something — you'll add something.
+
+Apple Vision Pro is a revolutionary spatial computer that seamlessly blends digital content with your physical space. It allows us to do the things we love in ways never before possible — all while staying connected to the people around us.
+
+The visionOS Apps team is looking for a software engineer to help us build software experiences across visionOS and iOS. We're creating the bridge between users' everyday devices and the future of computing.
+
+As a core member of our software engineering team, you'll work cross-functionally with partners in design, frameworks, Vision Products engineering, and more. You will apply your unique skills and perspectives to solve challenging problems, building experiences that empower customers to discover, manage, and unlock the full potential of Apple Vision Pro.
+
+### Description
+
+Apps and experiences are at the core of unleashing the potential of spatial computing. As a member of the visionOS Apps team, you will build experiences that enable users to discover the wonder of immersive media, manage their Apple Vision Pro, and learn about the ever-evolving capabilities of visionOS. You will ideate, develop, and ship groundbreaking features that make spatial computing accessible, intuitive, and magical.
+
+Our applications engineering team is uniquely positioned at the intersection of iOS and visionOS. By joining us, you will work closely with peers across these functions to deliver an experience that introduces millions of customers to the future of computing.
+
+The ideal engineer for this role is looking to demonstrate their experience building apps for Apple's software platforms while pioneering new paradigms in cross-device experiences. We are looking for engineers who thrive in a dynamic and agile organization chartered with delivering the leading edge in spatial computing technologies.
+
+You focus on the details, treat your work as a reflection of yourself, and look for opportunities to expand your technical knowledge into emerging domains. You respect debate and enjoy working in groups with different technical and non-technical backgrounds and diverse opinions.
+
+### Responsibilities
+
+* Design, develop, and ship high-quality software experiences for visionOS and across Apple's ecosystems
+* Lead and contribute to cross-functional initiatives, collaborating with design, services, and software engineering partners to deliver exceptional user experiences
+* Own the quality of your work end-to-end, from architecture and implementation through testing, performance, and release
+* Mentor and support the growth of engineers around you, helping to raise the technical bar of the team
+* Stay current with emerging technologies and industry trends, proactively identify opportunities to apply them across the team's work
+
+### Minimum Qualifications
+
+* 5+ years of experience developing and shipping production applications
+* Strong computer science fundamentals, including a deep understanding of data structures, algorithms, and system design
+* Proven ability to drive complex, cross-functional projects from concept to release
+* Experience mentoring engineers and fostering team growth
+* Experience delivering consumer-facing applications using Swift and SwiftUI
+
+### Preferred Qualifications
+
+* Expertise developing for Apple's ecosystems, including one or more of macOS, iOS, iPadOS, tvOS, watchOS, and visionOS
+* Ability to define and uphold engineering best practices, including code reviews, testing strategies, and performance optimization
+* Demonstrated experience identifying and resolving complex technical challenges with pragmatic, scalable solutions
+* Comfort operating with ambiguity and a track record of leading software development in fast-paced environments with rapidly changing priorities
+* Experience leveraging AI productivity tools to successfully accelerate software development while maintaining high-quality code and architectures
+
