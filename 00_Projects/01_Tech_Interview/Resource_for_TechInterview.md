@@ -43,15 +43,15 @@
 
 ## Best Youtube Channels
 
-![Pirate King](./img/YT_PirateKing.webp)
+![Pirate King](YT_PirateKing.webp)
 - [Pirate King](https://www.youtube.com/watch?v=17cQGPLbmfQ)
 > Good guides and overall strategies for coding interviews.
 
-![Joma Tech YT](./img/YT_JomaTech.webp)
+![Joma Tech YT](YT_JomaTech.webp)
 - [Joma Tech](https://www.youtube.com/watch?v=5bId3N7QZec)
 > Fun and informative a lot of good interviews with software engineers.
 
-![ThePrimeagen](./img/YT_ThePrmeagen.webp)
+![ThePrimeagen](YT_ThePrmeagen.webp)
 - [ThePrimeagen](https://www.youtube.com/watch?v=hW5s_UUO1RI)
 > ♂ 💪 **REAL** ♂ 💪 **MALE** way of coding & 🥲 fun to watch if you love pain and VIM.
 

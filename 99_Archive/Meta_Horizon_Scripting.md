@@ -1,8 +1,11 @@
-# Meta Horizon Scripting
 
+# Meta Horizon Cretor Program
+
+**MHCP**(Meta Horizon Creator Program) - A program that allows users to create and customize their own virtual worlds and experiences within the Meta Horizon platform.
 
 ## Links
-
+- [GitHub repo with all MHCP](https://github.com/MHCPCreators/horizonCreatorManual/blob/main/HorizonTechnicalDoc.md)
+- [TypeScript Code convention](https://developers.meta.com/horizon-worlds/learn/documentation/mhcp-program/community-tutorials/typescript-conventions-and-best-practices-for-horizon-worlds)
 - [Horizon Scripting API Reference](https://developers.meta.com/horizon-worlds/reference/2.0.0/?utm_source=social-yt&utm_medium=M4D&utm_campaign=organic&utm_content=ScriptingYourWorld)
 - [ Meta World Creation Manual](https://developers.meta.com/horizon-worlds/learn/documentation/mhcp-program/community-tutorials/creator-manual)
 

@@ -2,7 +2,7 @@
 
 -  ❗Amortized **O(N)** not **Big O(N)** [explanation link](https://stackoverflow.com/questions/33044883/why-is-the-time-complexity-of-pythons-list-append-method-o1)
 
-![String/array complexity](./img/1_1.png)
+![String/array complexity](1_1.png)
 
 ## Notes
 
